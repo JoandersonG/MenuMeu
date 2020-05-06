@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">VeganoCook</string>
+
+    <string name="api_key">AIzaSyBtNj8tCjMb3lqRHNzN67KIAXHouknm_as</string>
 </resources>
