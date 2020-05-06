@@ -20,7 +20,7 @@ class CreateRecipeActivity : AppCompatActivity() {
 
     fun getVideos() {
         println("entrou no get videos")
-        ApiService.service.getVideos("go4DMa5-fZM")
+        ApiService.service.getVideos("go4DMa5-fZM",getString(R.string.youtube_api_key))
             .enqueue(object: Callback<VideoBodyResponse> {
                 override fun onFailure(call: Call<VideoBodyResponse>, t: Throwable) {
                     Toast.makeText(applicationContext,"Erro ao conectar com API", Toast.LENGTH_SHORT).show()

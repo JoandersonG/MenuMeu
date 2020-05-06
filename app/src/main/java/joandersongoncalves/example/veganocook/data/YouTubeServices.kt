@@ -9,7 +9,7 @@ interface YouTubeServices {
     @GET("videos")
     fun getVideos(
         @Query("id") idVideo: String = "go4DMa5-fZM",
-        @Query("key") apiKey: String = "AIzaSyBtNj8tCjMb3lqRHNzN67KIAXHouknm_as",
+        @Query("key") apiKey: String = "api_key_here",
         @Query("part") partResponses: String = "snippet",
         @Query("type") type: String = "video"
     ): Call<VideoBodyResponse>
