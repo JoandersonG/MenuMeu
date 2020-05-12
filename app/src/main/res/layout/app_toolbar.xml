@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.appbar.AppBarLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ViewFlipper
+        android:id="@+id/viewFlipperAppToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- HomeActivity -->
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/appToolbarHome"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="  VeganoCook"
+            app:menu="@menu/home_top_app_bar"
+            app:logo="@drawable/app_icon"
+            app:popupTheme="@style/AppTheme"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary" />
+
+        <!-- Other Activities -->
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/appToolbarOther"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_arrow_back_white_24dp"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary" />
+
+        <!-- SearchActivity -->
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/appToolbarSearch"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:menu="@menu/search_top_app_bar"
+            app:navigationIcon="@drawable/ic_arrow_back_white_24dp"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary" />
+
+    </ViewFlipper>
+
+</com.google.android.material.appbar.AppBarLayout>

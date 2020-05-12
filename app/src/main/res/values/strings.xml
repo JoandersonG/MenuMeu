@@ -1,3 +1,40 @@
 <resources>
     <string name="app_name">VeganoCook</string>
+
+    <!--  HomeActivity  -->
+    <string name="add_recipe">Adicionar receita</string>
+    <string name="all_recipes">Todas as Receitas</string>
+
+    <!-- CreateRecipeActivity -->
+    <string name="hint_create_recipe_youtube_link">Cole o link do YouTube</string>
+    <string name="content_description_search">Pesquisar</string>
+    <string name="category">Categoria:</string>
+
+    <!-- Generic string -->
+    <string name="title">Título</string>
+    <string name="description">Descrição</string>
+    <string name="breakfest">Café da Manhã</string>
+    <string name="lunch">Almoço</string>
+    <string name="dinner">Jantar</string>
+    <string name="snack">Lanche</string>
+    <string name="cancel">Cancelar</string>
+    <string name="save">Salvar</string>
+
+    <!-- RecipeDetailsActivity -->
+    <string name="edit_recipe">Editar receita</string>
+
+    <!-- SearchActivity -->
+    <string name="search_results">Resultados da Busca:</string>
+
+    <!-- RecipeAdapter -->
+    <string name="recipe_image">Imagem da receita</string>
+    <string name="searchable">searchable</string>
+    <string name="hint_search">Pesquisar receitas salvas</string>
+    <string name="category_placeholder">Categoria</string>
+    <string name="new_recipe">Nova Receita</string>
+
+
+    <string name="search_button">Search Button</string>
+
+
 </resources>

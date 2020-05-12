@@ -2,7 +2,7 @@ package joandersongoncalves.example.veganocook.data.response
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import joandersongoncalves.example.veganocook.data.model.Video
+import joandersongoncalves.example.veganocook.data.model.YouTubeVideo
 
 @JsonClass(generateAdapter = true)
 data class SnippetVideoResponse (
@@ -16,7 +16,7 @@ data class SnippetVideoResponse (
         return "nome é " + title + "\ndescrição é " + description
     }
 
-    fun getVideoModel() = Video(
+    fun getVideoModel() = YouTubeVideo(
         title = this.title,
         description = this.description,
         id = null,
