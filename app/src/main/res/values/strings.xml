@@ -19,6 +19,7 @@
     <string name="snack">Lanche</string>
     <string name="cancel">Cancelar</string>
     <string name="save">Salvar</string>
+    <string name="ok">OK</string>
 
     <!-- RecipeDetailsActivity -->
     <string name="edit_recipe">Editar receita</string>
@@ -33,8 +34,14 @@
     <string name="category_placeholder">Categoria</string>
     <string name="new_recipe">Nova Receita</string>
 
-
+    <!-- top app bar -->
     <string name="search_button">Search Button</string>
 
+    <!-- errors -->
+    <string name="error_invalid_link">link inválido</string>
+    <string name="error_retrieving_information">Erro ao recuperar informações do vídeo</string>
+    <string name="error_select_category">Selecione ao menos uma categoria</string>
+    <string name="error_conecting_api">Erro ao conectar com API</string>
+    <string name="error_insert_title">Insira um título</string>
 
 </resources>

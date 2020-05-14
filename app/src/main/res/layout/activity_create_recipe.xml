@@ -128,12 +128,14 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroupCategories"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/Widget.MaterialComponents.ChipGroup"
                     app:singleSelection="false">
 
                     <com.google.android.material.chip.Chip
+                        android:id="@+id/chipBreakfast"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/breakfest"
@@ -142,6 +144,7 @@
                         android:textSize="16sp" />
 
                     <com.google.android.material.chip.Chip
+                        android:id="@+id/chipLunch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/lunch"
@@ -150,6 +153,7 @@
                         android:background="@color/white" />
 
                     <com.google.android.material.chip.Chip
+                        android:id="@+id/chipDinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/dinner"
@@ -158,6 +162,7 @@
                         app:textStartPadding="8dp" />
 
                     <com.google.android.material.chip.Chip
+                        android:id="@+id/chipSnack"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/snack"
