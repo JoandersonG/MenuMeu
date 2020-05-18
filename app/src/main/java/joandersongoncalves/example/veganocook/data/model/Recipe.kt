@@ -1,7 +1,7 @@
 package joandersongoncalves.example.veganocook.data.model
 
 data class Recipe(
-    val videoLink: String,
+    val video: YouTubeVideo,
     val categories: List<RecipeCategory>
 )
 

@@ -4,29 +4,22 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView.OnEditorActionListener
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.iterator
+import androidx.lifecycle.Observer
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import joandersongoncalves.example.veganocook.R
-import joandersongoncalves.example.veganocook.data.ApiService
-import joandersongoncalves.example.veganocook.data.model.Recipe
-import joandersongoncalves.example.veganocook.data.model.RecipeCategory
-import joandersongoncalves.example.veganocook.data.model.YouTubeVideo
-import joandersongoncalves.example.veganocook.data.response.VideoBodyResponse
 import kotlinx.android.synthetic.main.activity_create_recipe.*
 import kotlinx.android.synthetic.main.app_toolbar.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 
 @Suppress("ControlFlowWithEmptyBody")
 class CreateRecipeActivity : AppCompatActivity() {
 
-    private val recipeCategories = mutableListOf<RecipeCategory>()
-    private var videoLink = ""
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +30,36 @@ class CreateRecipeActivity : AppCompatActivity() {
         appToolbarOther.setTitle(R.string.add_recipe)
         AppToolbarSetup.setBackButton(appToolbarOther, this)
 
+        val viewModel: CreateRecipeViewModel by viewModels()
+
+        viewModel.videoLiveData.observe(this, Observer {
+            it?.let {
+                fillFields(it.title, it.description)
+            }
+        })
+        viewModel.videoRetrieveResponseLiveData.observe(this, Observer {
+            it?.let {
+                when (it) {
+                    CreateRecipeViewModel.ERROR_INVALID_LINK -> {
+                        textInputYoutubeLink.error = getString(R.string.error_invalid_link)
+                    }
+                    CreateRecipeViewModel.ERROR_RETRIEVING_INFORMATION -> {
+                        Snackbar.make(
+                            viewFlipperCreateRecipeActivity, R.string.error_retrieving_information,
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    }
+                    CreateRecipeViewModel.ERROR_CONECTING_API -> {
+                        Snackbar.make(
+                            viewFlipperCreateRecipeActivity,
+                            R.string.error_conecting_api,
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+        })
+
         // setting cancel button
         btCreateRecipeCancel.setOnClickListener {
             // close activity
@@ -44,7 +67,7 @@ class CreateRecipeActivity : AppCompatActivity() {
         }
 
         // setting search button
-        btSearch.setOnClickListener { handleYoutubeLinkSearch() }
+        btSearch.setOnClickListener { handleYoutubeLinkSearch(viewModel) }
 
         //handling pressing enter on softkeyboard on textInputYoutubeLink
         val listener = OnEditorActionListener { _, actionId, event ->
@@ -58,7 +81,7 @@ class CreateRecipeActivity : AppCompatActivity() {
             } else return@OnEditorActionListener false
 
             //when enter is pressed do:
-            handleYoutubeLinkSearch()
+            handleYoutubeLinkSearch(viewModel)
 
             true
         }
@@ -66,96 +89,40 @@ class CreateRecipeActivity : AppCompatActivity() {
 
         //handling checking chips
         chipBreakfast.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                recipeCategories.add(RecipeCategory.BREAKFAST)
-            } else {
-                recipeCategories.remove(RecipeCategory.BREAKFAST)
-            }
+            viewModel.chipCheckedChange(R.id.chipBreakfast, isChecked)
         }
         chipLunch.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                recipeCategories.add(RecipeCategory.LUNCH)
-            } else {
-                recipeCategories.remove(RecipeCategory.LUNCH)
-            }
+            viewModel.chipCheckedChange(R.id.chipLunch, isChecked)
         }
         chipDinner.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                recipeCategories.add(RecipeCategory.DINNER)
-            } else {
-                recipeCategories.remove(RecipeCategory.DINNER)
-            }
+            viewModel.chipCheckedChange(R.id.chipDinner, isChecked)
         }
         chipSnack.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                recipeCategories.add(RecipeCategory.SNACK)
-            } else {
-                recipeCategories.remove(RecipeCategory.SNACK)
-            }
+            viewModel.chipCheckedChange(R.id.chipDinner, isChecked)
         }
 
         //pressing save button
         btCreateRecipeSave.setOnClickListener {
             if (validateData()) {
-                val recipe = Recipe(videoLink, recipeCategories)
-                //add to database
-                println("Receita é $recipe")
+                viewModel.saveNewRecipe()
             }
         }
+
     }
 
-    private fun handleYoutubeLinkSearch() {
+    private fun handleYoutubeLinkSearch(viewModel: CreateRecipeViewModel) {
         val link = textInputYoutubeLink.text
         if (link.toString().startsWith("https://youtu.be/", false)) {
             //its a valid link
             //remove prefix
-            videoLink = link.toString().removePrefix("https://youtu.be/")
-            getVideo(videoLink)
+            val videoLink = link.toString().removePrefix("https://youtu.be/")
+            viewModel.getVideo(videoLink, getString(R.string.youtube_api_key))
         } else {
             //invalid link
             textInputYoutubeLink.error = getString(R.string.error_invalid_link)
         }
     }
 
-    private fun getVideo(idVideo: String) {
-        ApiService.service.getVideos(idVideo, getString(R.string.youtube_api_key))
-            .enqueue(object: Callback<VideoBodyResponse> {
-                override fun onFailure(call: Call<VideoBodyResponse>, t: Throwable) {
-                    Snackbar.make(
-                        viewFlipperCreateRecipeActivity,
-                        R.string.error_conecting_api,
-                        Snackbar.LENGTH_SHORT
-                    ).show()
-                }
-
-                override fun onResponse(
-                    call: Call<VideoBodyResponse>,
-                    response: Response<VideoBodyResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        var youTubeVideo: YouTubeVideo
-                        response.body()?.let { videoBodyResponse ->
-                            if (videoBodyResponse.itemsResult.isNotEmpty()) {
-                                //get the result
-                                youTubeVideo =
-                                    videoBodyResponse.itemsResult[0].snippetVideoResponse.getVideoModel()
-                                //show the result
-                                fillFields(youTubeVideo)
-                            } else {
-                                //didn't find the video
-                                textInputYoutubeLink.error = getString(R.string.error_invalid_link)
-                            }
-                        }
-                    } else {
-                        Snackbar.make(
-                            viewFlipperCreateRecipeActivity, R.string.error_retrieving_information,
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-
-            })
-    }
 
     private fun validateData(): Boolean {
 
@@ -186,10 +153,10 @@ class CreateRecipeActivity : AppCompatActivity() {
     }
 
     //fill layout filds with info in video
-    private fun fillFields(video: YouTubeVideo) {
+    private fun fillFields(title: String, description: String) {
 
-        textInputTitle.setText(video.title)
-        textInputDescription.setText(video.description)
+        textInputTitle.setText(title)
+        textInputDescription.setText(description)
 
         //show fields on ViewFlipper
         viewFlipperCreateRecipeActivity.displayedChild = 1
