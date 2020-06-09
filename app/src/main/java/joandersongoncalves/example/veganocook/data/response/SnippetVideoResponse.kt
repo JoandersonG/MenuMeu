@@ -19,7 +19,7 @@ data class SnippetVideoResponse (
     fun getVideoModel() = YouTubeVideo(
         title = this.title,
         description = this.description,
-        id = null,
+        url = "urlHere",
         thumbnailUrl = null)
 
 }
