@@ -5,14 +5,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import joandersongoncalves.example.veganocook.R
-import joandersongoncalves.example.veganocook.data.model.YouTubeVideo
+import joandersongoncalves.example.veganocook.data.model.Recipe
 import kotlinx.android.synthetic.main.adapter_recipe.view.*
 
 class RecipeAdapter(
-    private val videos: List<YouTubeVideo>,
-    private val onItemClickListener: ((youtubeVideo: YouTubeVideo) -> Unit)
+    private val onItemClickListener: ((recipe: Recipe) -> Unit)
 ) : RecyclerView.Adapter<RecipeAdapter.MyViewHolder>() {
 
+    private var recipes = emptyList<Recipe>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView =
@@ -21,28 +21,33 @@ class RecipeAdapter(
     }
 
     override fun getItemCount(): Int {
-        return videos.size
+        return recipes.size
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.bindView(videos[position])
+        holder.bindView(recipes[position])
+    }
+
+    internal fun setRecipes(recipes: List<Recipe>) {
+        this.recipes = recipes
+        notifyDataSetChanged()
     }
 
     class MyViewHolder(
         itemView: View,
-        private val onItemClickListener: ((youtubeVideo: YouTubeVideo) -> Unit)
+        private val onItemClickListener: ((recipe: Recipe) -> Unit)
     ) : RecyclerView.ViewHolder(itemView) {
 
         //        private val recipeImage = itemView.ivRecipe
         private val recipeName = itemView.tvRecipeName
 //        private val layoutRecipeAdapter = itemView.layoutRecipeAdapter
 
-        fun bindView(video: YouTubeVideo) {
+        fun bindView(recipe: Recipe) {
             //recipeImage =
-            recipeName.text = video.title
+            recipeName.text = recipe.name
 
             itemView.setOnClickListener {
-                onItemClickListener.invoke(video)
+                onItemClickListener.invoke(recipe)
             }
         }
 
