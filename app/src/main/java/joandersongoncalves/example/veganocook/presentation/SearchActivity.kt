@@ -9,7 +9,6 @@ import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import joandersongoncalves.example.veganocook.R
-import joandersongoncalves.example.veganocook.data.model.YouTubeVideo
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.app_toolbar.*
 
@@ -24,10 +23,9 @@ class SearchActivity : AppCompatActivity() {
         with(rvSearchResults) {
             layoutManager = androidx.recyclerview.widget.GridLayoutManager(this@SearchActivity, 2)
             setHasFixedSize(true)
-            adapter = joandersongoncalves.example.veganocook.presentation.adapter.RecipeAdapter(
-                videoExemples()
-            ) { youtubeVideo ->
-                val intent = RecipeDetailsActivity.getStartIntent(this@SearchActivity, youtubeVideo)
+            adapter =
+                joandersongoncalves.example.veganocook.presentation.adapter.RecipeAdapter { recipe ->
+                    val intent = RecipeDetailsActivity.getStartIntent(this@SearchActivity, recipe)
                 this@SearchActivity.startActivity(intent)
 
             }
@@ -78,31 +76,4 @@ class SearchActivity : AppCompatActivity() {
 
         return true
     }
-
-
-    private fun videoExemples(): List<YouTubeVideo> {
-        return listOf(
-            YouTubeVideo("Nhoque delicioso", "Este é um nhoque divino...", null, null),
-            YouTubeVideo(
-                "Lasanha de beringela",
-                "Este é uma lasanha de comer rezando...",
-                null,
-                null
-            ),
-            YouTubeVideo(
-                "Farofa proteica",
-                "Esta farofa vai te fazer chorar de alegria...",
-                null,
-                null
-            ),
-            YouTubeVideo(
-                "Smoothie verde",
-                "Este smoothie vai te fazer muito mais saudável...",
-                null,
-                null
-            ),
-            YouTubeVideo("Pão vegano fácil", "Este pão vai te fazer sonhar acordado...", null, null)
-        )
-    }
-
 }
