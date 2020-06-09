@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView.OnEditorActionListener
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.iterator
@@ -12,14 +13,13 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import joandersongoncalves.example.veganocook.R
+import joandersongoncalves.example.veganocook.presentation.viewmodel.CreateRecipeViewModel
 import kotlinx.android.synthetic.main.activity_create_recipe.*
 import kotlinx.android.synthetic.main.app_toolbar.*
 
 
 @Suppress("ControlFlowWithEmptyBody")
 class CreateRecipeActivity : AppCompatActivity() {
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,6 +66,24 @@ class CreateRecipeActivity : AppCompatActivity() {
             finish()
         }
 
+        //pressing save button
+        btCreateRecipeSave.setOnClickListener {
+            if (validateData()) {
+                val worked = viewModel.saveNewRecipe(
+                    textInputTitle.text.toString(),
+                    textInputDescription.text.toString()
+                )
+                val idMessage = if (worked) {
+                    R.string.success_saving_recipe
+                } else {
+                    R.string.error_saving_recipe
+                }
+
+                Toast.makeText(this, idMessage, Toast.LENGTH_SHORT).show()
+                finish()
+            }
+        }
+
         // setting search button
         btSearch.setOnClickListener { handleYoutubeLinkSearch(viewModel) }
 
@@ -98,16 +116,8 @@ class CreateRecipeActivity : AppCompatActivity() {
             viewModel.chipCheckedChange(R.id.chipDinner, isChecked)
         }
         chipSnack.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.chipCheckedChange(R.id.chipDinner, isChecked)
+            viewModel.chipCheckedChange(R.id.chipSnack, isChecked)
         }
-
-        //pressing save button
-        btCreateRecipeSave.setOnClickListener {
-            if (validateData()) {
-                viewModel.saveNewRecipe()
-            }
-        }
-
     }
 
     private fun handleYoutubeLinkSearch(viewModel: CreateRecipeViewModel) {
