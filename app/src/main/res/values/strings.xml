@@ -9,6 +9,7 @@
     <string name="hint_create_recipe_youtube_link">Cole o link do YouTube</string>
     <string name="content_description_search">Pesquisar</string>
     <string name="category">Categoria:</string>
+    <string name="success_saving_recipe">Receita Salva com Sucesso</string>
 
     <!-- Generic string -->
     <string name="title">Título</string>
@@ -43,5 +44,7 @@
     <string name="error_select_category">Selecione ao menos uma categoria</string>
     <string name="error_conecting_api">Erro ao conectar com API</string>
     <string name="error_insert_title">Insira um título</string>
+    <string name="error_saving_recipe">Erro ao salvar receita</string>
+    <string name="error_showing_video">Erro na exibição do vídeo</string>
 
 </resources>
