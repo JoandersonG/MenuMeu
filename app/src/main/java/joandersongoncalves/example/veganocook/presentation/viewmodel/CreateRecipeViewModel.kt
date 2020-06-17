@@ -8,6 +8,7 @@ import joandersongoncalves.example.veganocook.R
 import joandersongoncalves.example.veganocook.data.ApiService
 import joandersongoncalves.example.veganocook.data.RecipeRepository
 import joandersongoncalves.example.veganocook.data.database.RecipeDatabase
+import joandersongoncalves.example.veganocook.data.model.Category
 import joandersongoncalves.example.veganocook.data.model.Recipe
 import joandersongoncalves.example.veganocook.data.model.YouTubeVideo
 import joandersongoncalves.example.veganocook.data.response.VideoBodyResponse
@@ -21,17 +22,25 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
 
     val videoLiveData = MutableLiveData<YouTubeVideo>()
     val videoRetrieveResponseLiveData = MutableLiveData<Int>()//holds the errors, if any
-    private val recipeCategories = mutableListOf<String>()
+    val recipeCategories = MutableLiveData<MutableList<Category>>()
 
     private val repository: RecipeRepository
 
     init {
         val recipeDao = RecipeDatabase.getDatabase(application, viewModelScope).recipeDao()
         repository = RecipeRepository(recipeDao)
+        recipeCategories.value = mutableListOf()
     }
 
-    fun insert(recipe: Recipe) = viewModelScope.launch(Dispatchers.IO) {
+    private fun insert(recipe: Recipe) = viewModelScope.launch(Dispatchers.IO) {
         repository.insert(recipe)
+    }
+
+    fun getCategoriesFromRecipe(recipe: Recipe) = viewModelScope.launch(Dispatchers.IO) {
+//        val recipeId = repository.getRecipeId(recipe)
+        recipeCategories.postValue(
+            repository.getRecipeWithCategories(recipe.recipeId).toMutableList()
+        )
     }
 
     fun getVideo(idVideo: String, apiKey: String) {
@@ -78,32 +87,56 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
             // add to the list
             when (id) {
                 R.id.chipBreakfast -> {
-                    recipeCategories.add(Recipe.BREAKFAST)
+                    recipeCategories.value?.add(Category(Recipe.BREAKFAST))
                 }
                 R.id.chipLunch -> {
-                    recipeCategories.add(Recipe.LUNCH)
+                    recipeCategories.value?.add(Category(Recipe.LUNCH))
                 }
                 R.id.chipDinner -> {
-                    recipeCategories.add(Recipe.DINNER)
+                    recipeCategories.value?.add(Category(Recipe.DINNER))
                 }
                 R.id.chipSnack -> {
-                    recipeCategories.add(Recipe.SNACK)
+                    recipeCategories.value?.add(Category(Recipe.SNACK))
                 }
             }
         } else {
             //remove from the list
             when (id) {
                 R.id.chipBreakfast -> {
-                    recipeCategories.remove(Recipe.BREAKFAST)
+                    recipeCategories.value?.let {
+                        for (category in it.toList()) {
+                            if (category == Category(Recipe.BREAKFAST)) {
+                                it.remove(category)
+                            }
+                        }
+                    }
                 }
                 R.id.chipLunch -> {
-                    recipeCategories.remove(Recipe.LUNCH)
+                    recipeCategories.value?.let {
+                        for (category in it.toList()) {
+                            if (category == Category(Recipe.LUNCH)) {
+                                it.remove(category)
+                            }
+                        }
+                    }
                 }
                 R.id.chipDinner -> {
-                    recipeCategories.remove(Recipe.DINNER)
+                    recipeCategories.value?.let {
+                        for (category in it.toList()) {
+                            if (category == Category(Recipe.DINNER)) {
+                                it.remove(category)
+                            }
+                        }
+                    }
                 }
                 R.id.chipSnack -> {
-                    recipeCategories.remove(Recipe.SNACK)
+                    recipeCategories.value?.let {
+                        for (category in it.toList()) {
+                            if (category == Category(Recipe.SNACK)) {
+                                it.remove(category)
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -112,8 +145,10 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
 
     fun saveNewRecipe(name: String, description: String): Boolean {
 
-        val recipe = videoLiveData.value?.let { it ->
-            Recipe(it.url, name, description, recipeCategories.toList())
+        val recipe = videoLiveData.value?.let { video ->
+            recipeCategories.value?.toList()?.let { listCategories ->
+                Recipe(video.url, name, description, listCategories)
+            }
         }
 
         // save created recipe on database:
@@ -122,6 +157,22 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
             return true
         }
         return false
+    }
+
+    fun updateRecipe(name: String, description: String, recipe: Recipe): Recipe {
+
+        viewModelScope.launch(Dispatchers.IO) {
+            recipe.name = name
+            recipe.description = description
+            videoLiveData.value?.let {
+                recipe.videoUrl = it.url
+            }
+            recipeCategories.value?.let {
+                recipe.categories = it.toList()
+            }
+            repository.updateRecipe(recipe)
+        }
+        return recipe
     }
 
     companion object {

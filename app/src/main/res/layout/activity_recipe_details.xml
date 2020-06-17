@@ -41,16 +41,6 @@
             android:text="@string/description"
             android:textSize="16sp" />
 
-        <Button
-            android:id="@+id/btEditRecipe"
-            style="@style/HomeActivityButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/edit_recipe" />
-
 
     </LinearLayout>
 

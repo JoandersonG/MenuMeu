@@ -37,6 +37,15 @@
             app:navigationIcon="@drawable/ic_arrow_back_white_24dp"
             style="@style/Widget.MaterialComponents.Toolbar.Primary" />
 
+        <!-- RecipeDetailsActivity -->
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/appToolbarRecipeDetais"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_arrow_back_white_24dp"
+            app:menu="@menu/recipe_detais_top_app_bar"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary" />
+
     </ViewFlipper>
 
 </com.google.android.material.appbar.AppBarLayout>

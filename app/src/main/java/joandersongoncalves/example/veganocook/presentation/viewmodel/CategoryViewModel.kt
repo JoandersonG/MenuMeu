@@ -15,17 +15,23 @@ class CategoryViewModel(application: Application) : AndroidViewModel(application
 
     private val repository: RecipeRepository
     var recipesByCategory = MutableLiveData<List<Recipe>>()
+    var category: String
 
     init {
         val recipeDao = RecipeDatabase.getDatabase(application, viewModelScope).recipeDao()
         repository = RecipeRepository(recipeDao)
+        category = ""
     }
 
-    fun getCategoryWithRecipes(category: String) = viewModelScope.launch(Dispatchers.IO) {
+    fun getCategoryWithRecipes() = viewModelScope.launch(Dispatchers.IO) {
         if (category == "") { //all recipes
             recipesByCategory.postValue(repository.getAllRecipes())
         } else {
             recipesByCategory.postValue(repository.getRecipesByCategory(category))
         }
+    }
+
+    fun deleteRecipe(recipe: Recipe) = viewModelScope.launch(Dispatchers.IO) {
+        repository.deleteRecipe(recipe)
     }
 }

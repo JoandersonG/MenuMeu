@@ -3,6 +3,8 @@ package joandersongoncalves.example.veganocook.presentation
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.youtube.player.YouTubeBaseActivity
 import com.google.android.youtube.player.YouTubeInitializationResult
@@ -14,20 +16,66 @@ import kotlinx.android.synthetic.main.app_toolbar.*
 
 class RecipeDetailsActivity : YouTubeBaseActivity() {
 
+    private var recipe: Recipe? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe_details)
 
-        //setting the right toolbar for this activity
-        viewFlipperAppToolbar.displayedChild = 1
-        AppToolbarSetup.setBackButton(appToolbarOther, this)
-
         // retrieving data from parent activity
-        val recipe = intent.getParcelableExtra<Recipe>(EXTRA_RECIPE)
+        if (!intent.hasExtra(EXTRA_RECIPE)) {
+            Toast.makeText(this, R.string.error_showing_recipe, Toast.LENGTH_SHORT).show()
+            finish()
+        }
+        recipe = intent.getParcelableExtra(EXTRA_RECIPE)
+
+        updateFields(recipe)
+
+        //setting the right toolbar for this activity
+        viewFlipperAppToolbar.displayedChild = 3
+        AppToolbarSetup.setBackButton(appToolbarRecipeDetais, this)
+        appToolbarRecipeDetais.setOnMenuItemClickListener { item ->
+            when (item.title) {
+                getString(R.string.edit) -> {
+                    val requestCode = 1
+                    startActivityForResult(
+                        CreateRecipeActivity.getStartIntent(this, recipe!!),
+                        requestCode
+                    )
+                }
+                getString(R.string.delete) -> {
+                    //deleting confirmation
+                    MaterialAlertDialogBuilder(this)
+                        .setTitle(R.string.confirmation_delete)
+                        .setNegativeButton(R.string.cancel) { _, _ ->/*does nothing*/ }
+                        .setPositiveButton(R.string.ok) { _, _ ->
+                            //send to previous activity to delete
+                            val intent = Intent()
+                            intent.putExtra(RECIPE_TO_BE_DELETED, recipe)
+                            setResult(DELETE_RECIPE, intent)
+                            //finnish activity
+                            finish()
+
+                        }
+                        .show()
+                }
+            }
+            return@setOnMenuItemClickListener true
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (data != null) {
+            recipe = data.getParcelableExtra(UPDATED_RECIPE)
+            updateFields(recipe)
+            setResult(RETURN_UPDATED_RECIPE)
+        }
+    }
+
+    private fun updateFields(recipe: Recipe?) {
         tvTitle.text = recipe?.name
         tvDescription.text = recipe?.description
         val videoUrl = recipe?.videoUrl
-
         //executa o player de vídeo do arquivo XML
         videoUrl?.let { runYouTubePlayer(it) }
     }
@@ -59,6 +107,10 @@ class RecipeDetailsActivity : YouTubeBaseActivity() {
 
     companion object {
         private const val EXTRA_RECIPE = "EXTRA_RECIPE"
+        private const val UPDATED_RECIPE = "UPDATED_RECIPE"
+        const val RECIPE_TO_BE_DELETED = "RECIPE_TO_BE_DELETED"
+        const val DELETE_RECIPE = 3
+        const val RETURN_UPDATED_RECIPE = 2
 
         fun getStartIntent(context: Context, recipe: Recipe): Intent {
             return Intent(context, RecipeDetailsActivity::class.java).apply {

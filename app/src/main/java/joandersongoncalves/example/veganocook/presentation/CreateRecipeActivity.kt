@@ -1,5 +1,8 @@
 package joandersongoncalves.example.veganocook.presentation
 
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
@@ -13,6 +16,8 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import joandersongoncalves.example.veganocook.R
+import joandersongoncalves.example.veganocook.data.model.Category
+import joandersongoncalves.example.veganocook.data.model.Recipe
 import joandersongoncalves.example.veganocook.presentation.viewmodel.CreateRecipeViewModel
 import kotlinx.android.synthetic.main.activity_create_recipe.*
 import kotlinx.android.synthetic.main.app_toolbar.*
@@ -30,11 +35,12 @@ class CreateRecipeActivity : AppCompatActivity() {
         appToolbarOther.setTitle(R.string.add_recipe)
         AppToolbarSetup.setBackButton(appToolbarOther, this)
 
+        // setting viewModel
         val viewModel: CreateRecipeViewModel by viewModels()
 
         viewModel.videoLiveData.observe(this, Observer {
             it?.let {
-                fillFields(it.title, it.description)
+                fillFields(it.title, it.description, "https://youtu.be/${it.url}")
             }
         })
         viewModel.videoRetrieveResponseLiveData.observe(this, Observer {
@@ -60,6 +66,34 @@ class CreateRecipeActivity : AppCompatActivity() {
             }
         })
 
+        // getting extra, if any
+        var recipe = intent.getParcelableExtra<Recipe>(EXTRA_RECIPE)
+        recipe?.let { rec ->
+            //viewModel.getVideo(it.videoUrl,getString(R.string.youtube_api_key))
+            fillFields(rec.name, rec.description, "https://youtu.be/${rec.videoUrl}")
+            //categories:
+            viewModel.getCategoriesFromRecipe(rec)
+            //update categories to chips
+            viewModel.recipeCategories.observe(this, Observer {
+                if (it.contains(Category(Recipe.BREAKFAST))) {
+                    chipBreakfast.isChecked = true
+                    viewModel.chipCheckedChange(R.id.chipBreakfast, true)
+                }
+                if (it.contains(Category(Recipe.LUNCH))) {
+                    chipLunch.isChecked = true
+                    viewModel.chipCheckedChange(R.id.chipLunch, true)
+                }
+                if (it.contains(Category(Recipe.DINNER))) {
+                    chipDinner.isChecked = true
+                    viewModel.chipCheckedChange(R.id.chipDinner, true)
+                }
+                if (it.contains(Category(Recipe.SNACK))) {
+                    chipSnack.isChecked = true
+                    viewModel.chipCheckedChange(R.id.chipSnack, true)
+                }
+            })
+        }
+
         // setting cancel button
         btCreateRecipeCancel.setOnClickListener {
             // close activity
@@ -69,14 +103,30 @@ class CreateRecipeActivity : AppCompatActivity() {
         //pressing save button
         btCreateRecipeSave.setOnClickListener {
             if (validateData()) {
-                val worked = viewModel.saveNewRecipe(
-                    textInputTitle.text.toString(),
-                    textInputDescription.text.toString()
-                )
-                val idMessage = if (worked) {
-                    R.string.success_saving_recipe
+                val worked: Boolean
+                val idMessage: Int
+                //if it's editing an existing recipe
+                if (recipe != null) {
+                    recipe = viewModel.updateRecipe(
+                        textInputTitle.text.toString(),
+                        textInputDescription.text.toString(),
+                        recipe!!
+                    )
+                    idMessage = R.string.success_updating_recipe
+
+                    val intent = Intent()
+                    intent.putExtra(UPDATED_RECIPE, recipe)
+                    setResult(Activity.RESULT_OK, intent)
                 } else {
-                    R.string.error_saving_recipe
+                    worked = viewModel.saveNewRecipe(
+                        textInputTitle.text.toString(),
+                        textInputDescription.text.toString()
+                    )
+                    idMessage = if (worked) {
+                        R.string.success_saving_recipe
+                    } else {
+                        R.string.error_saving_recipe
+                    }
                 }
 
                 Toast.makeText(this, idMessage, Toast.LENGTH_SHORT).show()
@@ -163,13 +213,26 @@ class CreateRecipeActivity : AppCompatActivity() {
     }
 
     //fill layout filds with info in video
-    private fun fillFields(title: String, description: String) {
+    private fun fillFields(title: String, description: String, videoId: String? = null) {
 
         textInputTitle.setText(title)
         textInputDescription.setText(description)
 
+        textInputYoutubeLink.setText(videoId)
+
         //show fields on ViewFlipper
         viewFlipperCreateRecipeActivity.displayedChild = 1
 
+    }
+
+    companion object {
+        private const val EXTRA_RECIPE = "EXTRA_RECIPE"
+        private const val UPDATED_RECIPE = "UPDATED_RECIPE"
+
+        fun getStartIntent(context: Context, recipe: Recipe): Intent {
+            return Intent(context, CreateRecipeActivity::class.java).apply {
+                putExtra(EXTRA_RECIPE, recipe)
+            }
+        }
     }
 }

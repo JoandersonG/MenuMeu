@@ -10,6 +10,7 @@
     <string name="content_description_search">Pesquisar</string>
     <string name="category">Categoria:</string>
     <string name="success_saving_recipe">Receita Salva com Sucesso</string>
+    <string name="success_updating_recipe">Receita atualizada com sucesso</string>
 
     <!-- Generic string -->
     <string name="title">Título</string>
@@ -27,6 +28,10 @@
 
     <!-- SearchActivity -->
     <string name="search_results">Resultados da Busca:</string>
+
+    <!-- CategoryActivity -->
+    <string name="confirmation_delete">Tem certeza que deseja excluir esta receita?</string>
+    <string name="success_deleting_recipe">Receita excluída com sucesso</string>
 
     <!-- RecipeAdapter -->
     <string name="recipe_image">Imagem da receita</string>
@@ -46,5 +51,10 @@
     <string name="error_insert_title">Insira um título</string>
     <string name="error_saving_recipe">Erro ao salvar receita</string>
     <string name="error_showing_video">Erro na exibição do vídeo</string>
+    <string name="error_showing_recipe">Erro em exibir receita</string>
+
+    <string name="edit">Editar</string>
+    <string name="delete">Excluir</string>
+
 
 </resources>
