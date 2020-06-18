@@ -9,17 +9,20 @@ data class SnippetVideoResponse (
     @Json(name = "title")
     val title: String,
     @Json(name = "description")
-    val description: String
+    val description: String,
+    val thumbnails: ThumbnailsResponse
 ) {
 
     override fun toString(): String {
-        return "nome é " + title + "\ndescrição é " + description
+        return "nome é $title\ndescrição é $description"
     }
 
     fun getVideoModel() = YouTubeVideo(
         title = this.title,
         description = this.description,
         url = "urlHere",
-        thumbnailUrl = null)
+        defaultThumbnailUrl = thumbnails.default.thumbnailUrl,
+        mediumThumbnailUrl = thumbnails.medium.thumbnailUrl
+    )
 
 }

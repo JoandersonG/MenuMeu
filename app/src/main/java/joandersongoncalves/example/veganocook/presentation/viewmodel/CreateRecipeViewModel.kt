@@ -147,7 +147,7 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
 
         val recipe = videoLiveData.value?.let { video ->
             recipeCategories.value?.toList()?.let { listCategories ->
-                Recipe(video.url, name, description, listCategories)
+                Recipe(video, name, description, listCategories)
             }
         }
 
@@ -165,7 +165,7 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
             recipe.name = name
             recipe.description = description
             videoLiveData.value?.let {
-                recipe.videoUrl = it.url
+                recipe.video = it
             }
             recipeCategories.value?.let {
                 recipe.categories = it.toList()

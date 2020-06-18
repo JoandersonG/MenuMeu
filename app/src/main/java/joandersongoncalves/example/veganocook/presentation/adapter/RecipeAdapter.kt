@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import joandersongoncalves.example.veganocook.R
 import joandersongoncalves.example.veganocook.data.model.Recipe
 import kotlinx.android.synthetic.main.adapter_recipe.view.*
@@ -38,14 +39,17 @@ class RecipeAdapter(
         private val onItemClickListener: ((recipe: Recipe) -> Unit)
     ) : RecyclerView.ViewHolder(itemView) {
 
-        //        private val recipeImage = itemView.ivRecipe
+        private val recipeImage = itemView.ivRecipe
         private val recipeName = itemView.tvRecipeName
 //        private val layoutRecipeAdapter = itemView.layoutRecipeAdapter
 
         fun bindView(recipe: Recipe) {
-            //recipeImage =
             recipeName.text = recipe.name
-
+            Picasso
+                .get()
+                .load(recipe.video.mediumThumbnailUrl)
+                .placeholder(R.drawable.placeholder)
+                .into(recipeImage)
             itemView.setOnClickListener {
                 onItemClickListener.invoke(recipe)
             }

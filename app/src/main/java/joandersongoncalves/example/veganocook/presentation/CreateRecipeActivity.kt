@@ -70,7 +70,7 @@ class CreateRecipeActivity : AppCompatActivity() {
         var recipe = intent.getParcelableExtra<Recipe>(EXTRA_RECIPE)
         recipe?.let { rec ->
             //viewModel.getVideo(it.videoUrl,getString(R.string.youtube_api_key))
-            fillFields(rec.name, rec.description, "https://youtu.be/${rec.videoUrl}")
+            fillFields(rec.name, rec.description, "https://youtu.be/${rec.video.url}")
             //categories:
             viewModel.getCategoriesFromRecipe(rec)
             //update categories to chips

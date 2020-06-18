@@ -9,7 +9,7 @@ import kotlinx.android.parcel.Parcelize
 @Entity(tableName = "recipes")
 data class Recipe(
     @ColumnInfo(name = "recipe_id") @PrimaryKey(autoGenerate = true) var recipeId: Int,
-    @ColumnInfo(name = "video_url") var videoUrl: String,
+    @Embedded var video: YouTubeVideo,
     var name: String,
     var description: String
 ) : Parcelable {
@@ -18,16 +18,16 @@ data class Recipe(
     var categories = listOf<Category>()
 
     constructor(
-        videoUrl: String,
+        video: YouTubeVideo,
         name: String,
         description: String,
         categories: List<Category>
-    ) : this(0, videoUrl, name, description) {
+    ) : this(0, video, name, description) {
         this.categories = categories
     }
 
     override fun toString(): String {
-        return "url: $videoUrl, name: $name, categories: $categories"
+        return "url: ${video.url}, name: $name, categories: $categories"
     }
 
     companion object {

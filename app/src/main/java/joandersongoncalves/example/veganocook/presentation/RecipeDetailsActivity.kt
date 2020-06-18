@@ -75,7 +75,7 @@ class RecipeDetailsActivity : YouTubeBaseActivity() {
     private fun updateFields(recipe: Recipe?) {
         tvTitle.text = recipe?.name
         tvDescription.text = recipe?.description
-        val videoUrl = recipe?.videoUrl
+        val videoUrl = recipe?.video?.url
         //executa o player de vídeo do arquivo XML
         videoUrl?.let { runYouTubePlayer(it) }
     }
