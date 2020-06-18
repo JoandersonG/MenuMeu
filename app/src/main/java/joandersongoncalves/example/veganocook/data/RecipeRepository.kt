@@ -16,13 +16,20 @@ class RecipeRepository(private val recipeDao: RecipeDao) {
 
     suspend fun getRecipesByCategory(category: String): List<Recipe> {
         val listCategoryWithRecipes = recipeDao.getCategoryWithRecipes(category)
-        return listCategoryWithRecipes[0].recipes
-
+        return if (listCategoryWithRecipes.isNotEmpty()) {
+            listCategoryWithRecipes[0].recipes
+        } else {
+            listOf()
+        }
     }
 
     suspend fun getRecipeWithCategories(recipeId: Int): List<Category> {
         val listRecipeWithCategories = recipeDao.getRecipeWithCategories(recipeId)
-        return listRecipeWithCategories[0].categories
+        return if (listRecipeWithCategories.isNotEmpty()) {
+            listRecipeWithCategories[0].categories
+        } else {
+            listOf()
+        }
     }
 
     suspend fun updateRecipe(recipe: Recipe) {
