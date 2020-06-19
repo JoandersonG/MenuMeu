@@ -39,4 +39,8 @@ class RecipeRepository(private val recipeDao: RecipeDao) {
     suspend fun deleteRecipe(recipe: Recipe) {
         recipeDao.deleteRecipe(recipe)
     }
+
+    suspend fun queryByName(q: String): List<Recipe> {
+        return recipeDao.queryByName("%$q%")
+    }
 }

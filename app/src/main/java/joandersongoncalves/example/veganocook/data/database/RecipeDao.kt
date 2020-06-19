@@ -78,4 +78,7 @@ abstract class RecipeDao {
     @Query("SELECT * FROM recipes WHERE recipe_id = :recipeId")
     abstract suspend fun getRecipeWithCategories(recipeId: Int): List<RecipesWithCategories>
 
+    @Query("SELECT * FROM recipes WHERE name LIKE :q")
+    abstract suspend fun queryByName(q: String): List<Recipe>
+
 }
