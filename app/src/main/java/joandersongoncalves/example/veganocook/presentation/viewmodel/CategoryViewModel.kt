@@ -24,14 +24,31 @@ class CategoryViewModel(application: Application) : AndroidViewModel(application
     }
 
     fun getCategoryWithRecipes() = viewModelScope.launch(Dispatchers.IO) {
-        if (category == "") { //all recipes
-            recipesByCategory.postValue(repository.getAllRecipes())
-        } else {
-            recipesByCategory.postValue(repository.getRecipesByCategory(category))
+        when (category) {
+            "" -> {//all recipes
+                recipesByCategory.postValue(repository.getAllRecipes())
+            }
+            Recipe.BREAKFAST, Recipe.LUNCH, Recipe.DINNER, Recipe.SNACK -> {
+                recipesByCategory.postValue(repository.getRecipesByCategory(category))
+            }
+            "FAVORITE" -> {
+                recipesByCategory.postValue(repository.getFavoriteRecipes())
+            }
         }
     }
 
     fun deleteRecipe(recipe: Recipe) = viewModelScope.launch(Dispatchers.IO) {
         repository.deleteRecipe(recipe)
+        getCategoryWithRecipes()
+    }
+
+    fun updateRecipe(recipe: Recipe) = viewModelScope.launch(Dispatchers.IO) {
+        if (recipe.categories.isEmpty()) {
+            //get categories
+            recipe.categories = repository.getRecipeWithCategories(recipe.recipeId)
+        }
+        //then update
+        repository.updateRecipe(recipe)
+        getCategoryWithRecipes()
     }
 }

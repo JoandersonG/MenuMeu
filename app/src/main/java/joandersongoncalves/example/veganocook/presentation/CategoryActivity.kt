@@ -42,6 +42,7 @@ class CategoryActivity : AppCompatActivity() {
                 getString(R.string.lunch) -> Recipe.LUNCH
                 getString(R.string.dinner) -> Recipe.DINNER
                 getString(R.string.snack) -> Recipe.SNACK
+                getString(R.string.favorite) -> "FAVORITE"
                 else -> ""
             }
             viewModel.category = category
@@ -70,14 +71,18 @@ class CategoryActivity : AppCompatActivity() {
             if (data != null && data.hasExtra(RecipeDetailsActivity.RECIPE_TO_BE_DELETED)) {
                 //delete the recipe received:
                 viewModel.deleteRecipe(data.getParcelableExtra(RecipeDetailsActivity.RECIPE_TO_BE_DELETED)!!)
-                //update the recipe list:
-                viewModel.getCategoryWithRecipes()
                 //snackbar confirming exclusion:
                 Snackbar.make(
                     baseLayoutCategoryActivity,
                     R.string.success_deleting_recipe,
                     Snackbar.LENGTH_SHORT
                 ).show()
+            }
+        }
+        if (resultCode == RecipeDetailsActivity.TOGGLE_RECIPE_FAVORITE) {
+            val r: Recipe? = data?.getParcelableExtra(RecipeDetailsActivity.RECIPE_TO_BE_UPDATED)
+            r?.let {
+                viewModel.updateRecipe(it)
             }
         }
     }
