@@ -52,13 +52,22 @@
             app:layout_constraintStart_toStartOf="@id/guideline3" />
 
         <Button
+            android:id="@+id/btFavorites"
+            style="@style/HomeActivityButton"
+            android:layout_width="0dp"
+            android:text="@string/favorite"
+            app:layout_constraintEnd_toEndOf="@id/guideline2"
+            app:layout_constraintStart_toStartOf="@id/guideline"
+            app:layout_constraintTop_toBottomOf="@+id/btAddRecipe" />
+
+        <Button
             android:id="@+id/btBreakfest"
             style="@style/HomeActivityButton"
             android:layout_width="0dp"
             android:text="@string/breakfest"
             app:layout_constraintEnd_toEndOf="@id/guideline2"
             app:layout_constraintStart_toStartOf="@id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/btAddRecipe" />
+            app:layout_constraintTop_toBottomOf="@+id/btFavorites" />
 
         <Button
             android:id="@+id/btLunch"

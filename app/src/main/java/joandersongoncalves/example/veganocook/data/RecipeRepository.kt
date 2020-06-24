@@ -32,6 +32,10 @@ class RecipeRepository(private val recipeDao: RecipeDao) {
         }
     }
 
+    suspend fun getFavoriteRecipes(): List<Recipe> {
+        return recipeDao.getFavoriteRecipes()
+    }
+
     suspend fun updateRecipe(recipe: Recipe) {
         recipeDao.updateRecipeWithCategories(recipe)
     }

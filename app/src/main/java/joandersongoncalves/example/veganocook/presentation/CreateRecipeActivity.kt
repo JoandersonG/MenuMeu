@@ -40,7 +40,7 @@ class CreateRecipeActivity : AppCompatActivity() {
 
         viewModel.videoLiveData.observe(this, Observer {
             it?.let {
-                fillFields(it.title, it.description, "https://youtu.be/${it.url}")
+                fillFields(it.title, it.description, "https://youtu.be/${it.url}", null)
             }
         })
         viewModel.videoRetrieveResponseLiveData.observe(this, Observer {
@@ -69,8 +69,13 @@ class CreateRecipeActivity : AppCompatActivity() {
         // getting extra, if any
         var recipe = intent.getParcelableExtra<Recipe>(EXTRA_RECIPE)
         recipe?.let { rec ->
-            //viewModel.getVideo(it.videoUrl,getString(R.string.youtube_api_key))
-            fillFields(rec.name, rec.description, "https://youtu.be/${rec.video.url}")
+            fillFields(
+                rec.name,
+                rec.description,
+                "https://youtu.be/${rec.video.url}",
+                rec.isFavorite
+            )
+            viewModel.favorite.value = rec.isFavorite
             //categories:
             viewModel.getCategoriesFromRecipe(rec)
             //update categories to chips
@@ -136,6 +141,14 @@ class CreateRecipeActivity : AppCompatActivity() {
 
         // setting search button
         btSearch.setOnClickListener { handleYoutubeLinkSearch(viewModel) }
+
+        //setting add to favorite
+        viewModel.favorite.observe(this, Observer {
+            checkBoxAddFavorite.isChecked = it
+        })
+        layoutAddFavorite.setOnClickListener {
+            viewModel.changeFavoriteState()
+        }
 
         //handling pressing enter on softkeyboard on textInputYoutubeLink
         val listener = OnEditorActionListener { _, actionId, event ->
@@ -213,12 +226,19 @@ class CreateRecipeActivity : AppCompatActivity() {
     }
 
     //fill layout filds with info in video
-    private fun fillFields(title: String, description: String, videoId: String? = null) {
+    private fun fillFields(
+        title: String,
+        description: String,
+        videoId: String? = null,
+        isFavorite: Boolean?
+    ) {
 
         textInputTitle.setText(title)
         textInputDescription.setText(description)
-
         textInputYoutubeLink.setText(videoId)
+        if (isFavorite != null) {
+            checkBoxAddFavorite.isChecked = isFavorite
+        }
 
         //show fields on ViewFlipper
         viewFlipperCreateRecipeActivity.displayedChild = 1

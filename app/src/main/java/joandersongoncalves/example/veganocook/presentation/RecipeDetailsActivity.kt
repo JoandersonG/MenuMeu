@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.core.view.get
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.youtube.player.YouTubeBaseActivity
@@ -58,9 +59,42 @@ class RecipeDetailsActivity : YouTubeBaseActivity() {
                         }
                         .show()
                 }
+                getString(R.string.add_to_favorite) -> {
+                    item.isChecked = if (item.isChecked) {
+                        item.setIcon(R.drawable.ic_favorite_outlined_24dp)
+                        Snackbar.make(
+                            LinearLayoutRecipeDetails,
+                            R.string.recipe_removed_from_favorites,
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                        false
+                    } else {
+                        item.setIcon(R.drawable.ic_favorite_filled_24dp)
+                        Snackbar.make(
+                            LinearLayoutRecipeDetails,
+                            R.string.recipe_added_to_favorites,
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                        true
+                    }
+                    recipe?.isFavorite = item.isChecked
+
+                    val intent = Intent()
+                    intent.putExtra(RECIPE_TO_BE_UPDATED, recipe)
+                    setResult(TOGGLE_RECIPE_FAVORITE, intent)
+                }
             }
             return@setOnMenuItemClickListener true
         }
+    }
+
+    private fun setFavoriteCheckButton(isChecked: Boolean) {
+        if (isChecked) {
+            appToolbarRecipeDetais.menu[0].setIcon(R.drawable.ic_favorite_filled_24dp)
+        } else {
+            appToolbarRecipeDetais.menu[0].setIcon(R.drawable.ic_favorite_outlined_24dp)
+        }
+        appToolbarRecipeDetais.menu[0].isChecked = isChecked
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -75,6 +109,9 @@ class RecipeDetailsActivity : YouTubeBaseActivity() {
     private fun updateFields(recipe: Recipe?) {
         tvTitle.text = recipe?.name
         tvDescription.text = recipe?.description
+        if (recipe != null) {
+            setFavoriteCheckButton(recipe.isFavorite)
+        }
         val videoUrl = recipe?.video?.url
         //executa o player de vídeo do arquivo XML
         videoUrl?.let { runYouTubePlayer(it) }
@@ -109,7 +146,9 @@ class RecipeDetailsActivity : YouTubeBaseActivity() {
         private const val EXTRA_RECIPE = "EXTRA_RECIPE"
         private const val UPDATED_RECIPE = "UPDATED_RECIPE"
         const val RECIPE_TO_BE_DELETED = "RECIPE_TO_BE_DELETED"
+        const val RECIPE_TO_BE_UPDATED = "RECIPE_TO_BE_UPDATED"
         const val DELETE_RECIPE = 3
+        const val TOGGLE_RECIPE_FAVORITE = 4
         const val RETURN_UPDATED_RECIPE = 2
 
         fun getStartIntent(context: Context, recipe: Recipe): Intent {

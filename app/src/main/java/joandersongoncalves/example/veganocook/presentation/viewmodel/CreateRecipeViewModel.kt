@@ -23,6 +23,7 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
     val videoLiveData = MutableLiveData<YouTubeVideo>()
     val videoRetrieveResponseLiveData = MutableLiveData<Int>()//holds the errors, if any
     val recipeCategories = MutableLiveData<MutableList<Category>>()
+    val favorite = MutableLiveData<Boolean>()
 
     private val repository: RecipeRepository
 
@@ -30,6 +31,7 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
         val recipeDao = RecipeDatabase.getDatabase(application, viewModelScope).recipeDao()
         repository = RecipeRepository(recipeDao)
         recipeCategories.value = mutableListOf()
+        favorite.value = false
     }
 
     private fun insert(recipe: Recipe) = viewModelScope.launch(Dispatchers.IO) {
@@ -147,7 +149,7 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
 
         val recipe = videoLiveData.value?.let { video ->
             recipeCategories.value?.toList()?.let { listCategories ->
-                Recipe(video, name, description, listCategories)
+                Recipe(video, name, description, favorite.value!!, listCategories)
             }
         }
 
@@ -170,9 +172,18 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
             recipeCategories.value?.let {
                 recipe.categories = it.toList()
             }
+            favorite.value?.let {
+                recipe.isFavorite = it
+            }
             repository.updateRecipe(recipe)
         }
         return recipe
+    }
+
+    fun changeFavoriteState() {
+        favorite.value?.let {
+            favorite.value = !it
+        }
     }
 
     companion object {

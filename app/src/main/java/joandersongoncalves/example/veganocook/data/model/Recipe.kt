@@ -11,7 +11,9 @@ data class Recipe(
     @ColumnInfo(name = "recipe_id") @PrimaryKey(autoGenerate = true) var recipeId: Int,
     @Embedded var video: YouTubeVideo,
     var name: String,
-    var description: String
+    var description: String,
+    @ColumnInfo(name = "is_favorite")
+    var isFavorite: Boolean
 ) : Parcelable {
     @IgnoredOnParcel
     @Ignore
@@ -21,8 +23,9 @@ data class Recipe(
         video: YouTubeVideo,
         name: String,
         description: String,
+        favorite: Boolean,
         categories: List<Category>
-    ) : this(0, video, name, description) {
+    ) : this(0, video, name, description, favorite) {
         this.categories = categories
     }
 

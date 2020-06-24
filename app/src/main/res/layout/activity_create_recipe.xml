@@ -118,6 +118,32 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <LinearLayout
+                        android:id="@+id/layoutAddFavorite"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="16dp"
+                        android:orientation="horizontal">
+
+                        <CheckBox
+                            android:id="@+id/checkBoxAddFavorite"
+                            android:layout_weight="9"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:button="@drawable/sl_favourite_24dp"
+                            app:buttonTint="@color/colorAccent" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:layout_weight="1"
+                            android:text="@string/add_to_favorite" />
+
+                    </LinearLayout>
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

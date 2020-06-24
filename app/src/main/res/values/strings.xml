@@ -15,6 +15,7 @@
     <!-- Generic string -->
     <string name="title">Título</string>
     <string name="description">Descrição</string>
+    <string name="favorite">Favoritas</string>
     <string name="breakfest">Café da Manhã</string>
     <string name="lunch">Almoço</string>
     <string name="dinner">Jantar</string>
@@ -25,6 +26,9 @@
 
     <!-- RecipeDetailsActivity -->
     <string name="edit_recipe">Editar receita</string>
+    <string name="add_to_favorite">Adicionar aos favoritos</string>
+    <string name="recipe_added_to_favorites">Receita adicionada aos favoritos</string>
+    <string name="recipe_removed_from_favorites">Receita removida dos favoritos</string>
 
     <!-- SearchActivity -->
     <string name="search_results">Resultados da Busca:</string>

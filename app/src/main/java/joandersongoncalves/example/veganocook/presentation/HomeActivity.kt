@@ -15,6 +15,11 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
+        btFavorites.setOnClickListener {
+            val intent = CategoryActivity.getStartActivity(this, getString(R.string.favorite))
+            startActivity(intent)
+        }
+
         btBreakfest.setOnClickListener {
             val intent = CategoryActivity.getStartActivity(this, getString(R.string.breakfest))
             startActivity(intent)
