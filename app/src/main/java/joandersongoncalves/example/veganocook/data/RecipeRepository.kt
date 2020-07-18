@@ -47,4 +47,16 @@ class RecipeRepository(private val recipeDao: RecipeDao) {
     suspend fun queryByName(q: String): List<Recipe> {
         return recipeDao.queryByName("%$q%")
     }
+
+    suspend fun getAllCategories(): List<Category> {
+        return recipeDao.getAllCategories()
+    }
+
+    suspend fun saveNewCategory(category: Category) {
+        recipeDao.insertCategory(category)
+    }
+
+    suspend fun deleteCategory(category: Category) {
+        recipeDao.deleteCategory(category)
+    }
 }

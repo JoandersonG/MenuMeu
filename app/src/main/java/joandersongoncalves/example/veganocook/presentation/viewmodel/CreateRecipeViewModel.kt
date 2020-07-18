@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import joandersongoncalves.example.veganocook.R
 import joandersongoncalves.example.veganocook.data.ApiService
 import joandersongoncalves.example.veganocook.data.RecipeRepository
 import joandersongoncalves.example.veganocook.data.database.RecipeDatabase
@@ -22,15 +21,19 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
 
     val videoLiveData = MutableLiveData<YouTubeVideo>()
     val videoRetrieveResponseLiveData = MutableLiveData<Int>()//holds the errors, if any
-    val recipeCategories = MutableLiveData<MutableList<Category>>()
+    val recipeCategories = MutableLiveData<List<Category>>()
     val favorite = MutableLiveData<Boolean>()
+    val allCategories = MutableLiveData<List<Category>>()
+    val selectedCategoriesOnDialog = MutableLiveData<MutableList<Category>>()
+    val newCategoryField = MutableLiveData<String>()
 
     private val repository: RecipeRepository
 
     init {
         val recipeDao = RecipeDatabase.getDatabase(application, viewModelScope).recipeDao()
         repository = RecipeRepository(recipeDao)
-        recipeCategories.value = mutableListOf()
+        recipeCategories.value = listOf()
+        selectedCategoriesOnDialog.value = mutableListOf()
         favorite.value = false
     }
 
@@ -39,9 +42,8 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
     }
 
     fun getCategoriesFromRecipe(recipe: Recipe) = viewModelScope.launch(Dispatchers.IO) {
-//        val recipeId = repository.getRecipeId(recipe)
         recipeCategories.postValue(
-            repository.getRecipeWithCategories(recipe.recipeId).toMutableList()
+            repository.getRecipeWithCategories(recipe.recipeId)
         )
     }
 
@@ -50,7 +52,7 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
             .enqueue(object : Callback<VideoBodyResponse> {
                 override fun onFailure(call: Call<VideoBodyResponse>, t: Throwable) {
                     videoRetrieveResponseLiveData.value =
-                        ERROR_CONECTING_API
+                        ERROR_CONNECTING_API
                 }
 
                 override fun onResponse(
@@ -84,67 +86,6 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
             })
     }
 
-    fun chipCheckedChange(id: Int, checked: Boolean) {
-        if (checked) {
-            // add to the list
-            when (id) {
-                R.id.chipBreakfast -> {
-                    recipeCategories.value?.add(Category(Recipe.BREAKFAST))
-                }
-                R.id.chipLunch -> {
-                    recipeCategories.value?.add(Category(Recipe.LUNCH))
-                }
-                R.id.chipDinner -> {
-                    recipeCategories.value?.add(Category(Recipe.DINNER))
-                }
-                R.id.chipSnack -> {
-                    recipeCategories.value?.add(Category(Recipe.SNACK))
-                }
-            }
-        } else {
-            //remove from the list
-            when (id) {
-                R.id.chipBreakfast -> {
-                    recipeCategories.value?.let {
-                        for (category in it.toList()) {
-                            if (category == Category(Recipe.BREAKFAST)) {
-                                it.remove(category)
-                            }
-                        }
-                    }
-                }
-                R.id.chipLunch -> {
-                    recipeCategories.value?.let {
-                        for (category in it.toList()) {
-                            if (category == Category(Recipe.LUNCH)) {
-                                it.remove(category)
-                            }
-                        }
-                    }
-                }
-                R.id.chipDinner -> {
-                    recipeCategories.value?.let {
-                        for (category in it.toList()) {
-                            if (category == Category(Recipe.DINNER)) {
-                                it.remove(category)
-                            }
-                        }
-                    }
-                }
-                R.id.chipSnack -> {
-                    recipeCategories.value?.let {
-                        for (category in it.toList()) {
-                            if (category == Category(Recipe.SNACK)) {
-                                it.remove(category)
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-    }
-
     fun saveNewRecipe(name: String, description: String): Boolean {
 
         val recipe = videoLiveData.value?.let { video ->
@@ -170,7 +111,7 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
                 recipe.video = it
             }
             recipeCategories.value?.let {
-                recipe.categories = it.toList()
+                recipe.categories = it
             }
             favorite.value?.let {
                 recipe.isFavorite = it
@@ -186,10 +127,74 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
         }
     }
 
+    fun removeCategoryFromSelected(category: Category) {
+        recipeCategories.value?.let {
+            val listCategories: MutableList<Category> = it.toMutableList()
+            listCategories.remove(category)
+            recipeCategories.value = listCategories
+        }
+    }
+
+    fun addCategoryIntoSelected(category: Category) {
+        recipeCategories.value?.let {
+            val listCategories: MutableList<Category> = it.toMutableList()
+            listCategories.add(category)
+            recipeCategories.value = listCategories
+        }
+    }
+
+    fun changeSelectionOnCategoryOnDialog(category: Category) {
+        selectedCategoriesOnDialog.value?.let {
+            if (it.contains(category)) {
+                it.remove(category)
+            } else {
+                it.add(category)
+            }
+        }
+    }
+
+    fun saveNewCategory(category: Category) = viewModelScope.launch(Dispatchers.IO) {
+        repository.saveNewCategory(category)
+        getAllCategories()
+    }
+
+    fun getAllCategories() = viewModelScope.launch(Dispatchers.IO) {
+        allCategories.postValue(repository.getAllCategories().toMutableList())
+    }
+
+    fun deleteCategory(category: Category) = viewModelScope.launch(Dispatchers.IO) {
+        println("before deleting $category selectedCategoriesOnDialog is ${selectedCategoriesOnDialog.value}")
+        repository.deleteCategory(category)
+        selectedCategoriesOnDialog.value?.remove(category)
+        val newList = recipeCategories.value?.toMutableList()
+        newList?.remove(category)
+        recipeCategories.postValue(newList)
+        getAllCategories()
+        println("after deleting $category selectedCategoriesOnDialog is ${selectedCategoriesOnDialog.value}")
+    }
+
+    fun cleanSelectedCategoriesOnDialog() {
+        selectedCategoriesOnDialog.value = mutableListOf()
+    }
+
+    fun saveSelectedCategoriesOnDialog() {
+        recipeCategories.value = selectedCategoriesOnDialog.value
+        cleanSelectedCategoriesOnDialog()
+    }
+
+    fun addToSelectedCategoriesOnDialog(category: Category) {
+        //avoid possible duplicates
+        selectedCategoriesOnDialog.value?.let {
+            if (!it.contains(category)) {
+                it.add(category)
+            }
+        }
+    }
+
     companion object {
         const val VIDEO_RETRIEVE_SUCCESS = 0
         const val ERROR_INVALID_LINK = 1
         const val ERROR_RETRIEVING_INFORMATION = 2
-        const val ERROR_CONECTING_API = 3
+        const val ERROR_CONNECTING_API = 3
     }
 }

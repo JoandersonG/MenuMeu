@@ -26,13 +26,26 @@ class CategoryViewModel(application: Application) : AndroidViewModel(application
     fun getCategoryWithRecipes() = viewModelScope.launch(Dispatchers.IO) {
         when (category) {
             "" -> {//all recipes
-                recipesByCategory.postValue(repository.getAllRecipes())
+                val recipes = repository.getAllRecipes()
+                for (recipe in recipes) {
+                    recipe.categories = repository.getRecipeWithCategories(recipe.recipeId)
+                }
+                recipesByCategory.postValue(recipes)
             }
             Recipe.BREAKFAST, Recipe.LUNCH, Recipe.DINNER, Recipe.SNACK -> {
-                recipesByCategory.postValue(repository.getRecipesByCategory(category))
+                val recipes = repository.getRecipesByCategory(category)
+                for (recipe in recipes) {
+                    recipe.categories =
+                        repository.getRecipeWithCategories(recipe.recipeId)
+                }
+                recipesByCategory.postValue(recipes)
             }
             "FAVORITE" -> {
-                recipesByCategory.postValue(repository.getFavoriteRecipes())
+                val recipes = repository.getFavoriteRecipes()
+                for (recipe in recipes) {
+                    recipe.categories = repository.getRecipeWithCategories(recipe.recipeId)
+                }
+                recipesByCategory.postValue(recipes)
             }
         }
     }
