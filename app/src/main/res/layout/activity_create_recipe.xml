@@ -154,11 +154,10 @@
                         android:textSize="16sp" />
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"
-                        android:layout_marginTop="16dp"
                         android:padding="8dp"
                         android:orientation="vertical">
 
@@ -170,37 +169,14 @@
                             app:singleSelection="false">
 
                             <com.google.android.material.chip.Chip
-                                android:id="@+id/chipBreakfast"
+                                android:id="@+id/chipAddCategory"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/breakfest"
+                                android:text="@string/add_category"
                                 android:padding="5dp"
-                                style="@style/Widget.MaterialComponents.Chip.Choice"
-                                android:textSize="16sp" />
-
-                            <com.google.android.material.chip.Chip
-                                android:id="@+id/chipLunch"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/lunch"
-                                android:textSize="16sp"
-                                style="@style/Widget.MaterialComponents.Chip.Choice"
-                                android:background="@color/white" />
-
-                            <com.google.android.material.chip.Chip
-                                android:id="@+id/chipDinner"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/dinner"
-                                android:textSize="16sp"
-                                style="@style/Widget.MaterialComponents.Chip.Choice"
-                                app:textStartPadding="8dp" />
-
-                            <com.google.android.material.chip.Chip
-                                android:id="@+id/chipSnack"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/snack"
+                                android:checkable="false"
+                                app:chipIcon="@drawable/ic_add_black_24dp"
+                                app:chipIconEnabled="true"
                                 style="@style/Widget.MaterialComponents.Chip.Choice"
                                 android:textSize="16sp" />
 
