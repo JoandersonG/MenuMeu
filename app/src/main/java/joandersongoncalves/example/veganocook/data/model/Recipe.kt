@@ -41,10 +41,11 @@ data class Recipe(
     }
 }
 
+@Parcelize
 @Entity(tableName = "categories")
 data class Category(
     @ColumnInfo(name = "category_name") @PrimaryKey val categoryName: String
-) {
+) : Parcelable {
     override fun equals(other: Any?): Boolean {
         if (other == null) return false
         if (other.javaClass != this.javaClass) return false
