@@ -18,17 +18,11 @@ abstract class RecipeDao {
     }
 
     suspend fun updateRecipeWithCategories(recipe: Recipe) {
-        //recuperar todos as categorias associadas com essa recipe
-
-        //remover todas essas associações
-
-        //criar todas as novas associações
-
-
+        //deleting all categories - recipe associeation that envolves this recipe
         deleteAllRecipeCategoriesCrossRef(recipe.recipeId)
         updateRecipe(recipe)
+        //reset all categories - recipe associations
         for (category in recipe.categories) {
-            //println("adicionando a categoria $category em ${recipe.name}")
             insertRecipeCategoryCrossRef(
                 RecipeCategoryCrossRef(
                     recipe.recipeId,
@@ -84,4 +78,9 @@ abstract class RecipeDao {
     @Query("SELECT * FROM recipes WHERE name LIKE :q")
     abstract suspend fun queryByName(q: String): List<Recipe>
 
+    @Query("SELECT * FROM categories")
+    abstract suspend fun getAllCategories(): List<Category>
+
+    @Delete
+    abstract suspend fun deleteCategory(category: Category)
 }
