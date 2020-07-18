@@ -59,6 +59,7 @@ dependencies {
     implementation "androidx.room:room-ktx:$roomVersion"
 
     implementation "androidx.activity:activity-ktx:1.1.0"
+    implementation "androidx.fragment:fragment-ktx:1.2.5"
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
     implementation "androidx.room:room-runtime:$roomVersion"
