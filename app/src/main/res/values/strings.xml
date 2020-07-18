@@ -8,9 +8,10 @@
     <!-- CreateRecipeActivity -->
     <string name="hint_create_recipe_youtube_link">Cole o link do YouTube</string>
     <string name="content_description_search">Pesquisar</string>
-    <string name="category">Categoria:</string>
+    <string name="category">Categorias:</string>
     <string name="success_saving_recipe">Receita Salva com Sucesso</string>
     <string name="success_updating_recipe">Receita atualizada com sucesso</string>
+    <string name="category_removed">categoria removida</string>
 
     <!-- Generic string -->
     <string name="title">Título</string>
@@ -23,12 +24,17 @@
     <string name="cancel">Cancelar</string>
     <string name="save">Salvar</string>
     <string name="ok">OK</string>
+    <string name="undo">desfazer</string>
+    <string name="edit">Editar</string>
+    <string name="delete">Excluir</string>
 
     <!-- RecipeDetailsActivity -->
     <string name="edit_recipe">Editar receita</string>
     <string name="add_to_favorite">Adicionar aos favoritos</string>
     <string name="recipe_added_to_favorites">Receita adicionada aos favoritos</string>
     <string name="recipe_removed_from_favorites">Receita removida dos favoritos</string>
+    <string name="show_description">Mostrar ou Esconder Descrição</string>
+    <string name="add_category">Adicionar categoria</string>
 
     <!-- SearchActivity -->
     <string name="search_results">Resultados da Busca:</string>
@@ -57,9 +63,14 @@
     <string name="error_saving_recipe">Erro ao salvar receita</string>
     <string name="error_showing_video">Erro na exibição do vídeo</string>
     <string name="error_showing_recipe">Erro em exibir receita</string>
+    <string name="error_invalid_name">Nome inválido</string>
 
-    <string name="edit">Editar</string>
-    <string name="delete">Excluir</string>
+    <!-- Add Category Fragment Dialog -->
+    <string name="select_categories">Selecione as categorias para a receita:</string>
+    <string name="new_category">Nova categoria</string>
+    <string name="create_new_category">Criar nova categoria</string>
+    <string name="this_action_cannot_undone">Esta ação não pode ser desfeita</string>
+    <string name="confirmation_delete_category">Tem certeza que deseja apagar a categoria do aplicativo?</string>
 
 
 </resources>
