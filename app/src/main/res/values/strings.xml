@@ -8,7 +8,7 @@
     <!-- CreateRecipeActivity -->
     <string name="hint_create_recipe_youtube_link">Cole o link do YouTube</string>
     <string name="content_description_search">Pesquisar</string>
-    <string name="category">Categorias:</string>
+    <string name="categories">Categorias:</string>
     <string name="success_saving_recipe">Receita Salva com Sucesso</string>
     <string name="success_updating_recipe">Receita atualizada com sucesso</string>
     <string name="category_removed">categoria removida</string>
@@ -43,6 +43,9 @@
     <!-- CategoryActivity -->
     <string name="confirmation_delete">Tem certeza que deseja excluir esta receita?</string>
     <string name="success_deleting_recipe">Receita excluída com sucesso</string>
+    <string name="no_recipe_found">Nenhuma receita encontrada</string>
+    <string name="clean_all">limpar todos</string>
+    <string name="filters">Filtros</string>
 
     <!-- RecipeAdapter -->
     <string name="recipe_image">Imagem da receita</string>
