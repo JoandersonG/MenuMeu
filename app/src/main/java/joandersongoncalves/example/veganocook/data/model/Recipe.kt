@@ -33,6 +33,20 @@ data class Recipe(
         return "url: ${video.url}, name: $name, categories: $categories"
     }
 
+    override fun equals(other: Any?): Boolean {
+        if (other == null) {
+            return false
+        }
+        if (other::class.java != Recipe::class.java) {
+            return false
+        }
+        return recipeId == (other as Recipe).recipeId
+    }
+
+    override fun hashCode(): Int {
+        return super.hashCode()
+    }
+
     companion object {
         const val BREAKFAST = "BREAKFAST"
         const val LUNCH = "LUNCH"
