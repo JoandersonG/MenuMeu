@@ -2,6 +2,7 @@ package joandersongoncalves.example.veganocook.data
 
 import joandersongoncalves.example.veganocook.data.database.RecipeDao
 import joandersongoncalves.example.veganocook.data.model.Category
+import joandersongoncalves.example.veganocook.data.model.HomeRecipeSet
 import joandersongoncalves.example.veganocook.data.model.Recipe
 
 class RecipeRepository(private val recipeDao: RecipeDao) {
@@ -58,5 +59,9 @@ class RecipeRepository(private val recipeDao: RecipeDao) {
 
     suspend fun deleteCategory(category: Category) {
         recipeDao.deleteCategory(category)
+    }
+
+    suspend fun getRecipesToShow(): List<HomeRecipeSet> {
+        return recipeDao.getRecipesToShow()
     }
 }

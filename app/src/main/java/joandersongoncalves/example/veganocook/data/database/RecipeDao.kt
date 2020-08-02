@@ -69,6 +69,10 @@ abstract class RecipeDao {
     abstract suspend fun getCategoryWithRecipes(category: String): List<CategoryWithRecipes>
 
     @Transaction
+    @Query("SELECT * FROM categories WHERE category_name = :category LIMIT 3")
+    abstract suspend fun getThreeRecipes(category: String): List<CategoryWithRecipes>
+
+    @Transaction
     @Query("SELECT * FROM recipes WHERE recipe_id = :recipeId")
     abstract suspend fun getRecipeWithCategories(recipeId: Int): List<RecipesWithCategories>
 
@@ -83,4 +87,43 @@ abstract class RecipeDao {
 
     @Delete
     abstract suspend fun deleteCategory(category: Category)
+
+    @Query("SELECT * FROM categories WHERE is_showed_home = :isShowed")
+    abstract suspend fun getCategoriesToShowOnHome(isShowed: Boolean = true): List<Category>
+
+    suspend fun getRecipesToShow(): List<HomeRecipeSet> {
+        //first find categories that are to be shown on home screen
+        //then get 0-3 recipes from each category
+
+        val homeRecipeSets = mutableListOf<HomeRecipeSet>()
+
+        val categories = getCategoriesToShowOnHome()
+        for (category in categories) {
+
+            val threeRecipes = getThreeRecipes(category.categoryName)[0].recipes
+            val recipe1 = if (threeRecipes.size >= 1) {
+                threeRecipes[0]
+            } else {
+                null
+            }
+            val recipe2 = if (threeRecipes.size >= 2) {
+                threeRecipes[1]
+            } else {
+                null
+            }
+            val recipe3 = if (threeRecipes.size >= 3) {
+                threeRecipes[2]
+            } else {
+                null
+            }
+            if ((recipe1 == recipe2) && (recipe2 == recipe3) && (recipe3 == null)) {
+                //all recipes are null, do not add this
+                continue
+            }
+            val homeRecipeSet = HomeRecipeSet(category, recipe1, recipe2, recipe3)
+            homeRecipeSets.add(homeRecipeSet)
+        }
+
+        return homeRecipeSets
+    }
 }

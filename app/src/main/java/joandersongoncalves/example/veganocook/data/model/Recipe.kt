@@ -58,7 +58,8 @@ data class Recipe(
 @Parcelize
 @Entity(tableName = "categories")
 data class Category(
-    @ColumnInfo(name = "category_name") @PrimaryKey val categoryName: String
+    @ColumnInfo(name = "category_name") @PrimaryKey val categoryName: String,
+    @ColumnInfo(name = "is_showed_home") val isShowedOnHome: Boolean = false
 ) : Parcelable {
     override fun equals(other: Any?): Boolean {
         if (other == null) return false

@@ -11,98 +11,105 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.10" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.90" />
-
         <include
             android:id="@+id/appToolbarLayout"
             layout="@layout/app_toolbar" />
 
         <Button
-            android:id="@+id/btAddRecipe"
-            style="@style/HomeActivityButton"
+            android:id="@+id/searchButton"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/search_home_button"
+            android:drawableEnd="@drawable/ic_search_24dp"
+            android:text="@string/search"
+            android:textColor="@color/colorPrimary"
+            android:textAlignment="textStart"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:stateListAnimator="@null"
+            app:layout_constraintEnd_toEndOf="@id/guideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appToolbarLayout" />
+
+        <joandersongoncalves.example.veganocook.utils.SquareButton
+            android:id="@+id/btAllRecipes"
             android:layout_width="0dp"
-            android:layout_height="150dp"
-            android:text="@string/add_recipe"
-            app:layout_constraintEnd_toStartOf="@+id/guideline3"
-            app:layout_constraintStart_toStartOf="@id/guideline"
-            android:layout_marginEnd="10dp"
-            app:layout_constraintTop_toBottomOf="@+id/appToolbarLayout" />
+            android:layout_height="wrap_content"
+            android:layout_weight="100"
+            android:layout_marginTop="8dp"
+            android:text="@string/all_breakline_recipes"
+            android:textColor="@color/black"
+            android:background="@drawable/all_recipes_home_button"
+            style="@style/HomeActivityButton"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="4dp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/searchButton" />
 
         <Button
-            android:id="@+id/btAllRecipies"
-            style="@style/HomeActivityButton"
+            android:id="@+id/btFavorite"
             android:layout_width="0dp"
-            android:layout_height="150dp"
-            android:text="@string/all_recipes"
-            android:layout_marginStart="10dp"
-            app:layout_constraintBottom_toBottomOf="@id/btAddRecipe"
-            app:layout_constraintEnd_toEndOf="@id/guideline2"
-            app:layout_constraintStart_toStartOf="@id/guideline3" />
-
-        <Button
-            android:id="@+id/btFavorites"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/favorite_home_button"
             style="@style/HomeActivityButton"
-            android:layout_width="0dp"
             android:text="@string/favorite"
-            app:layout_constraintEnd_toEndOf="@id/guideline2"
-            app:layout_constraintStart_toStartOf="@id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/btAddRecipe" />
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/guideline"
+            app:layout_constraintBottom_toBottomOf="@id/btCreateRecipe"
+            app:layout_constraintTop_toBottomOf="@id/btAllRecipes" />
 
         <Button
-            android:id="@+id/btBreakfest"
-            style="@style/HomeActivityButton"
+            android:id="@+id/btEditHomeScreen"
             android:layout_width="0dp"
-            android:text="@string/breakfest"
-            app:layout_constraintEnd_toEndOf="@id/guideline2"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_main_screen_button"
+            style="@style/HomeActivityButton"
+            android:text="@string/edit_home_screen"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="8dp"
             app:layout_constraintStart_toStartOf="@id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/btFavorites" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btAllRecipes" />
 
-        <Button
-            android:id="@+id/btLunch"
-            style="@style/HomeActivityButton"
+        <joandersongoncalves.example.veganocook.utils.SquareButton
+            android:id="@+id/btCreateRecipe"
             android:layout_width="0dp"
-            android:text="@string/lunch"
-            app:layout_constraintEnd_toEndOf="@id/guideline2"
-            app:layout_constraintStart_toStartOf="@id/guideline"
-            app:layout_constraintTop_toBottomOf="@id/btBreakfest" />
-
-        <Button
-            android:id="@+id/btDinner"
+            android:layout_height="wrap_content"
+            android:layout_weight="100"
+            android:layout_marginTop="8dp"
+            android:text="@string/create_recipe"
+            android:background="@drawable/create_recipe_home_button"
             style="@style/HomeActivityButton"
-            android:layout_width="0dp"
-            android:text="@string/dinner"
-            app:layout_constraintEnd_toEndOf="@id/guideline2"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/guideline"
-            app:layout_constraintTop_toBottomOf="@id/btLunch" />
-
-        <Button
-            android:id="@+id/btSnack"
-            style="@style/HomeActivityButton"
-            android:layout_width="0dp"
-            android:text="@string/snack"
-            app:layout_constraintEnd_toEndOf="@id/guideline2"
-            app:layout_constraintStart_toStartOf="@id/guideline"
-            app:layout_constraintTop_toBottomOf="@id/btDinner" />
+            app:layout_constraintTop_toBottomOf="@+id/btEditHomeScreen" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline3"
+            android:id="@+id/guideline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.5" />
+            app:layout_constraintGuide_percent="0.50" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvRecipesHomeActivity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:paddingBottom="16dp"
+            tools:listitem="@layout/home_category_adapter"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btCreateRecipe" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

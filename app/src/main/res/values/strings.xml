@@ -4,6 +4,10 @@
     <!--  HomeActivity  -->
     <string name="add_recipe">Adicionar receita</string>
     <string name="all_recipes">Todas as Receitas</string>
+    <string name="create_recipe">criar\nreceita</string>
+    <string name="edit_home_screen">editar\n tela inicial</string>
+    <string name="all_breakline_recipes">todas\n as \n receitas</string>
+    <string name="search">Buscar</string>
 
     <!-- CreateRecipeActivity -->
     <string name="hint_create_recipe_youtube_link">Cole o link do YouTube</string>
@@ -75,5 +79,9 @@
     <string name="this_action_cannot_undone">Esta ação não pode ser desfeita</string>
     <string name="confirmation_delete_category">Tem certeza que deseja apagar a categoria do aplicativo?</string>
 
+    <!-- Home category adapter -->
+    <string name="recipe_title">Título da receita</string>
+    <string name="category_title">Category Title</string>
+    <string name="show_recipes_this_category">Mostrar mais receitas desta categoria</string>
 
 </resources>

@@ -2,7 +2,8 @@
 <com.google.android.material.appbar.AppBarLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:elevation="0dp">
 
     <ViewFlipper
         android:id="@+id/viewFlipperAppToolbar"
@@ -14,11 +15,19 @@
             android:id="@+id/appToolbarHome"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:title="  VeganoCook"
-            app:menu="@menu/home_top_app_bar"
-            app:logo="@drawable/app_icon"
-            app:popupTheme="@style/AppTheme"
-            style="@style/Widget.MaterialComponents.Toolbar.Primary" />
+            app:elevation="0dp"
+            android:background="@color/white">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:textSize="24sp"
+                android:layout_marginEnd="16dp"
+                android:textColor="@color/black"
+                android:gravity="center" />
+
+        </com.google.android.material.appbar.MaterialToolbar>
 
         <!-- Other Activities -->
         <com.google.android.material.appbar.MaterialToolbar

@@ -56,10 +56,10 @@ abstract class RecipeDatabase : RoomDatabase() {
             }
 
             suspend fun insertCategories(recipeDao: RecipeDao) {
-                recipeDao.insertCategory(Category(Recipe.BREAKFAST))
-                recipeDao.insertCategory(Category(Recipe.LUNCH))
-                recipeDao.insertCategory(Category(Recipe.DINNER))
-                recipeDao.insertCategory(Category(Recipe.SNACK))
+                recipeDao.insertCategory(Category(Recipe.BREAKFAST, true))
+                recipeDao.insertCategory(Category(Recipe.LUNCH, true))
+                recipeDao.insertCategory(Category(Recipe.DINNER, true))
+                recipeDao.insertCategory(Category(Recipe.SNACK, true))
             }
 
             suspend fun populateDatabase(recipeDao: RecipeDao) {
