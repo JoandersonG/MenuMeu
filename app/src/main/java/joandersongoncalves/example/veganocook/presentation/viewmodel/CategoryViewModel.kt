@@ -18,56 +18,16 @@ class CategoryViewModel(application: Application) : AndroidViewModel(application
     var recipesByCategory = MutableLiveData<List<Recipe>>()
     var allCategories = MutableLiveData<List<Category>>()
     var selectedCategoriesOnFilter = MutableLiveData<List<Category>>()
-    var category: String
+    var categoryTitle = MutableLiveData<String?>()
+    var isFavoriteRecipesOnly = MutableLiveData<Boolean>()
 
     init {
         val recipeDao = RecipeDatabase.getDatabase(application, viewModelScope).recipeDao()
         repository = RecipeRepository(recipeDao)
         allCategories.value = listOf()
         selectedCategoriesOnFilter.value = listOf()
-        category = ""
-    }
-
-    fun getCategoryWithRecipes() = viewModelScope.launch(Dispatchers.IO) {
-        when (category) {
-            "" -> {//all recipes
-                val recipes = repository.getAllRecipes()
-                for (recipe in recipes) {
-                    recipe.categories = repository.getRecipeWithCategories(recipe.recipeId)
-                }
-                recipesByCategory.postValue(recipes)
-            }
-            Recipe.BREAKFAST, Recipe.LUNCH, Recipe.DINNER, Recipe.SNACK -> {
-                val recipes = repository.getRecipesByCategory(category)
-                for (recipe in recipes) {
-                    recipe.categories =
-                        repository.getRecipeWithCategories(recipe.recipeId)
-                }
-                recipesByCategory.postValue(recipes)
-            }
-            "FAVORITE" -> {
-                val recipes = repository.getFavoriteRecipes()
-                for (recipe in recipes) {
-                    recipe.categories = repository.getRecipeWithCategories(recipe.recipeId)
-                }
-                recipesByCategory.postValue(recipes)
-            }
-        }
-    }
-
-    fun deleteRecipe(recipe: Recipe) = viewModelScope.launch(Dispatchers.IO) {
-        repository.deleteRecipe(recipe)
-        getCategoryWithRecipes()
-    }
-
-    fun updateRecipe(recipe: Recipe) = viewModelScope.launch(Dispatchers.IO) {
-        if (recipe.categories.isEmpty()) {
-            //get categories
-            recipe.categories = repository.getRecipeWithCategories(recipe.recipeId)
-        }
-        //then update
-        repository.updateRecipe(recipe)
-        getCategoryWithRecipes()
+        categoryTitle.value = null
+        isFavoriteRecipesOnly.value = false
     }
 
     fun getAllCategories() = viewModelScope.launch(Dispatchers.IO) {
@@ -96,13 +56,26 @@ class CategoryViewModel(application: Application) : AndroidViewModel(application
                 val result = repository.getRecipesByCategory(category.categoryName)
                 for (recipeOnResult in result) {
                     if (!listRecipe.contains(recipeOnResult)) {
-                        listRecipe.add(recipeOnResult)
+                        isFavoriteRecipesOnly.value?.let { isFavRecipes ->
+                            if (isFavRecipes) {//test if it is supposed to be showing only favorite recipes
+                                if (recipeOnResult.isFavorite) { //it's favorite
+                                    listRecipe.add(recipeOnResult)
+                                }
+                                true
+                            } else {
+                                listRecipe.add(recipeOnResult)
+                                true
+                            }
+                        }
                     }
                 }
             }
-            if (it.isEmpty()) { //get all results, cause there's no category filter
+            if (it.isEmpty() && isFavoriteRecipesOnly.value!!) {
+                listRecipe.addAll(repository.getFavoriteRecipes())
+            } else if (it.isEmpty()) { //get all results, cause there's no category filter
                 listRecipe.addAll(repository.getAllRecipes())
             }
+            true
         }
         recipesByCategory.postValue(listRecipe)
     }

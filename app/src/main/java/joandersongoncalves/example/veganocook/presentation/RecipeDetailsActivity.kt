@@ -67,16 +67,19 @@ class RecipeDetailsActivity : AppCompatActivity() {
                         .setTitle(R.string.confirmation_delete)
                         .setNegativeButton(R.string.cancel) { _, _ ->/*does nothing*/ }
                         .setPositiveButton(R.string.ok) { _, _ ->
-                            //send to previous activity to delete
-                            val intent = Intent()
-                            intent.putExtra(RECIPE_TO_BE_DELETED, recipe)
-                            setResult(DELETE_RECIPE, intent)
-                            //finnish activity
-                            finish()
+                            if (recipe != null) {
+                                viewModel.deleteRecipe(recipe)
+                                setResult(DELETE_RECIPE)
+                                //finnish activity
+                                finish()
+                            }
                         }
                         .show()
                 }
                 getString(R.string.add_to_favorite) -> {
+                    if (recipe != null) {
+                        viewModel.updateRecipe(recipe)
+                    }
                     item.isChecked = if (item.isChecked) {
                         item.setIcon(R.drawable.ic_favorite_outlined_24dp)
                         Snackbar.make(
@@ -95,10 +98,6 @@ class RecipeDetailsActivity : AppCompatActivity() {
                         true
                     }
                     recipe?.isFavorite = item.isChecked
-
-                    val intent = Intent()
-                    intent.putExtra(RECIPE_TO_BE_UPDATED, recipe)
-                    setResult(TOGGLE_RECIPE_FAVORITE, intent)
                 }
             }
             return@setOnMenuItemClickListener true
@@ -192,12 +191,9 @@ class RecipeDetailsActivity : AppCompatActivity() {
     companion object {
         private const val EXTRA_RECIPE = "EXTRA_RECIPE"
         private const val UPDATED_RECIPE = "UPDATED_RECIPE"
-        const val RECIPE_TO_BE_DELETED = "RECIPE_TO_BE_DELETED"
-        const val RECIPE_TO_BE_UPDATED = "RECIPE_TO_BE_UPDATED"
         const val RECIPE_CATEGORIES = "RECIPE_CATEGORIES"
         const val UPDATED_RECIPE_CATEGORIES = "UPDATED_RECIPE_CATEGORIES"
         const val DELETE_RECIPE = 3
-        const val TOGGLE_RECIPE_FAVORITE = 4
         const val RETURN_UPDATED_RECIPE = 2
 
         fun getStartIntent(context: Context, recipe: Recipe): Intent {

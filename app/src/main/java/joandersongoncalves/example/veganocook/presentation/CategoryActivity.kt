@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
 import joandersongoncalves.example.veganocook.R
-import joandersongoncalves.example.veganocook.data.model.Recipe
+import joandersongoncalves.example.veganocook.data.model.Category
 import joandersongoncalves.example.veganocook.presentation.adapter.RecipeAdapter
 import joandersongoncalves.example.veganocook.presentation.viewmodel.CategoryViewModel
 import kotlinx.android.synthetic.main.activity_category.*
@@ -40,29 +40,31 @@ class CategoryActivity : AppCompatActivity() {
         }
 
         // setting viewModel
-        intent.getStringExtra(EXTRA_CATEGORY_TITLE)?.let {
-            val category = when (it) {
-                getString(R.string.breakfest) -> Recipe.BREAKFAST
-                getString(R.string.lunch) -> Recipe.LUNCH
-                getString(R.string.dinner) -> Recipe.DINNER
-                getString(R.string.snack) -> Recipe.SNACK
-                getString(R.string.favorite) -> "FAVORITE"
-                else -> ""
-            }
-            viewModel.category = category
-            viewModel.getCategoryWithRecipes()
-
-        }
-
         viewModel.recipesByCategory.observe(this, Observer {
             recipeAdapter.setRecipes(it)
-
             if (it.isEmpty()) { //the results returned zero recipes
                 viewFlipperCategoryActivity.displayedChild = 1
             } else { //results returned at least one recipe
                 viewFlipperCategoryActivity.displayedChild = 0
             }
         })
+        //setting activity title
+        viewModel.categoryTitle.observe(this, Observer {
+            appToolbarOther.title = it
+        })
+        intent.getStringExtra(EXTRA_CATEGORY_TITLE)?.let {
+            when (it) {
+                getString(R.string.favorite) -> {
+                    viewModel.isFavoriteRecipesOnly.value = true
+                    viewModel.updateAllRecipes()
+                }
+                else -> {
+                    viewModel.checkedChangeOnSelectedCategory(Category(it))
+                }
+            }
+            viewModel.categoryTitle.value = it
+        }
+
 
         //setting the right toolbar for this activity
         viewFlipperAppToolbar.displayedChild = 1
@@ -132,25 +134,15 @@ class CategoryActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RecipeDetailsActivity.RETURN_UPDATED_RECIPE) {
-            viewModel.getCategoryWithRecipes()
+            viewModel.updateAllRecipes()
         }
         if (resultCode == RecipeDetailsActivity.DELETE_RECIPE) {
-            if (data != null && data.hasExtra(RecipeDetailsActivity.RECIPE_TO_BE_DELETED)) {
-                //delete the recipe received:
-                viewModel.deleteRecipe(data.getParcelableExtra(RecipeDetailsActivity.RECIPE_TO_BE_DELETED)!!)
-                //snackbar confirming exclusion:
-                Snackbar.make(
-                    baseLayoutCategoryActivity,
-                    R.string.success_deleting_recipe,
-                    Snackbar.LENGTH_SHORT
-                ).show()
-            }
-        }
-        if (resultCode == RecipeDetailsActivity.TOGGLE_RECIPE_FAVORITE) {
-            val r: Recipe? = data?.getParcelableExtra(RecipeDetailsActivity.RECIPE_TO_BE_UPDATED)
-            r?.let {
-                viewModel.updateRecipe(it)
-            }
+            //snackbar confirming exclusion:
+            Snackbar.make(
+                baseLayoutCategoryActivity,
+                R.string.success_deleting_recipe,
+                Snackbar.LENGTH_SHORT
+            ).show()
         }
         viewModel.getAllCategories() //updating categories for any possible updates
     }
