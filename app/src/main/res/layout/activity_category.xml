@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:background="@color/grey"
+    android:background="@color/white"
     android:id="@+id/drawerLayoutCategoryActivity"
     tools:context=".presentation.CategoryActivity">
 
@@ -21,6 +21,26 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/textOpenFilters"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:drawableStart="@drawable/ic_filter_24dp"
+            android:clickable="true"
+            android:textStyle="bold"
+            android:text="@string/filters"
+            android:textSize="16sp"
+            android:textColor="@color/colorPrimary"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:drawablePadding="8dp"
+            android:paddingVertical="4dp"
+            android:paddingHorizontal="6dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:focusable="true" />
+
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -30,25 +50,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:id="@+id/baseLayoutCategoryActivity">
-
-                <TextView
-                    android:id="@+id/textOpenFilters"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:drawableStart="@drawable/ic_filter_24dp"
-                    android:clickable="true"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:text="@string/filters"
-                    android:textSize="16sp"
-                    android:textColor="@color/colorAccent"
-                    android:drawablePadding="8dp"
-                    android:padding="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:focusable="true" />
 
                 <ViewFlipper
                     android:id="@+id/viewFlipperCategoryActivity"
@@ -63,6 +64,7 @@
                         android:id="@+id/rvRecipesByCategory"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:overScrollMode="never"
                         tools:listitem="@layout/adapter_recipe" />
 
                     <TextView

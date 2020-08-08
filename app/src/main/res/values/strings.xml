@@ -50,6 +50,8 @@
     <string name="no_recipe_found">Nenhuma receita encontrada</string>
     <string name="clean_all">limpar todos</string>
     <string name="filters">Filtros</string>
+    <string name="added_to_favorites">Receita adicionada aos favoritos</string>
+    <string name="removed_from_favorites">Receita removida dos favoritos"</string>
 
     <!-- RecipeAdapter -->
     <string name="recipe_image">Imagem da receita</string>

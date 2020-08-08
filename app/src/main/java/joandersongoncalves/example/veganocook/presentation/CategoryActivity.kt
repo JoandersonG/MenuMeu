@@ -28,11 +28,24 @@ class CategoryActivity : AppCompatActivity() {
         setContentView(R.layout.activity_category)
 
         // setting RecyclerView
-        val recipeAdapter = RecipeAdapter { recipe ->
+        val recipeAdapter = RecipeAdapter({ recipe -> //onClick: item
             val intent = RecipeDetailsActivity.getStartIntent(this@CategoryActivity, recipe)
             val reqCode = 1
             this@CategoryActivity.startActivityForResult(intent, reqCode)
-        }
+        }, { recipe -> //onClick: favorite button
+            //update the database
+            viewModel.toggleFavoriteRecipe(recipe)
+
+            //show success toggling favorite
+            Snackbar.make(
+                baseLayoutCategoryActivity,
+                if (recipe.isFavorite)
+                    getString(R.string.added_to_favorites)
+                else
+                    getString(R.string.removed_from_favorites),
+                Snackbar.LENGTH_SHORT
+            ).show()
+        })
         with(rvRecipesByCategory) {
             layoutManager = GridLayoutManager(this@CategoryActivity, 2)
             setHasFixedSize(true)
@@ -50,7 +63,7 @@ class CategoryActivity : AppCompatActivity() {
         })
         //setting activity title
         viewModel.categoryTitle.observe(this, Observer {
-            appToolbarOther.title = it
+            tvAppToolbarOtherTitle.text = it
         })
         intent.getStringExtra(EXTRA_CATEGORY_TITLE)?.let {
             when (it) {
@@ -68,7 +81,6 @@ class CategoryActivity : AppCompatActivity() {
 
         //setting the right toolbar for this activity
         viewFlipperAppToolbar.displayedChild = 1
-        appToolbarOther.title = intent.getStringExtra(EXTRA_CATEGORY_TITLE)
         AppToolbarSetup.setBackButton(appToolbarOther, this)
 
         //setting drawer

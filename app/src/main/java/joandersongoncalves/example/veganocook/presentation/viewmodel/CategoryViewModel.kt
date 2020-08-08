@@ -77,10 +77,26 @@ class CategoryViewModel(application: Application) : AndroidViewModel(application
             }
             true
         }
+        //get two (or three, doesn't matter) categories from each recipe for showing with the adapter
+        for (recipe in listRecipe) {
+            val categories: MutableList<Category> =
+                repository.getThreeCategories(recipe.recipeId) as MutableList<Category>
+            //do not save category that we're in right now in the CategoryActivity
+            if (categories.size >= 3) {
+                categories.remove(Category(categoryTitle.value.toString()))
+            }
+            recipe.categories = categories
+        }
         recipesByCategory.postValue(listRecipe)
     }
 
     fun cleanSelectedCategories() {
         selectedCategoriesOnFilter.value = listOf()
+    }
+
+    fun toggleFavoriteRecipe(recipe: Recipe) = viewModelScope.launch(Dispatchers.IO) {
+        recipe.categories = repository.getRecipeWithCategories(recipe.recipeId)
+        repository.updateRecipe(recipe)
+        updateAllRecipes()
     }
 }
