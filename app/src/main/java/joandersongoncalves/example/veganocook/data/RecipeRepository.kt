@@ -16,12 +16,7 @@ class RecipeRepository(private val recipeDao: RecipeDao) {
     }
 
     suspend fun getRecipesByCategory(category: String): List<Recipe> {
-        val listCategoryWithRecipes = recipeDao.getCategoryWithRecipes(category)
-        return if (listCategoryWithRecipes.isNotEmpty()) {
-            listCategoryWithRecipes[0].recipes
-        } else {
-            listOf()
-        }
+        return recipeDao.getRecipesByCategory(category)
     }
 
     suspend fun getRecipeWithCategories(recipeId: Int): List<Category> {
