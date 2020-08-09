@@ -23,6 +23,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/app_name"
                 android:textSize="24sp"
+                android:textStyle="bold"
                 android:layout_marginEnd="16dp"
                 android:textColor="@color/black"
                 android:gravity="center" />
@@ -34,8 +35,21 @@
             android:id="@+id/appToolbarOther"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:navigationIcon="@drawable/ic_arrow_back_white_24dp"
-            style="@style/Widget.MaterialComponents.Toolbar.Primary" />
+            app:navigationIcon="@drawable/ic_navigate_before_36dp"
+            android:background="@color/white"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary">
+
+            <TextView
+                android:id="@+id/tvAppToolbarOtherTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="64dp"
+                android:textColor="@color/black"
+                android:gravity="center" />
+
+        </com.google.android.material.appbar.MaterialToolbar>
 
         <!-- SearchActivity -->
         <com.google.android.material.appbar.MaterialToolbar

@@ -9,7 +9,7 @@
         android:id="@+id/layoutCategoryTitleHomeAdapter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:background="?attr/selectableItemBackground"
@@ -21,6 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/category_title"
+            android:textStyle="bold"
             android:textColor="@color/black"
             android:textSize="18sp" />
 
@@ -43,115 +44,150 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingVertical="8dp"
             android:orientation="horizontal">
 
-            <LinearLayout
-                android:id="@+id/layoutRecipeOneHomeAdapter"
+            <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:orientation="vertical">
+                android:layout_marginBottom="8dp"
+                app:cardElevation="1dp"
+                app:cardCornerRadius="5dp">
 
-                <androidx.cardview.widget.CardView
+                <LinearLayout
+                    android:id="@+id/layoutRecipeOneHomeAdapter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:cardElevation="0dp"
-                    app:cardCornerRadius="5dp">
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:orientation="vertical">
 
-                    <ImageView
-                        android:id="@+id/ivRecipeOneHomeAdapter"
-                        android:layout_width="140dp"
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:adjustViewBounds="true"
-                        android:src="@drawable/placeholder"
-                        android:contentDescription="@string/recipe_image" />
+                        app:cardElevation="0dp"
+                        app:cardCornerRadius="5dp">
 
-                </androidx.cardview.widget.CardView>
+                        <ImageView
+                            android:id="@+id/ivRecipeOneHomeAdapter"
+                            android:layout_width="140dp"
+                            android:layout_height="wrap_content"
+                            android:adjustViewBounds="true"
+                            android:src="@drawable/placeholder"
+                            android:contentDescription="@string/recipe_image" />
 
-                <TextView
-                    android:id="@+id/tvRecipeOneTitleHomeAdapter"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/recipe_title"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:textColor="@color/black" />
+                    </androidx.cardview.widget.CardView>
 
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/tvRecipeOneTitleHomeAdapter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:text="@string/recipe_title"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:textColor="@color/black" />
 
-            <LinearLayout
-                android:id="@+id/layoutRecipeTwoHomeAdapter"
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:orientation="vertical">
+                app:cardElevation="1dp"
+                app:cardCornerRadius="5dp">
 
-                <androidx.cardview.widget.CardView
+                <LinearLayout
+                    android:id="@+id/layoutRecipeTwoHomeAdapter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:cardElevation="0dp"
-                    app:cardCornerRadius="5dp">
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:orientation="vertical">
 
-                    <ImageView
-                        android:id="@+id/ivRecipeTwoHomeAdapter"
-                        android:layout_width="140dp"
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:adjustViewBounds="true"
-                        android:contentDescription="@string/recipe_image"
-                        android:src="@drawable/placeholder" />
+                        app:cardElevation="0dp"
+                        app:cardCornerRadius="5dp">
 
-                </androidx.cardview.widget.CardView>
+                        <ImageView
+                            android:id="@+id/ivRecipeTwoHomeAdapter"
+                            android:layout_width="140dp"
+                            android:layout_height="wrap_content"
+                            android:adjustViewBounds="true"
+                            android:contentDescription="@string/recipe_image"
+                            android:src="@drawable/placeholder" />
 
-                <TextView
-                    android:id="@+id/tvRecipeTwoTitleHomeAdapter"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/recipe_title"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:textColor="@color/black" />
+                    </androidx.cardview.widget.CardView>
 
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/tvRecipeTwoTitleHomeAdapter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:text="@string/recipe_title"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:textColor="@color/black" />
 
-            <LinearLayout
-                android:id="@+id/layoutRecipeThreeHomeAdapter"
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:orientation="vertical">
+                app:cardElevation="1dp"
+                app:cardCornerRadius="5dp">
 
-                <androidx.cardview.widget.CardView
+                <LinearLayout
+                    android:id="@+id/layoutRecipeThreeHomeAdapter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:cardElevation="0dp"
-                    app:cardCornerRadius="5dp">
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:orientation="vertical">
 
-                    <ImageView
-                        android:id="@+id/ivRecipeThreeHomeAdapter"
-                        android:layout_width="140dp"
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:adjustViewBounds="true"
-                        android:contentDescription="@string/recipe_image"
-                        android:src="@drawable/placeholder" />
+                        app:cardElevation="0dp"
+                        app:cardCornerRadius="5dp">
 
-                </androidx.cardview.widget.CardView>
+                        <ImageView
+                            android:id="@+id/ivRecipeThreeHomeAdapter"
+                            android:layout_width="140dp"
+                            android:layout_height="wrap_content"
+                            android:adjustViewBounds="true"
+                            android:contentDescription="@string/recipe_image"
+                            android:src="@drawable/placeholder" />
 
-                <TextView
-                    android:id="@+id/tvRecipeThreeTitleHomeAdapter"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/recipe_title"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:textColor="@color/black" />
+                    </androidx.cardview.widget.CardView>
 
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/tvRecipeThreeTitleHomeAdapter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:text="@string/recipe_title"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:textColor="@color/black" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
 
