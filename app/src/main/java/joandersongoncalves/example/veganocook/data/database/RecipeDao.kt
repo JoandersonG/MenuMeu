@@ -76,6 +76,17 @@ abstract class RecipeDao {
     @Query("SELECT * FROM recipes WHERE recipe_id = :recipeId")
     abstract suspend fun getRecipeWithCategories(recipeId: Int): List<RecipesWithCategories>
 
+    @Transaction
+    @Query(
+        "SELECT * FROM categories " +
+                "INNER JOIN recipes_categories " +
+                "ON recipes_categories.category_name = categories.category_name " +
+                "INNER JOIN recipes " +
+                "ON recipes.recipe_id = recipes_categories.recipe_id " +
+                "WHERE recipes.recipe_id = :recipeId LIMIT 3"
+    )
+    abstract suspend fun getThreeCategories(recipeId: Int): List<Category>
+
     @Query("SELECT * FROM recipes WHERE is_favorite = :isFavorite")
     abstract suspend fun getFavoriteRecipes(isFavorite: Boolean = true): List<Recipe>
 
