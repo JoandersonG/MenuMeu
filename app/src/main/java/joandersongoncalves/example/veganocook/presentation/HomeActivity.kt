@@ -62,11 +62,11 @@ class HomeActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == RecipeDetailsActivity.RETURN_UPDATED_RECIPE) {
+        if (resultCode == AppConstantCodes.RETURN_UPDATED_RECIPE) {
             //update recipes
             viewModel.updateRecipesToShow()
         }
-        if (resultCode == RecipeDetailsActivity.DELETE_RECIPE) {
+        if (resultCode == AppConstantCodes.DELETE_RECIPE) {
             Snackbar.make(
                 ScrollViewMainActivity,
                 R.string.success_deleting_recipe,

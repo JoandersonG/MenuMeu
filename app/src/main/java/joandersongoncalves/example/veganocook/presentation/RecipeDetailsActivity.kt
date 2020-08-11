@@ -35,12 +35,13 @@ class RecipeDetailsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_recipe_details)
 
         // retrieving data from parent activity
-        if (!intent.hasExtra(EXTRA_RECIPE)) {
+        if (!intent.hasExtra(AppConstantCodes.EXTRA_RECIPE)) {
             Toast.makeText(this, R.string.error_showing_recipe, Toast.LENGTH_SHORT).show()
             finish()
         }
-        val recipe: Recipe? = intent.getParcelableExtra(EXTRA_RECIPE)
-        recipe?.categories = intent.getSerializableExtra(RECIPE_CATEGORIES) as List<Category>
+        val recipe: Recipe? = intent.getParcelableExtra(AppConstantCodes.EXTRA_RECIPE)
+        recipe?.categories =
+            intent.getSerializableExtra(AppConstantCodes.RECIPE_CATEGORIES) as List<Category>
         viewModel.recipe.observe(this, Observer {
             updateFields(it)
         })
@@ -69,7 +70,7 @@ class RecipeDetailsActivity : AppCompatActivity() {
                         .setPositiveButton(R.string.ok) { _, _ ->
                             if (recipe != null) {
                                 viewModel.deleteRecipe(recipe)
-                                setResult(DELETE_RECIPE)
+                                setResult(AppConstantCodes.DELETE_RECIPE)
                                 //finnish activity
                                 finish()
                             }
@@ -127,16 +128,16 @@ class RecipeDetailsActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (data != null) {
-            recipe = data.getParcelableExtra(UPDATED_RECIPE)
+            recipe = data.getParcelableExtra(AppConstantCodes.UPDATED_RECIPE)
             recipe?.categories =
-                data.getSerializableExtra(UPDATED_RECIPE_CATEGORIES) as List<Category>
+                data.getSerializableExtra(AppConstantCodes.UPDATED_RECIPE_CATEGORIES) as List<Category>
             recipe?.let {
                 intent = getStartIntent(this, it)
                 //recreating activity for updating video
                 recreate()
             }
             viewModel.recipe.value = recipe
-            setResult(RETURN_UPDATED_RECIPE)
+            setResult(AppConstantCodes.RETURN_UPDATED_RECIPE)
         }
     }
 
@@ -189,17 +190,10 @@ class RecipeDetailsActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val EXTRA_RECIPE = "EXTRA_RECIPE"
-        private const val UPDATED_RECIPE = "UPDATED_RECIPE"
-        const val RECIPE_CATEGORIES = "RECIPE_CATEGORIES"
-        const val UPDATED_RECIPE_CATEGORIES = "UPDATED_RECIPE_CATEGORIES"
-        const val DELETE_RECIPE = 3
-        const val RETURN_UPDATED_RECIPE = 2
-
         fun getStartIntent(context: Context, recipe: Recipe): Intent {
             return Intent(context, RecipeDetailsActivity::class.java).apply {
-                putExtra(EXTRA_RECIPE, recipe)
-                putExtra(RECIPE_CATEGORIES, recipe.categories as Serializable)
+                putExtra(AppConstantCodes.EXTRA_RECIPE, recipe)
+                putExtra(AppConstantCodes.RECIPE_CATEGORIES, recipe.categories as Serializable)
             }
         }
     }

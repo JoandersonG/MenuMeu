@@ -65,7 +65,7 @@ class CategoryActivity : AppCompatActivity() {
         viewModel.categoryTitle.observe(this, Observer {
             tvAppToolbarOtherTitle.text = it
         })
-        intent.getStringExtra(EXTRA_CATEGORY_TITLE)?.let {
+        intent.getStringExtra(AppConstantCodes.EXTRA_CATEGORY_TITLE)?.let {
             when (it) {
                 getString(R.string.favorite) -> {
                     viewModel.isFavoriteRecipesOnly.value = true
@@ -145,10 +145,10 @@ class CategoryActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RecipeDetailsActivity.RETURN_UPDATED_RECIPE) {
+        if (resultCode == AppConstantCodes.RETURN_UPDATED_RECIPE) {
             viewModel.updateAllRecipes()
         }
-        if (resultCode == RecipeDetailsActivity.DELETE_RECIPE) {
+        if (resultCode == AppConstantCodes.DELETE_RECIPE) {
             //snackbar confirming exclusion:
             Snackbar.make(
                 baseLayoutCategoryActivity,
@@ -160,11 +160,9 @@ class CategoryActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val EXTRA_CATEGORY_TITLE = "EXTRA_CATEGORY_TITLE"
-
         fun getStartActivity(context: Context, title: String): Intent {
             return Intent(context, CategoryActivity::class.java).apply {
-                putExtra(EXTRA_CATEGORY_TITLE, title)
+                putExtra(AppConstantCodes.EXTRA_CATEGORY_TITLE, title)
             }
         }
     }

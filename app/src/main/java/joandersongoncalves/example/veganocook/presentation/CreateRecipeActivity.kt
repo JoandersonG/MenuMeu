@@ -70,7 +70,7 @@ class CreateRecipeActivity : AppCompatActivity() {
         })
 
         // getting extra, if any
-        var recipe = intent.getParcelableExtra<Recipe>(EXTRA_RECIPE)
+        var recipe = intent.getParcelableExtra<Recipe>(AppConstantCodes.EXTRA_RECIPE)
         recipe?.let { rec ->
             fillFields(
                 rec.name,
@@ -104,9 +104,9 @@ class CreateRecipeActivity : AppCompatActivity() {
                     idMessage = R.string.success_updating_recipe
 
                     val intent = Intent()
-                    intent.putExtra(UPDATED_RECIPE, recipe)
+                    intent.putExtra(AppConstantCodes.UPDATED_RECIPE, recipe)
                     intent.putExtra(
-                        RecipeDetailsActivity.UPDATED_RECIPE_CATEGORIES,
+                        AppConstantCodes.UPDATED_RECIPE_CATEGORIES,
                         viewModel.recipeCategories.value?.toList() as Serializable
                     )
                     setResult(Activity.RESULT_OK, intent)
@@ -258,12 +258,9 @@ class CreateRecipeActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val EXTRA_RECIPE = "EXTRA_RECIPE"
-        private const val UPDATED_RECIPE = "UPDATED_RECIPE"
-
         fun getStartIntent(context: Context, recipe: Recipe): Intent {
             return Intent(context, CreateRecipeActivity::class.java).apply {
-                putExtra(EXTRA_RECIPE, recipe)
+                putExtra(AppConstantCodes.EXTRA_RECIPE, recipe)
             }
         }
     }
