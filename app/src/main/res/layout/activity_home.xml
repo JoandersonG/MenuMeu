@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/edit_main_screen_button"
             style="@style/HomeActivityButton"
-            android:text="@string/edit_home_screen"
+            android:text="@string/edit_home_screen_w_brk_line"
             android:textColor="@color/colorPrimary"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="8dp"

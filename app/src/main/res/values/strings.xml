@@ -5,7 +5,7 @@
     <string name="add_recipe">Adicionar receita</string>
     <string name="all_recipes">Todas as Receitas</string>
     <string name="create_recipe">criar\nreceita</string>
-    <string name="edit_home_screen">editar\n tela inicial</string>
+    <string name="edit_home_screen_w_brk_line">editar\n tela inicial</string>
     <string name="all_breakline_recipes">todas\n as \n receitas</string>
     <string name="search">Buscar</string>
 
