@@ -57,6 +57,10 @@ class HomeActivity : AppCompatActivity() {
         searchButton.setOnClickListener {
             startActivity(Intent(this, SearchActivity::class.java))
         }
+        btEditHomeScreen.setOnClickListener {
+            val newIntent = Intent(this, EditHomeScreenActivity::class.java)
+            startActivityForResult(newIntent, 0)
+        }
 
         setSupportActionBar(appToolbarHome);
     }
@@ -74,6 +78,13 @@ class HomeActivity : AppCompatActivity() {
             ).show()
             //update recipes
             viewModel.updateRecipesToShow()
+        }
+        if (resultCode == AppConstantCodes.CHANGES_MADE_EDIT_HOME) {
+            Snackbar.make(
+                ScrollViewMainActivity,
+                R.string.success_updating_home_screen,
+                Snackbar.LENGTH_SHORT
+            ).show()
         }
         super.onActivityResult(requestCode, resultCode, data)
     }

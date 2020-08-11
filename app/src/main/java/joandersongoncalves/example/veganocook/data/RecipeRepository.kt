@@ -63,4 +63,8 @@ class RecipeRepository(private val recipeDao: RecipeDao) {
     suspend fun getRecipesToShow(): List<HomeRecipeSet> {
         return recipeDao.getRecipesToShow()
     }
+
+    suspend fun updateCategory(category: Category) {
+        recipeDao.updateCategory(category)
+    }
 }

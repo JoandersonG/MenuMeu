@@ -8,6 +8,7 @@
     <string name="edit_home_screen_w_brk_line">editar\n tela inicial</string>
     <string name="all_breakline_recipes">todas\n as \n receitas</string>
     <string name="search">Buscar</string>
+    <string name="success_updating_home_screen">Tela inicial atualizada com sucesso</string>
 
     <!-- CreateRecipeActivity -->
     <string name="hint_create_recipe_youtube_link">Cole o link do YouTube</string>
@@ -85,5 +86,9 @@
     <string name="recipe_title">Título da receita</string>
     <string name="category_title">Category Title</string>
     <string name="show_recipes_this_category">Mostrar mais receitas desta categoria</string>
+
+    <!-- EditHomeScreenActivity -->
+    <string name="edit_home_screen">Editar tela inicial</string>
+    <string name="select_categories_show_home_screen">Selecione as categorias que deseja exibir na tela inicial:</string>
 
 </resources>

@@ -11,13 +11,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".presentation.EditHomeScreenActivity" />
         <activity android:name=".presentation.CreateRecipeActivity" />
         <activity android:name=".presentation.CategoryActivity" />
         <activity android:name=".presentation.SearchActivity">
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
+
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>

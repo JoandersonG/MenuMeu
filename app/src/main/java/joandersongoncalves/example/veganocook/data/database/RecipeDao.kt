@@ -141,4 +141,7 @@ abstract class RecipeDao {
 
         return homeRecipeSets
     }
+
+    @Update
+    abstract suspend fun updateCategory(category: Category)
 }
