@@ -81,7 +81,7 @@ class CategoryActivity : AppCompatActivity() {
 
         //setting the right toolbar for this activity
         viewFlipperAppToolbar.displayedChild = 1
-        AppToolbarSetup.setBackButton(appToolbarOther, this)
+        AppToolbarSetup.setBackButton(appToolbarGeneral, this)
 
         //setting drawer
         drawerLayoutCategoryActivity.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)

@@ -35,8 +35,8 @@ class CreateRecipeActivity : AppCompatActivity() {
 
         //setting the right toolbar for this activity
         viewFlipperAppToolbar.displayedChild = 1
-        appToolbarOther.setTitle(R.string.add_recipe)
-        AppToolbarSetup.setBackButton(appToolbarOther, this)
+        appToolbarGeneral.setTitle(R.string.add_recipe)
+        AppToolbarSetup.setBackButton(appToolbarGeneral, this)
 
         // setting viewModel
         val viewModel: CreateRecipeViewModel by viewModels()
