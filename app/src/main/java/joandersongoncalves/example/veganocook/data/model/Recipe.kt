@@ -74,8 +74,8 @@ data class Category(
 
 @Entity(primaryKeys = ["recipe_id", "category_name"], tableName = "recipes_categories")
 data class RecipeCategoryCrossRef(
-    @ColumnInfo(name = "recipe_id") val recipeId: Int,
-    @ColumnInfo(name = "category_name") val categoryName: String
+    @ColumnInfo(name = "recipe_id", index = true) val recipeId: Int,
+    @ColumnInfo(name = "category_name", index = true) val categoryName: String
 )
 
 data class CategoryWithRecipes(
