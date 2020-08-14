@@ -73,8 +73,15 @@ abstract class RecipeDao {
     abstract suspend fun getRecipesByCategory(category: String): List<Recipe>
 
     @Transaction
-    @Query("SELECT * FROM categories WHERE category_name = :category LIMIT 3")
-    abstract suspend fun getThreeRecipes(category: String): List<CategoryWithRecipes>
+    //@Query("SELECT * FROM categories WHERE category_name = :category LIMIT 3")
+    @Query(
+        "SELECT * FROM recipes " +
+                "INNER JOIN recipes_categories ON recipes.recipe_id = recipes_categories.recipe_id " +
+                "INNER JOIN categories ON recipes_categories.category_name = categories.category_name " +
+                "WHERE categories.category_name = :category " +
+                "LIMIT 3"
+    )
+    abstract suspend fun getThreeRecipes(category: String): List<Recipe>
 
     @Transaction
     @Query("SELECT * FROM recipes WHERE recipe_id = :recipeId")
@@ -115,7 +122,7 @@ abstract class RecipeDao {
         val categories = getCategoriesToShowOnHome()
         for (category in categories) {
 
-            val threeRecipes = getThreeRecipes(category.categoryName)[0].recipes
+            val threeRecipes = getThreeRecipes(category.categoryName)
             val recipe1 = if (threeRecipes.size >= 1) {
                 threeRecipes[0]
             } else {
