@@ -89,10 +89,12 @@ class AddCategoryDialogFragment(
         rootView.btAddCategoryDialogSave.setOnClickListener {
             //send categories selected back to activity
             if (noCategoriesSelected()) {
-                MaterialAlertDialogBuilder(context)
-                    .setTitle(R.string.error_select_category)
-                    .setPositiveButton(R.string.ok) { _, _ ->/*does nothing*/ }
-                    .show()
+                context?.let { it1 ->
+                    MaterialAlertDialogBuilder(it1)
+                        .setTitle(R.string.error_select_category)
+                        .setPositiveButton(R.string.ok) { _, _ ->/*does nothing*/ }
+                        .show()
+                }
             } else {
                 viewModel.saveSelectedCategoriesOnDialog()
                 dismiss()
@@ -104,15 +106,17 @@ class AddCategoryDialogFragment(
     //listener for pressing close icon on Chips
     private fun getCloseListenerForChips() = View.OnClickListener {
         //confirmation on delete
-        MaterialAlertDialogBuilder(context)
-            .setTitle(getString(R.string.confirmation_delete_category))
-            .setMessage("\n ${getString(R.string.this_action_cannot_undone)}")
-            .setPositiveButton(R.string.delete) { _, _ ->
-                //delete view
-                viewModel.deleteCategory(Category((it as Chip).text.toString()))
-            }
-            .setNegativeButton(R.string.cancel) { _, _ -> /*does nothing*/ }
-            .show()
+        context?.let { it1 ->
+            MaterialAlertDialogBuilder(it1)
+                .setTitle(getString(R.string.confirmation_delete_category))
+                .setMessage("\n ${getString(R.string.this_action_cannot_undone)}")
+                .setPositiveButton(R.string.delete) { _, _ ->
+                    //delete view
+                    viewModel.deleteCategory(Category((it as Chip).text.toString()))
+                }
+                .setNegativeButton(R.string.cancel) { _, _ -> /*does nothing*/ }
+                .show()
+        }
     }
 
     //listener for checking chips
