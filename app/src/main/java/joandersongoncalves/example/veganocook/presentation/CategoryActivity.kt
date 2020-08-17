@@ -29,16 +29,16 @@ class CategoryActivity : AppCompatActivity() {
 
         val recipeAdapter = setRecyclerView()
 
-        setupViewModelObservers(recipeAdapter)
+        viewModelObserversSetup(recipeAdapter)
 
         getIntentExtra()
 
-        setupAppToolbar()
+        appToolbarSetup()
 
-        setupDrawer()
+        drawerSetup()
     }
 
-    private fun setupAppToolbar() {
+    private fun appToolbarSetup() {
         viewFlipperAppToolbar.displayedChild = 1
         AppToolbarSetup.setBackButton(appToolbarGeneral, this)
     }
@@ -61,7 +61,7 @@ class CategoryActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupDrawer() {
+    private fun drawerSetup() {
         drawerLayoutCategoryActivity.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
 
         //setting button Filters
@@ -84,7 +84,7 @@ class CategoryActivity : AppCompatActivity() {
         viewModel.getAllCategories()
     }
 
-    private fun setupViewModelObservers(recipeAdapter: RecipeAdapter) {
+    private fun viewModelObserversSetup(recipeAdapter: RecipeAdapter) {
         viewModel.recipesByCategory.observe(this, Observer {
             recipeAdapter.setRecipes(it)
             if (it.isEmpty()) { //the results returned zero recipes
