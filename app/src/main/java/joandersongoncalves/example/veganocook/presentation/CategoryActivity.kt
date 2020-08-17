@@ -71,6 +71,9 @@ class CategoryActivity : AppCompatActivity() {
                     viewModel.isFavoriteRecipesOnly.value = true
                     viewModel.updateAllRecipes()
                 }
+                getString(R.string.all_recipes) -> {
+                    viewModel.updateAllRecipes()
+                }
                 else -> {
                     viewModel.checkedChangeOnSelectedCategory(Category(it))
                 }
