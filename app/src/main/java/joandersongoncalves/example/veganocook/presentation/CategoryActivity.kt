@@ -27,7 +27,85 @@ class CategoryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_category)
 
-        // setting RecyclerView
+        val recipeAdapter = setRecyclerView()
+
+        setupViewModelObservers(recipeAdapter)
+
+        getIntentExtra()
+
+        setupAppToolbar()
+
+        setupDrawer()
+    }
+
+    private fun setupAppToolbar() {
+        viewFlipperAppToolbar.displayedChild = 1
+        AppToolbarSetup.setBackButton(appToolbarGeneral, this)
+    }
+
+    private fun getIntentExtra() {
+        intent.getStringExtra(AppConstantCodes.EXTRA_CATEGORY_TITLE)?.let {
+            when (it) {
+                getString(R.string.favorite) -> {
+                    viewModel.isFavoriteRecipesOnly.value = true
+                    viewModel.updateAllRecipes()
+                }
+                getString(R.string.all_recipes) -> {
+                    viewModel.updateAllRecipes()
+                }
+                else -> {
+                    viewModel.checkedChangeOnSelectedCategory(Category(it))
+                }
+            }
+            viewModel.categoryTitle.value = it
+        }
+    }
+
+    private fun setupDrawer() {
+        drawerLayoutCategoryActivity.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+
+        //setting button Filters
+        textOpenFilters.setOnClickListener {
+            drawerLayoutCategoryActivity.openDrawer(drawerFilters)
+            addAllCategoriesIntoChips()
+        }
+
+        //setting button Clean All
+        drawerFilters
+            .getHeaderView(0)
+            .findViewById<Button>(R.id.btCleanSelectionFiltersDrawer)
+            .setOnClickListener {
+                //clean filter selection
+                viewModel.cleanSelectedCategories()
+                //recreate all category chips
+                addAllCategoriesIntoChips()
+            }
+
+        viewModel.getAllCategories()
+    }
+
+    private fun setupViewModelObservers(recipeAdapter: RecipeAdapter) {
+        viewModel.recipesByCategory.observe(this, Observer {
+            recipeAdapter.setRecipes(it)
+            if (it.isEmpty()) { //the results returned zero recipes
+                viewFlipperCategoryActivity.displayedChild = 1
+            } else { //results returned at least one recipe
+                viewFlipperCategoryActivity.displayedChild = 0
+            }
+        })
+
+        //setting activity title
+        viewModel.categoryTitle.observe(this, Observer {
+            tvAppToolbarOtherTitle.text = it
+        })
+
+        viewModel.selectedCategoriesOnFilter.observe(this, Observer {
+            //now filter categories
+            viewModel.updateAllRecipes()
+        })
+    }
+
+    private fun setRecyclerView(): RecipeAdapter {
         val recipeAdapter = RecipeAdapter({ recipe -> //onClick: item
             val intent = RecipeDetailsActivity.getStartIntent(this@CategoryActivity, recipe)
             val reqCode = 1
@@ -51,67 +129,7 @@ class CategoryActivity : AppCompatActivity() {
             setHasFixedSize(true)
             adapter = recipeAdapter
         }
-
-        // setting viewModel
-        viewModel.recipesByCategory.observe(this, Observer {
-            recipeAdapter.setRecipes(it)
-            if (it.isEmpty()) { //the results returned zero recipes
-                viewFlipperCategoryActivity.displayedChild = 1
-            } else { //results returned at least one recipe
-                viewFlipperCategoryActivity.displayedChild = 0
-            }
-        })
-        //setting activity title
-        viewModel.categoryTitle.observe(this, Observer {
-            tvAppToolbarOtherTitle.text = it
-        })
-        intent.getStringExtra(AppConstantCodes.EXTRA_CATEGORY_TITLE)?.let {
-            when (it) {
-                getString(R.string.favorite) -> {
-                    viewModel.isFavoriteRecipesOnly.value = true
-                    viewModel.updateAllRecipes()
-                }
-                getString(R.string.all_recipes) -> {
-                    viewModel.updateAllRecipes()
-                }
-                else -> {
-                    viewModel.checkedChangeOnSelectedCategory(Category(it))
-                }
-            }
-            viewModel.categoryTitle.value = it
-        }
-
-
-        //setting the right toolbar for this activity
-        viewFlipperAppToolbar.displayedChild = 1
-        AppToolbarSetup.setBackButton(appToolbarGeneral, this)
-
-        //setting drawer
-        drawerLayoutCategoryActivity.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-
-        //setting button Filters
-        textOpenFilters.setOnClickListener {
-            drawerLayoutCategoryActivity.openDrawer(drawerFilters)
-            addAllCategoriesIntoChips()
-        }
-
-        //setting button Clean All
-        drawerFilters
-            .getHeaderView(0)
-            .findViewById<Button>(R.id.btCleanSelectionFiltersDrawer)
-            .setOnClickListener {
-                //clean filter selection
-                viewModel.cleanSelectedCategories()
-                //recreate all category chips
-                addAllCategoriesIntoChips()
-            }
-
-        viewModel.selectedCategoriesOnFilter.observe(this, Observer {
-            //now filter categories
-            viewModel.updateAllRecipes()
-        })
-
-        viewModel.getAllCategories()
+        return recipeAdapter
     }
 
     private fun addAllCategoriesIntoChips() {
