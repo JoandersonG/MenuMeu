@@ -64,6 +64,7 @@ abstract class RecipeDao {
     @Query("SELECT * FROM recipes")
     abstract suspend fun getAllRecipes(): List<Recipe>
 
+    @Transaction
     @Query(
         "SELECT * FROM recipes " +
                 "INNER JOIN recipes_categories ON recipes.recipe_id = recipes_categories.recipe_id " +
