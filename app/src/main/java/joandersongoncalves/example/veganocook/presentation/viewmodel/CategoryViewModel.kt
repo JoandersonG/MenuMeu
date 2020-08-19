@@ -99,4 +99,8 @@ class CategoryViewModel(application: Application) : AndroidViewModel(application
         repository.updateRecipe(recipe)
         updateAllRecipes()
     }
+
+    fun setToolbarTitle(string: String) {
+        categoryTitle.value = string
+    }
 }

@@ -57,7 +57,6 @@ class CategoryActivity : AppCompatActivity() {
                     viewModel.checkedChangeOnSelectedCategory(Category(it))
                 }
             }
-            viewModel.categoryTitle.value = it
         }
     }
 
@@ -100,6 +99,17 @@ class CategoryActivity : AppCompatActivity() {
         })
 
         viewModel.selectedCategoriesOnFilter.observe(this, Observer {
+            if (viewModel.isFavoriteRecipesOnly.value!!) {
+                //this means is it should be favorite only, so show title Favorites
+                viewModel.setToolbarTitle(getString(R.string.favorite))
+            } else if (it.isEmpty() || it.size > 1) {
+                //this means there is no selected categories on filter
+                //or there is multiple selected categories, so show title All Recipes
+                viewModel.setToolbarTitle(getString(R.string.all_recipes))
+            } else {
+                //ths means there is only one selected category, so show that category title
+                viewModel.setToolbarTitle(it[0].categoryName)
+            }
             //now filter categories
             viewModel.updateAllRecipes()
         })
