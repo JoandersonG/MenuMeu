@@ -24,19 +24,24 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        //setting RecyclerView
-        val searchResultAdapter = SearchResultAdapter { recipe ->
-            val intent = RecipeDetailsActivity.getStartIntent(this@SearchActivity, recipe)
-            val reqCode = 1
-            this@SearchActivity.startActivityForResult(intent, reqCode)
-        }
-        with(rvSearchResults) {
-            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this@SearchActivity)
-            setHasFixedSize(true)
-            adapter = searchResultAdapter
-        }
+        val adapter = settingRecyclerView()
 
-        //setting viewModel
+        settingViewModel(adapter)
+
+        //setting viewFlipper
+        viewFlipperSearch.displayedChild = 0
+
+        settingToolbar()
+    }
+
+    private fun settingToolbar() {
+        viewFlipperAppToolbar.displayedChild = 2
+        setSupportActionBar(appToolbarSearch)
+        appToolbarSearch.title = ""
+        AppToolbarSetup.setBackButton(appToolbarSearch, this)
+    }
+
+    private fun settingViewModel(searchResultAdapter: SearchResultAdapter) {
         viewModel.recipesResult.observe(this, Observer {
             searchResultAdapter.updateRecipes(it)
             if (viewFlipperSearch.displayedChild > 0 && it.isEmpty()) {
@@ -47,16 +52,20 @@ class SearchActivity : AppCompatActivity() {
                 viewFlipperSearch.displayedChild = 2
             }
         })
+    }
 
-        //setting viewFlipper
-        viewFlipperSearch.displayedChild = 0
-
-        //setting SearchActivity toolbar
-        viewFlipperAppToolbar.displayedChild = 2
-        setSupportActionBar(appToolbarSearch)
-        appToolbarSearch.title = ""
-        AppToolbarSetup.setBackButton(appToolbarSearch, this)
-
+    private fun settingRecyclerView(): SearchResultAdapter {
+        val searchResultAdapter = SearchResultAdapter { recipe ->
+            val intent = RecipeDetailsActivity.getStartIntent(this@SearchActivity, recipe)
+            val reqCode = 1
+            this@SearchActivity.startActivityForResult(intent, reqCode)
+        }
+        with(rvSearchResults) {
+            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this@SearchActivity)
+            setHasFixedSize(true)
+            adapter = searchResultAdapter
+        }
+        return searchResultAdapter
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

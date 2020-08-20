@@ -36,6 +36,19 @@ class AddCategoryDialogFragment(
         val rootView = inflater.inflate(R.layout.fragment_dialog_add_category, container, false)
 
 
+        settingViewModel()
+
+        loadObservers(rootView, inflater)
+
+        //handling pressing enter on softkeyboard on textInputYoutubeLink
+        handlingEnterPressingOnSoftKeyboard(rootView)
+
+        settingButtonsListeners(rootView)
+
+        return rootView
+    }
+
+    private fun settingViewModel() {
         //update all categories to be shown
         viewModel.getAllCategories()
 
@@ -46,37 +59,9 @@ class AddCategoryDialogFragment(
             }
         }
 
-        loadObservers(rootView, inflater)
+    }
 
-        //creating new category
-        rootView.chipCreateCategory.setOnClickListener {
-            if (layoutAddFavorite.isVisible) {
-                //layoutAddFavorite.setPadding(0,0,0,0)
-                layoutAddFavorite.visibility = View.GONE
-            } else {
-                //layoutAddFavorite.setPadding(0,16,0,0)
-                layoutAddFavorite.visibility = View.VISIBLE
-            }
-        }
-
-        //handling pressing enter on softkeyboard on textInputYoutubeLink
-        val listener = TextView.OnEditorActionListener { _, actionId, event ->
-            if (event == null) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) ;
-                else if (actionId == EditorInfo.IME_ACTION_NEXT) ;
-                else return@OnEditorActionListener false // Let system handle all other null KeyEvents
-            } else if (actionId == EditorInfo.IME_NULL) {
-                if (event.action == KeyEvent.ACTION_DOWN) ;
-                else return@OnEditorActionListener true // We consume the event when the key is released.
-            } else return@OnEditorActionListener false
-
-            //when enter is pressed do:
-            createNewCategory(rootView)
-
-            true
-        }
-        rootView.textInputNewCategory.setOnEditorActionListener(listener)
-
+    private fun settingButtonsListeners(rootView: View) {
         rootView.buttonSaveNewCategory.setOnClickListener {
             createNewCategory(rootView)
         }
@@ -100,7 +85,35 @@ class AddCategoryDialogFragment(
                 dismiss()
             }
         }
-        return rootView
+
+        rootView.chipCreateCategory.setOnClickListener {
+            if (layoutAddFavorite.isVisible) {
+                //layoutAddFavorite.setPadding(0,0,0,0)
+                layoutAddFavorite.visibility = View.GONE
+            } else {
+                //layoutAddFavorite.setPadding(0,16,0,0)
+                layoutAddFavorite.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    private fun handlingEnterPressingOnSoftKeyboard(rootView: View) {
+        val listener = TextView.OnEditorActionListener { _, actionId, event ->
+            if (event == null) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) ;
+                else if (actionId == EditorInfo.IME_ACTION_NEXT) ;
+                else return@OnEditorActionListener false // Let system handle all other null KeyEvents
+            } else if (actionId == EditorInfo.IME_NULL) {
+                if (event.action == KeyEvent.ACTION_DOWN) ;
+                else return@OnEditorActionListener true // We consume the event when the key is released.
+            } else return@OnEditorActionListener false
+
+            //when enter is pressed do:
+            createNewCategory(rootView)
+
+            true
+        }
+        rootView.textInputNewCategory.setOnEditorActionListener(listener)
     }
 
     //listener for pressing close icon on Chips

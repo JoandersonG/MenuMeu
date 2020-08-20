@@ -21,28 +21,16 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        //setting RecyclerView
-        val homeAdapter = HomeAdapter({
-            val intent = RecipeDetailsActivity.getStartIntent(this@HomeActivity, it)
-            val reqCode = 1
-            this@HomeActivity.startActivityForResult(intent, reqCode)
-        }, {
-            val intent = CategoryActivity.getStartActivity(this, it.categoryName)
-            startActivity(intent)
-        })
-        with(rvRecipesHomeActivity) {
-            layoutManager = LinearLayoutManager(this@HomeActivity)
-            setHasFixedSize(true)
-            adapter = homeAdapter
-        }
+        val adapter = settingRecyclerView()
 
-        viewModel.updateRecipesToShow()
+        settingViewModel(adapter)
 
-        viewModel.homeRecipeSets.observe(this, Observer {
-            homeAdapter.setRecipes(it)
-        })
+        settingHomeScreenButtons()
 
-        //setting home screen buttons
+        setSupportActionBar(appToolbarHome);
+    }
+
+    private fun settingHomeScreenButtons() {
         btCreateRecipe.setOnClickListener {
             startActivity(Intent(this, CreateRecipeActivity::class.java))
         }
@@ -61,8 +49,31 @@ class HomeActivity : AppCompatActivity() {
             val newIntent = Intent(this, EditHomeScreenActivity::class.java)
             startActivityForResult(newIntent, 0)
         }
+    }
 
-        setSupportActionBar(appToolbarHome);
+    private fun settingViewModel(homeAdapter: HomeAdapter) {
+        viewModel.updateRecipesToShow()
+
+        viewModel.homeRecipeSets.observe(this, Observer {
+            homeAdapter.setRecipes(it)
+        })
+    }
+
+    private fun settingRecyclerView(): HomeAdapter {
+        val homeAdapter = HomeAdapter({
+            val intent = RecipeDetailsActivity.getStartIntent(this@HomeActivity, it)
+            val reqCode = 1
+            this@HomeActivity.startActivityForResult(intent, reqCode)
+        }, {
+            val intent = CategoryActivity.getStartActivity(this, it.categoryName)
+            startActivity(intent)
+        })
+        with(rvRecipesHomeActivity) {
+            layoutManager = LinearLayoutManager(this@HomeActivity)
+            setHasFixedSize(true)
+            adapter = homeAdapter
+        }
+        return homeAdapter
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

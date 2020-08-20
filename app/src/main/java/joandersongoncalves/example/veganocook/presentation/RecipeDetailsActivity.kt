@@ -34,23 +34,37 @@ class RecipeDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe_details)
 
-        // retrieving data from parent activity
-        if (!intent.hasExtra(AppConstantCodes.EXTRA_RECIPE)) {
-            Toast.makeText(this, R.string.error_showing_recipe, Toast.LENGTH_SHORT).show()
-            finish()
-        }
-        val recipe: Recipe? = intent.getParcelableExtra(AppConstantCodes.EXTRA_RECIPE)
-        recipe?.categories =
-            intent.getSerializableExtra(AppConstantCodes.RECIPE_CATEGORIES) as List<Category>
+        retrieveDataFromParentActivity()
+
+        settingViewModel()
+
+        runYouTubePlayer()
+
+        settingToolbar()
+
+        settingShowAndHideDescription()
+    }
+
+    private fun settingViewModel() {
         viewModel.recipe.observe(this, Observer {
             updateFields(it)
         })
         viewModel.recipe.value = recipe
+    }
 
-        //setting the youtube Player
-        runYouTubePlayer()
+    private fun settingShowAndHideDescription() {
+        layoutShowHideDescription.setOnClickListener {
+            tvDescription.visibility = if (tvDescription.isVisible) {
+                imageShowHideDescription.setImageDrawable(getDrawable(R.drawable.ic_keyboard_arrow_down_black_24dp))
+                View.GONE
+            } else {
+                imageShowHideDescription.setImageDrawable(getDrawable(R.drawable.ic_keyboard_arrow_up_black_24dp))
+                View.VISIBLE
+            }
+        }
+    }
 
-        //setting the right toolbar for this activity
+    private fun settingToolbar() {
         viewFlipperAppToolbar.displayedChild = 3
         AppToolbarSetup.setBackButton(appToolbarRecipeDetais, this)
         appToolbarRecipeDetais.setOnMenuItemClickListener { item ->
@@ -69,7 +83,7 @@ class RecipeDetailsActivity : AppCompatActivity() {
                         .setNegativeButton(R.string.cancel) { _, _ ->/*does nothing*/ }
                         .setPositiveButton(R.string.ok) { _, _ ->
                             if (recipe != null) {
-                                viewModel.deleteRecipe(recipe)
+                                viewModel.deleteRecipe(recipe!!)
                                 setResult(AppConstantCodes.DELETE_RECIPE)
                                 //finnish activity
                                 finish()
@@ -79,7 +93,7 @@ class RecipeDetailsActivity : AppCompatActivity() {
                 }
                 getString(R.string.add_to_favorite) -> {
                     if (recipe != null) {
-                        viewModel.updateRecipe(recipe)
+                        viewModel.updateRecipe(recipe!!)
                     }
                     item.isChecked = if (item.isChecked) {
                         item.setIcon(R.drawable.ic_favorite_outlined_24dp)
@@ -103,17 +117,16 @@ class RecipeDetailsActivity : AppCompatActivity() {
             }
             return@setOnMenuItemClickListener true
         }
+    }
 
-        //setting show/hide description functionality
-        layoutShowHideDescription.setOnClickListener {
-            tvDescription.visibility = if (tvDescription.isVisible) {
-                imageShowHideDescription.setImageDrawable(getDrawable(R.drawable.ic_keyboard_arrow_down_black_24dp))
-                View.GONE
-            } else {
-                imageShowHideDescription.setImageDrawable(getDrawable(R.drawable.ic_keyboard_arrow_up_black_24dp))
-                View.VISIBLE
-            }
+    private fun retrieveDataFromParentActivity() {
+        if (!intent.hasExtra(AppConstantCodes.EXTRA_RECIPE)) {
+            Toast.makeText(this, R.string.error_showing_recipe, Toast.LENGTH_SHORT).show()
+            finish()
         }
+        recipe = intent.getParcelableExtra(AppConstantCodes.EXTRA_RECIPE)
+        recipe?.categories =
+            intent.getSerializableExtra(AppConstantCodes.RECIPE_CATEGORIES) as List<Category>
     }
 
     private fun setFavoriteCheckButton(isChecked: Boolean) {

@@ -33,99 +33,20 @@ class CreateRecipeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_recipe)
 
-        //setting the right toolbar for this activity
-        viewFlipperAppToolbar.displayedChild = 1
-        appToolbarGeneral.setTitle(R.string.add_recipe)
-        AppToolbarSetup.setBackButton(appToolbarGeneral, this)
+        settingToolbar()
 
-        // setting viewModel
-        val viewModel: CreateRecipeViewModel by viewModels()
+        val viewModel = settingViewModel()
 
-        viewModel.videoLiveData.observe(this, Observer {
-            it?.let {
-                fillFields(it.title, it.description, "https://youtu.be/${it.url}", null)
-            }
-        })
-        viewModel.videoRetrieveResponseLiveData.observe(this, Observer {
-            it?.let {
-                when (it) {
-                    CreateRecipeViewModel.ERROR_INVALID_LINK -> {
-                        textInputYoutubeLink.error = getString(R.string.error_invalid_link)
-                    }
-                    CreateRecipeViewModel.ERROR_RETRIEVING_INFORMATION -> {
-                        Snackbar.make(
-                            viewFlipperCreateRecipeActivity, R.string.error_retrieving_information,
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                    }
-                    CreateRecipeViewModel.ERROR_CONNECTING_API -> {
-                        Snackbar.make(
-                            viewFlipperCreateRecipeActivity,
-                            R.string.error_conecting_api,
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-            }
-        })
+        var recipe = gettingReceivedData(viewModel)
 
-        // getting extra, if any
-        var recipe = intent.getParcelableExtra<Recipe>(AppConstantCodes.EXTRA_RECIPE)
-        recipe?.let { rec ->
-            fillFields(
-                rec.name,
-                rec.description,
-                "https://youtu.be/${rec.video.url}",
-                rec.isFavorite
-            )
-            viewModel.favorite.value = rec.isFavorite
-            //categories:
-            viewModel.getCategoriesFromRecipe(rec)
-        }
 
-        // setting cancel button
-        btCreateRecipeCancel.setOnClickListener {
-            // close activity
-            finish()
-        }
+
+        settingCancelButton()
+
 
         //pressing save button
-        btCreateRecipeSave.setOnClickListener {
-            if (validateData()) {
-                val worked: Boolean
-                val idMessage: Int
-                //if it's editing an existing recipe
-                if (recipe != null) {
-                    recipe = viewModel.updateRecipe(
-                        textInputTitle.text.toString(),
-                        textInputDescription.text.toString(),
-                        recipe!!
-                    )
-                    idMessage = R.string.success_updating_recipe
+        settingSaveButton(recipe, viewModel)
 
-                    val intent = Intent()
-                    intent.putExtra(AppConstantCodes.UPDATED_RECIPE, recipe)
-                    intent.putExtra(
-                        AppConstantCodes.UPDATED_RECIPE_CATEGORIES,
-                        viewModel.recipeCategories.value?.toList() as Serializable
-                    )
-                    setResult(Activity.RESULT_OK, intent)
-                } else {
-                    worked = viewModel.saveNewRecipe(
-                        textInputTitle.text.toString(),
-                        textInputDescription.text.toString()
-                    )
-                    idMessage = if (worked) {
-                        R.string.success_saving_recipe
-                    } else {
-                        R.string.error_saving_recipe
-                    }
-                }
-
-                Toast.makeText(this, idMessage, Toast.LENGTH_SHORT).show()
-                finish()
-            }
-        }
 
         // setting search button
         btSearch.setOnClickListener { handleYoutubeLinkSearch(viewModel) }
@@ -200,6 +121,109 @@ class CreateRecipeActivity : AppCompatActivity() {
                 addCategoriesFragment.show(fm, "add category fragment")
             }
         }
+    }
+
+    private fun settingSaveButton(recipeArg: Recipe?, viewModel: CreateRecipeViewModel): Recipe? {
+        var recipe = recipeArg
+        btCreateRecipeSave.setOnClickListener {
+            if (validateData()) {
+                val worked: Boolean
+                val idMessage: Int
+                //if it's editing an existing recipe
+                if (recipe != null) {
+                    recipe = viewModel.updateRecipe(
+                        textInputTitle.text.toString(),
+                        textInputDescription.text.toString(),
+                        recipe!!
+                    )
+                    idMessage = R.string.success_updating_recipe
+
+                    val intent = Intent()
+                    intent.putExtra(AppConstantCodes.UPDATED_RECIPE, recipe)
+                    intent.putExtra(
+                        AppConstantCodes.UPDATED_RECIPE_CATEGORIES,
+                        viewModel.recipeCategories.value?.toList() as Serializable
+                    )
+                    setResult(Activity.RESULT_OK, intent)
+                } else {
+                    worked = viewModel.saveNewRecipe(
+                        textInputTitle.text.toString(),
+                        textInputDescription.text.toString()
+                    )
+                    idMessage = if (worked) {
+                        R.string.success_saving_recipe
+                    } else {
+                        R.string.error_saving_recipe
+                    }
+                }
+
+                Toast.makeText(this, idMessage, Toast.LENGTH_SHORT).show()
+                finish()
+            }
+        }
+        return recipe
+    }
+
+    private fun settingCancelButton() {
+        btCreateRecipeCancel.setOnClickListener {
+            // close activity
+            finish()
+        }
+    }
+
+    private fun gettingReceivedData(viewModel: CreateRecipeViewModel): Recipe? {
+        var recipe = intent.getParcelableExtra<Recipe>(AppConstantCodes.EXTRA_RECIPE)
+        recipe?.let { rec ->
+            fillFields(
+                rec.name,
+                rec.description,
+                "https://youtu.be/${rec.video.url}",
+                rec.isFavorite
+            )
+            viewModel.favorite.value = rec.isFavorite
+            //categories:
+            viewModel.getCategoriesFromRecipe(rec)
+        }
+        return recipe
+    }
+
+    private fun settingViewModel(): CreateRecipeViewModel {
+        val viewModel: CreateRecipeViewModel by viewModels()
+
+        viewModel.videoLiveData.observe(this, Observer {
+            it?.let {
+                fillFields(it.title, it.description, "https://youtu.be/${it.url}", null)
+            }
+        })
+        viewModel.videoRetrieveResponseLiveData.observe(this, Observer {
+            it?.let {
+                when (it) {
+                    CreateRecipeViewModel.ERROR_INVALID_LINK -> {
+                        textInputYoutubeLink.error = getString(R.string.error_invalid_link)
+                    }
+                    CreateRecipeViewModel.ERROR_RETRIEVING_INFORMATION -> {
+                        Snackbar.make(
+                            viewFlipperCreateRecipeActivity, R.string.error_retrieving_information,
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    }
+                    CreateRecipeViewModel.ERROR_CONNECTING_API -> {
+                        Snackbar.make(
+                            viewFlipperCreateRecipeActivity,
+                            R.string.error_conecting_api,
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+        })
+        return viewModel
+    }
+
+    private fun settingToolbar() {
+        viewFlipperAppToolbar.displayedChild = 1
+        appToolbarGeneral.setTitle(R.string.add_recipe)
+        AppToolbarSetup.setBackButton(appToolbarGeneral, this)
     }
 
     private fun handleYoutubeLinkSearch(viewModel: CreateRecipeViewModel) {
