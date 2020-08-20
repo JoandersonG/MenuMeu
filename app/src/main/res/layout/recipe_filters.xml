@@ -22,14 +22,15 @@
             android:textSize="20sp"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
-            app:layout_constraintStart_toStartOf="@+id/chipGroupCategoriesFilter"
-            app:layout_constraintTop_toTopOf="@+id/chipGroupCategoriesFilter" />
+            android:background="?android:attr/selectableItemBackground" />
 
         <Button
             android:id="@+id/btCleanSelectionFiltersDrawer"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:textColor="@color/black"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
+            android:paddingHorizontal="16dp"
+            android:background="@drawable/transparent_ripple_no_stroke_background"
             android:gravity="end|center_vertical"
             android:textSize="12sp"
             android:text="@string/clean_all" />
@@ -41,8 +42,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="8dp"
-        android:background="@android:color/darker_gray"
-        app:layout_constraintTop_toBottomOf="@id/tvFilter" />
+        android:background="@android:color/darker_gray" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -52,14 +52,11 @@
         android:textSize="16sp"
         android:textColor="@color/black" />
 
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/chipGroupCategoriesFilter"
+    <com.google.android.flexbox.FlexboxLayout
+        android:id="@+id/flexboxLayoutRecipeFilters"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1.7"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dividerFilters" />
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        app:flexWrap="wrap" />
 
 </LinearLayout>

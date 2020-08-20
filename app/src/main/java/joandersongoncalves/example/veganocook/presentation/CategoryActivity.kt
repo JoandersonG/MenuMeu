@@ -2,10 +2,15 @@ package joandersongoncalves.example.veganocook.presentation
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.widget.Button
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.get
+import androidx.core.view.size
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
@@ -143,24 +148,41 @@ class CategoryActivity : AppCompatActivity() {
     }
 
     private fun addAllCategoriesIntoChips() {
-        viewModel.allCategories.value?.let {
-            chipGroupCategoriesFilter.removeAllViews()
-            for (category in it) {
-                val categoryChip = layoutInflater.inflate(
-                    R.layout.chip_all_categories,
-                    chipGroupCategoriesFilter,
-                    false
-                ) as Chip
-                viewModel.selectedCategoriesOnFilter.value?.let { selectedCategories ->
-                    if (selectedCategories.contains(category)) {
-                        categoryChip.isChecked = true
+        viewModel.allCategories.value?.let { allCategories ->
+            flexboxLayoutRecipeFilters.removeAllViews()
+            for (category in allCategories) {
+                LayoutInflater.from(this).inflate(
+                    R.layout.recipe_filter_category_chip,
+                    flexboxLayoutRecipeFilters
+                )
+                val categoryId = flexboxLayoutRecipeFilters.size - 1
+                val tvCategory = (flexboxLayoutRecipeFilters[categoryId] as TextView)
+                tvCategory.apply {
+                    text = category.categoryName
+                    viewModel.selectedCategoriesOnFilter.value?.let { selectedCategories ->
+                        background = if (selectedCategories.contains(category)) {
+                            setTextColor(Color.WHITE)
+                            getDrawable(R.drawable.primary_ripple_stroke_background)
+                        } else {
+                            setTextColor(Color.BLACK)
+                            getDrawable(R.drawable.white_ripple_stroke_background)
+                        }
+                    }
+
+                    setOnClickListener {
+                        category.isShowedOnHome = !category.isShowedOnHome
+                        viewModel.checkedChangeOnSelectedCategory(category)
+                        viewModel.selectedCategoriesOnFilter.value?.let { selectedCategories ->
+                            background = if (selectedCategories.contains(category)) {
+                                setTextColor(Color.WHITE)
+                                getDrawable(R.drawable.primary_ripple_stroke_background)
+                            } else {
+                                setTextColor(Color.BLACK)
+                                getDrawable(R.drawable.white_ripple_stroke_background)
+                            }
+                        }
                     }
                 }
-                categoryChip.setOnCheckedChangeListener { _, _ ->
-                    viewModel.checkedChangeOnSelectedCategory(category)
-                }
-                categoryChip.text = category.categoryName
-                chipGroupCategoriesFilter.addView(categoryChip)
             }
         }
     }
