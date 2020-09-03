@@ -1,22 +1,26 @@
 package joandersongoncalves.example.veganocook.presentation
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.CompoundButton
+import android.widget.ImageButton
 import android.widget.TextView
-import androidx.core.view.isVisible
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.get
 import androidx.core.view.iterator
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
-import com.google.android.material.chip.Chip
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.flexbox.FlexboxLayout
 import joandersongoncalves.example.veganocook.R
 import joandersongoncalves.example.veganocook.data.model.Category
+import joandersongoncalves.example.veganocook.presentation.fragment.DeleteCategoryFragment
+import joandersongoncalves.example.veganocook.presentation.fragment.DialogErrorNoCategoryFragment
 import joandersongoncalves.example.veganocook.presentation.viewmodel.CreateRecipeViewModel
 import kotlinx.android.synthetic.main.fragment_dialog_add_category.*
 import kotlinx.android.synthetic.main.fragment_dialog_add_category.view.*
@@ -35,6 +39,8 @@ class AddCategoryDialogFragment(
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_dialog_add_category, container, false)
 
+        //to allow corner radius:
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         settingViewModel()
 
@@ -74,25 +80,23 @@ class AddCategoryDialogFragment(
         rootView.btAddCategoryDialogSave.setOnClickListener {
             //send categories selected back to activity
             if (noCategoriesSelected()) {
-                context?.let { it1 ->
-                    MaterialAlertDialogBuilder(it1)
-                        .setTitle(R.string.error_select_category)
-                        .setPositiveButton(R.string.ok) { _, _ ->/*does nothing*/ }
-                        .show()
-                }
+                val errorCategoriesFragment =
+                    DialogErrorNoCategoryFragment()
+                val fm = requireActivity().supportFragmentManager
+                errorCategoriesFragment.show(fm, "no category error fragment")
+
             } else {
                 viewModel.saveSelectedCategoriesOnDialog()
                 dismiss()
             }
         }
 
-        rootView.chipCreateCategory.setOnClickListener {
-            if (layoutAddFavorite.isVisible) {
-                //layoutAddFavorite.setPadding(0,0,0,0)
-                layoutAddFavorite.visibility = View.GONE
+        rootView.tvBtCreateNewCategory.setOnClickListener {
+            rootView.layoutAddFavorite.visibility =
+                if (rootView.layoutAddFavorite.visibility == View.VISIBLE) {
+                    View.GONE
             } else {
-                //layoutAddFavorite.setPadding(0,16,0,0)
-                layoutAddFavorite.visibility = View.VISIBLE
+                    View.VISIBLE
             }
         }
     }
@@ -116,64 +120,80 @@ class AddCategoryDialogFragment(
         rootView.textInputNewCategory.setOnEditorActionListener(listener)
     }
 
-    //listener for pressing close icon on Chips
-    private fun getCloseListenerForChips() = View.OnClickListener {
-        //confirmation on delete
-        context?.let { it1 ->
-            MaterialAlertDialogBuilder(it1)
-                .setTitle(getString(R.string.confirmation_delete_category))
-                .setMessage("\n ${getString(R.string.this_action_cannot_undone)}")
-                .setPositiveButton(R.string.delete) { _, _ ->
-                    //delete view
-                    viewModel.deleteCategory(Category((it as Chip).text.toString()))
-                }
-                .setNegativeButton(R.string.cancel) { _, _ -> /*does nothing*/ }
-                .show()
-        }
-    }
-
-    //listener for checking chips
-    private fun getCheckListenerForChips() =
-        CompoundButton.OnCheckedChangeListener { compoundButton, _ ->
-            viewModel.changeSelectionOnCategoryOnDialog(Category(compoundButton.text.toString()))
-        }
-
     private fun loadObservers(rootView: View, inflater: LayoutInflater) {
 
         //adding all categories and selected ones to view
         viewModel.allCategories.observe(owner, Observer { listCategory ->
-            rootView.chipGroupAllCategories.removeAllViews()
+            rootView.flexboxLayoutDialogAddCategory.removeAllViews()
             for (category in listCategory) {
                 val newCategoryView = inflater.inflate(
-                    R.layout.chip_all_categories,
-                    rootView.chipGroupAllCategories,
+                    R.layout.chip_add_categories_dialog,
+                    rootView.flexboxLayoutDialogAddCategory,
                     false
-                ) as Chip
-                newCategoryView.text = category.categoryName
-                newCategoryView.isCloseIconVisible = true
-                newCategoryView.isCheckable = true
-                newCategoryView.setOnCloseIconClickListener(getCloseListenerForChips())
+                ) as ConstraintLayout
+                val chipTitleTextView = newCategoryView[0] as TextView
+                chipTitleTextView.text = category.categoryName
                 viewModel.selectedCategoriesOnDialog.value?.let {
-                    if (it.contains(category)) {
-                        newCategoryView.isChecked = true
+                    newCategoryView.background = if (it.contains(category)) {
+                        //textColor:
+                        chipTitleTextView.setTextColor(Color.WHITE)
+                        //background:
+                        context?.getDrawable(R.drawable.primary_ripple_stroke_background)
+                    } else {
+                        //textColor:
+                        chipTitleTextView.setTextColor(Color.BLACK)
+                        //background:
+                        context?.getDrawable(R.drawable.white_ripple_stroke_background)
                     }
                 }
-                newCategoryView.setOnCheckedChangeListener(getCheckListenerForChips())
-                rootView.chipGroupAllCategories.addView(newCategoryView)
+
+                //onClick on delete button
+                val chipDeleteButton = newCategoryView[1] as ImageButton
+                chipDeleteButton.setOnClickListener {
+                    val deleteCategoriesFragment =
+                        DeleteCategoryFragment(
+                            category,
+                            viewModel
+                        )
+                    val fm = requireActivity().supportFragmentManager
+                    deleteCategoriesFragment.show(fm, "delete category fragment")
+                }
+
+                newCategoryView.setOnClickListener { view ->
+                    viewModel.changeSelectionOnCategoryOnDialog(category)
+                    viewModel.selectedCategoriesOnDialog.value?.let { selectedCateg ->
+                        view.background = if (selectedCateg.contains(category)) {
+                            //textColor:
+                            chipTitleTextView.setTextColor(Color.WHITE)
+                            //background:
+                            context?.getDrawable(R.drawable.primary_ripple_stroke_background)
+                        } else {
+                            //textColor:
+                            chipTitleTextView.setTextColor(Color.BLACK)
+                            //background:
+                            context?.getDrawable(R.drawable.white_ripple_stroke_background)
+                        }
+                    }
+                }
+                rootView.flexboxLayoutDialogAddCategory.addView(newCategoryView)
             }
         })
 
         viewModel.selectedCategoriesOnDialog.observe(owner, Observer {
-            println("observer do selectedCategoriesOnDialog executando. Value is $it")
-            if (chipGroupAllCategories != null) {
+            if (flexboxLayoutDialogAddCategory != null) {
                 for (category in it) {
-                    for (chip in chipGroupAllCategories) {
-                        if ((chip as Chip).text == it) {
-                            chip.isChecked = true
+                    for (view in flexboxLayoutDialogAddCategory) {
+                        val flexboxLayout = (view as FlexboxLayout)
+                        val tvTitle = (flexboxLayout[0] as TextView)
+                        if (tvTitle.text == it) { //check
+                            tvTitle.setTextColor(Color.WHITE)
+                            flexboxLayout.background =
+                                context?.getDrawable(R.drawable.primary_ripple_stroke_background)
                         }
                     }
                 }
             }
+
         })
 
         //newCategoryField observer

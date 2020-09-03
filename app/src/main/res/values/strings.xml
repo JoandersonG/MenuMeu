@@ -32,6 +32,7 @@
     <string name="undo">desfazer</string>
     <string name="edit">Editar</string>
     <string name="delete">Excluir</string>
+    <string name="category">category</string>
 
     <!-- RecipeDetailsActivity -->
     <string name="edit_recipe">Editar receita</string>
@@ -80,7 +81,6 @@
     <string name="new_category">Nova categoria</string>
     <string name="create_new_category">Criar nova categoria</string>
     <string name="this_action_cannot_undone">Esta ação não pode ser desfeita</string>
-    <string name="confirmation_delete_category">Tem certeza que deseja apagar a categoria do aplicativo?</string>
 
     <!-- Home category adapter -->
     <string name="recipe_title">Título da receita</string>
@@ -90,5 +90,9 @@
     <!-- EditHomeScreenActivity -->
     <string name="edit_home_screen">Editar tela inicial</string>
     <string name="select_categories_show_home_screen">Selecione as categorias que deseja exibir na tela inicial:</string>
+
+    <!-- AddCategoryDialogFragment -->
+    <string name="confirm_delete_category">Confirme que deseja apagar completamente a seguinte categoria:</string>
+    <string name="delete_category">Delete Category</string>
 
 </resources>
