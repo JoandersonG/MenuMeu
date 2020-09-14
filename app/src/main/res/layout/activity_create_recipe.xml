@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.CreateRecipeActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/white">
 
     <include
         android:id="@+id/appToolbar"
@@ -19,56 +20,22 @@
         android:layout_height="match_parent"
         app:layout_constraintTop_toBottomOf="@+id/appToolbar">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="0dp"
+            <include
+                android:id="@+id/youtubeLinkLayout"
+                layout="@layout/include_youtube_link_create_recipe"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="16dp"
-                app:layout_constraintEnd_toStartOf="@id/btSearch"
-                app:layout_constraintStart_toStartOf="parent"
-                app:boxStrokeColor="@color/colorAccent"
-                app:hintTextColor="@color/colorAccent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/textInputYoutubeLink"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:maxLines="1"
-                    android:inputType="textImeMultiLine"
-                    android:hint="@string/hint_create_recipe_youtube_link" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <ImageButton
-                android:id="@+id/btSearch"
-                style="@style/HomeActivityButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:padding="14dp"
-                android:src="@drawable/ic_play_arrow_white_24dp"
-                app:layout_constraintBottom_toBottomOf="@+id/textInputLayout"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/textInputLayout"
-                app:layout_constraintVertical_bias="1.0"
-                android:contentDescription="@string/content_description_search" />
+                android:layout_margin="16dp" />
 
             <ViewFlipper
                 android:id="@+id/viewFlipperCreateRecipeActivity"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btSearch"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginTop="16dp">
+                android:layout_height="wrap_content">
 
                 <!--Empty Layout for blank screen in ViewFlipper-->
                 <LinearLayout
@@ -81,108 +48,29 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    <include
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginEnd="16dp"
-                        app:boxStrokeColor="@color/colorAccent"
-                        app:hintTextColor="@color/colorAccent">
+                        layout="@layout/include_recipe_name_create_recipe"
+                        android:layout_margin="16dp" />
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/textInputTitle"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:hint="@string/title" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    <include
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginEnd="16dp"
-                        app:boxStrokeColor="@color/colorAccent"
-                        app:hintTextColor="@color/colorAccent">
+                        layout="@layout/include_video_description_create_recipe"
+                        android:layout_margin="16dp" />
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/textInputDescription"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/description"
-                            android:lines="7" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <LinearLayout
-                        android:id="@+id/layoutAddFavorite"
+                    <include
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginTop="16dp"
-                        android:orientation="horizontal">
+                        layout="@layout/include_recipe_categories_create_recipe"
+                        android:layout_margin="16dp" />
 
-                        <CheckBox
-                            android:id="@+id/checkBoxAddFavorite"
-                            android:layout_weight="9"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:button="@drawable/sl_favourite_24dp"
-                            app:buttonTint="@color/colorAccent" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textSize="16sp"
-                            android:layout_weight="1"
-                            android:text="@string/add_to_favorite" />
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <include
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/categories"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginTop="16dp"
-                        android:textSize="16sp" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:padding="8dp"
-                        android:orientation="vertical">
-
-                        <com.google.android.material.chip.ChipGroup
-                            android:id="@+id/chipGroupCategories"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            style="@style/Widget.MaterialComponents.ChipGroup"
-                            app:singleSelection="false">
-
-                            <com.google.android.material.chip.Chip
-                                android:id="@+id/chipAddCategory"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/add_category"
-                                android:padding="5dp"
-                                android:checkable="false"
-                                app:chipIcon="@drawable/ic_add_black_24dp"
-                                app:chipIconEnabled="true"
-                                style="@style/Widget.MaterialComponents.Chip.Choice"
-                                android:textSize="16sp" />
-
-                        </com.google.android.material.chip.ChipGroup>
-
-                    </LinearLayout>
+                        layout="@layout/include_save_favorite_create_recipe"
+                        android:layout_margin="16dp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -195,30 +83,34 @@
                         <Button
                             android:id="@+id/btCreateRecipeCancel"
                             android:layout_width="match_parent"
-                            android:layout_height="60dp"
+                            android:layout_height="42dp"
                             android:layout_weight="1"
                             android:layout_marginEnd="8dp"
                             android:layout_gravity="bottom"
-                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:background="@drawable/white_ripple_stroke_background"
                             android:text="@string/cancel" />
 
                         <Button
                             android:id="@+id/btCreateRecipeSave"
                             android:layout_width="match_parent"
-                            android:layout_height="60dp"
+                            android:layout_height="42dp"
                             android:layout_weight="1"
                             android:layout_marginStart="8dp"
-                            android:background="@color/colorAccent"
+                            android:background="@drawable/white_ripple_stroke_background"
+                            android:backgroundTint="@color/black"
+                            android:textColor="@color/white"
                             android:layout_gravity="bottom"
-                            style="?buttonBarButtonStyle"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:text="@string/save" />
 
                     </LinearLayout>
 
                 </LinearLayout>
+
             </ViewFlipper>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
     </ScrollView>
 

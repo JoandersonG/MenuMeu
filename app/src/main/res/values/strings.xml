@@ -11,12 +11,19 @@
     <string name="success_updating_home_screen">Tela inicial atualizada com sucesso</string>
 
     <!-- CreateRecipeActivity -->
-    <string name="hint_create_recipe_youtube_link">Cole o link do YouTube</string>
+    <string name="hint_create_recipe_youtube_link">Link do YouTube</string>
     <string name="content_description_search">Pesquisar</string>
     <string name="categories">Categorias:</string>
     <string name="success_saving_recipe">Receita Salva com Sucesso</string>
     <string name="success_updating_recipe">Receita atualizada com sucesso</string>
     <string name="category_removed">categoria removida</string>
+    <string name="video_description">Descrição do vídeo</string>
+    <string name="categories_selected">Categorias</string>
+    <string name="recipe_name">Nome da receita</string>
+    <string name="hide_video_description">Ocultar descrição</string>
+    <string name="show_video_description">Ver completa</string>
+    <string name="see_all_recipe">Ver completa</string>
+    <string name="get_description">Recuperar descrição</string>
 
     <!-- Generic string -->
     <string name="title">Título</string>
@@ -36,7 +43,7 @@
 
     <!-- RecipeDetailsActivity -->
     <string name="edit_recipe">Editar receita</string>
-    <string name="add_to_favorite">Adicionar aos favoritos</string>
+    <string name="add_to_favorite">Salvar receita nos favoritos</string>
     <string name="recipe_added_to_favorites">Receita adicionada aos favoritos</string>
     <string name="recipe_removed_from_favorites">Receita removida dos favoritos</string>
     <string name="show_description">Mostrar ou Esconder Descrição</string>

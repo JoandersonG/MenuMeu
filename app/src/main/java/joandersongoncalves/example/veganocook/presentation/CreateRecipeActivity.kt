@@ -5,24 +5,28 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
+import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.CompoundButton
+import android.widget.TextView
 import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.get
 import androidx.core.view.size
 import androidx.lifecycle.Observer
-import com.google.android.material.chip.Chip
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import joandersongoncalves.example.veganocook.R
 import joandersongoncalves.example.veganocook.data.model.Category
 import joandersongoncalves.example.veganocook.data.model.Recipe
+import joandersongoncalves.example.veganocook.presentation.fragment.DialogErrorNoCategoryFragment
 import joandersongoncalves.example.veganocook.presentation.viewmodel.CreateRecipeViewModel
 import kotlinx.android.synthetic.main.activity_create_recipe.*
 import kotlinx.android.synthetic.main.app_toolbar.*
+import kotlinx.android.synthetic.main.include_recipe_categories_create_recipe.*
+import kotlinx.android.synthetic.main.include_recipe_name_create_recipe.*
+import kotlinx.android.synthetic.main.include_save_favorite_create_recipe.*
+import kotlinx.android.synthetic.main.include_video_description_create_recipe.*
+import kotlinx.android.synthetic.main.include_youtube_link_create_recipe.*
 import java.io.Serializable
 
 
@@ -43,19 +47,45 @@ class CreateRecipeActivity : AppCompatActivity() {
 
         settingCancelButton()
 
+        //pressing show/hide description button
+        btSeeHideAllVideoDescription.setOnClickListener {
+            if (tvVideoDescription.maxLines == 5) {
+                tvVideoDescription.maxLines = 300
+                btSeeHideAllVideoDescription.text = getString(R.string.hide_video_description)
+            } else {
+                tvVideoDescription.maxLines = 5
+                btSeeHideAllVideoDescription.text = getString(R.string.show_video_description)
+            }
+        }
+
+        //pressing delete video description button
+        btDeleteVideoDescription.setOnClickListener {
+            tvVideoDescription.setText("")
+            tvVideoDescription.visibility = View.GONE
+            layoutVideoDescriptionButtons.visibility = View.GONE
+            btGetVideoDescription.visibility = View.VISIBLE
+        }
+
+        //pressing get description button
+        btGetVideoDescription.setOnClickListener {
+            tvVideoDescription.setText(viewModel.videoLiveData.value?.description)
+            tvVideoDescription.visibility = View.VISIBLE
+            layoutVideoDescriptionButtons.visibility = View.VISIBLE
+            btGetVideoDescription.visibility = View.GONE
+        }
 
         //pressing save button
         settingSaveButton(recipe, viewModel)
 
 
         // setting search button
-        btSearch.setOnClickListener { handleYoutubeLinkSearch(viewModel) }
+        btSearchYoutubeLink.setOnClickListener { handleYoutubeLinkSearch(viewModel) }
 
         //setting add to favorite
         viewModel.favorite.observe(this, Observer {
             checkBoxAddFavorite.isChecked = it
         })
-        layoutAddFavorite.setOnClickListener {
+        layoutAddFavoriteCreateRecipe.setOnClickListener {
             viewModel.changeFavoriteState()
         }
 
@@ -75,51 +105,54 @@ class CreateRecipeActivity : AppCompatActivity() {
 
             true
         }
-        textInputYoutubeLink.setOnEditorActionListener(listener)
-
-        //listener for checking chips
-        val checkedListener = CompoundButton.OnCheckedChangeListener { compoundButton, _ ->
-            viewModel.removeCategoryFromSelected(Category(compoundButton.text.toString()))
-            Snackbar.make(
-                viewFlipperCreateRecipeActivity, R.string.category_removed,
-                Snackbar.LENGTH_LONG
-            )
-                .setAction(R.string.undo) {
-                    viewModel.addCategoryIntoSelected(Category(compoundButton.text.toString()))
-                }
-                .show()
-        }
+        etYoutubeLinkCreateRecipe.setOnEditorActionListener(listener)
 
         //setting observer to add categories to Chips
         viewModel.recipeCategories.observe(this, Observer { listCategory ->
-            val addCategoryChip = chipGroupCategories[0]
-            chipGroupCategories.removeAllViews()
-            chipGroupCategories.addView(addCategoryChip)
+            layoutChipCategoryCreateRecipe.removeAllViews()
             for (category in listCategory) {
+
                 val newCategoryView = layoutInflater.inflate(
-                    R.layout.chip_all_categories,
-                    chipGroupCategories,
+                    R.layout.chip_category_create_recipe,
+                    layoutChipCategoryCreateRecipe,
                     false
-                ) as Chip
+                ) as TextView
+
                 newCategoryView.text = category.categoryName
-                newCategoryView.isCheckable = true
-                viewModel.recipeCategories.value?.let {
-                    //select this chip
-                    newCategoryView.isChecked = true
-                }
-                newCategoryView.setOnCheckedChangeListener(checkedListener)
-                chipGroupCategories.addView(newCategoryView)
+                newCategoryView.setOnClickListener(
+                    getClickListenerForCategoryChips(newCategoryView, viewModel)
+                )
+                layoutChipCategoryCreateRecipe.addView(newCategoryView)
             }
         })
 
         //handling pressing add category button
-        chipAddCategory.setOnClickListener {
+        btAddCategoryCreateRecipe.setOnClickListener {
             viewModel.recipeCategories.value?.let {
                 val addCategoriesFragment =
                     AddCategoryDialogFragment(this, viewModel)
                 val fm = supportFragmentManager
                 addCategoriesFragment.show(fm, "add category fragment")
             }
+        }
+    }
+
+    private fun getClickListenerForCategoryChips(
+        textView: TextView,
+        viewModel: CreateRecipeViewModel
+    ): View.OnClickListener {
+
+        return View.OnClickListener {
+
+            viewModel.removeCategoryFromSelected(Category(textView.text.toString()))
+            Snackbar.make(
+                viewFlipperCreateRecipeActivity, R.string.category_removed,
+                Snackbar.LENGTH_LONG
+            )
+                .setAction(R.string.undo) {
+                    viewModel.addCategoryIntoSelected(Category(textView.text.toString()))
+                }
+                .show()
         }
     }
 
@@ -132,8 +165,8 @@ class CreateRecipeActivity : AppCompatActivity() {
                 //if it's editing an existing recipe
                 if (recipe != null) {
                     recipe = viewModel.updateRecipe(
-                        textInputTitle.text.toString(),
-                        textInputDescription.text.toString(),
+                        etRecipeNameCreateRecipe.text.toString(),
+                        tvVideoDescription.text.toString(),
                         recipe!!
                     )
                     idMessage = R.string.success_updating_recipe
@@ -147,8 +180,8 @@ class CreateRecipeActivity : AppCompatActivity() {
                     setResult(Activity.RESULT_OK, intent)
                 } else {
                     worked = viewModel.saveNewRecipe(
-                        textInputTitle.text.toString(),
-                        textInputDescription.text.toString()
+                        etRecipeNameCreateRecipe.text.toString(),
+                        tvVideoDescription.text.toString()
                     )
                     idMessage = if (worked) {
                         R.string.success_saving_recipe
@@ -199,7 +232,7 @@ class CreateRecipeActivity : AppCompatActivity() {
             it?.let {
                 when (it) {
                     CreateRecipeViewModel.ERROR_INVALID_LINK -> {
-                        textInputYoutubeLink.error = getString(R.string.error_invalid_link)
+                        etYoutubeLinkCreateRecipe.error = getString(R.string.error_invalid_link)
                     }
                     CreateRecipeViewModel.ERROR_RETRIEVING_INFORMATION -> {
                         Snackbar.make(
@@ -222,12 +255,13 @@ class CreateRecipeActivity : AppCompatActivity() {
 
     private fun settingToolbar() {
         viewFlipperAppToolbar.displayedChild = 1
-        appToolbarGeneral.setTitle(R.string.add_recipe)
+        //appToolbarGeneral.setTitle(R.string.add_recipe)
+        tvAppToolbarOtherTitle.text = getString(R.string.add_recipe)
         AppToolbarSetup.setBackButton(appToolbarGeneral, this)
     }
 
     private fun handleYoutubeLinkSearch(viewModel: CreateRecipeViewModel) {
-        val link = textInputYoutubeLink.text
+        val link = etYoutubeLinkCreateRecipe.text
         if (link.toString().startsWith("https://youtu.be/", false)) {
             //its a valid link
             //remove prefix
@@ -235,7 +269,7 @@ class CreateRecipeActivity : AppCompatActivity() {
             viewModel.getVideo(videoLink, getString(R.string.youtube_api_key))
         } else {
             //invalid link
-            textInputYoutubeLink.error = getString(R.string.error_invalid_link)
+            etYoutubeLinkCreateRecipe.error = getString(R.string.error_invalid_link)
         }
     }
 
@@ -243,18 +277,18 @@ class CreateRecipeActivity : AppCompatActivity() {
     private fun validateData(): Boolean {
 
         //test title field
-        if (textInputTitle.text == null || textInputTitle.text.toString() == "") {
+        if (etRecipeNameCreateRecipe.text == null || etRecipeNameCreateRecipe.text.toString() == "") {
             //invalid
-            textInputTitle.error = getString(R.string.error_insert_title)
+            etRecipeNameCreateRecipe.error = getString(R.string.error_insert_title)
             return false
         }
 
         //test categories
-        if (chipGroupCategories.size <= 1) {
-            MaterialAlertDialogBuilder(this)
-                .setTitle(R.string.error_select_category)
-                .setPositiveButton(R.string.ok) { _, _ ->/*does nothing*/ }
-                .show()
+        if (layoutChipCategoryCreateRecipe.size == 0) {
+            val errorCategoriesFragment =
+                DialogErrorNoCategoryFragment()
+            val fm = supportFragmentManager
+            errorCategoriesFragment.show(fm, "no category error fragment")
             return false
         }
 
@@ -269,9 +303,9 @@ class CreateRecipeActivity : AppCompatActivity() {
         isFavorite: Boolean?
     ) {
 
-        textInputTitle.setText(title)
-        textInputDescription.setText(description)
-        textInputYoutubeLink.setText(videoId)
+        etRecipeNameCreateRecipe.setText(title)
+        tvVideoDescription.setText(description)
+        etYoutubeLinkCreateRecipe.setText(videoId)
         if (isFavorite != null) {
             checkBoxAddFavorite.isChecked = isFavorite
         }

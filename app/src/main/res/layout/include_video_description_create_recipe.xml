@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/white_ripple_stroke_background"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/tvVideoDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="@string/video_description"
+            android:background="@null"
+            android:ellipsize="end"
+            android:hint="@string/video_description"
+            android:inputType="textMultiLine"
+            android:maxLines="5"
+            android:nestedScrollingEnabled="false"
+            android:textColorHint="@color/white" />
+
+        <LinearLayout
+            android:id="@+id/layoutVideoDescriptionButtons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btSeeHideAllVideoDescription"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/transparent_ripple_no_stroke_background"
+                android:text="@string/see_all_recipe"
+                android:textColor="@color/colorPrimary" />
+
+            <Button
+                android:id="@+id/btDeleteVideoDescription"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_weight="1"
+                android:background="@drawable/transparent_ripple_no_stroke_background"
+                android:text="@string/delete"
+                android:textColor="@color/colorPrimary" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btGetVideoDescription"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:visibility="gone"
+            android:background="@drawable/transparent_ripple_no_stroke_background"
+            android:text="@string/get_description"
+            android:paddingHorizontal="16dp"
+            android:textColor="@color/black"
+            android:layout_gravity="center" />
+
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/video_description"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginStart="8dp"
+        android:paddingHorizontal="4dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/white" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

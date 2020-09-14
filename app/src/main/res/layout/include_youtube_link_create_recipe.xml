@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/layoutYoutubeLinkCreateRecipe"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/white_ripple_stroke_background"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btSearchYoutubeLink"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/etYoutubeLinkCreateRecipe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:inputType="textShortMessage|textCapSentences"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:autofillHints="@string/hint_create_recipe_youtube_link"
+            android:hint="@string/hint_create_recipe_youtube_link"
+            android:textColorHint="@color/white" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:paddingHorizontal="4dp"
+        android:background="@color/white"
+        android:text="@string/hint_create_recipe_youtube_link"
+        android:textSize="14sp"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <joandersongoncalves.example.veganocook.utils.SquareButton
+        android:id="@+id/btSearchYoutubeLink"
+        style="@style/HomeActivityButton"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_gravity="bottom"
+        android:padding="14dp"
+        android:background="@drawable/white_ripple_primary_stroke_play_icon_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/layoutYoutubeLinkCreateRecipe"
+        android:contentDescription="@string/content_description_search" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
