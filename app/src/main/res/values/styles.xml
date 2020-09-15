@@ -34,4 +34,10 @@
         <item name="android:layout_marginEnd">8dp</item>
     </style>
 
+    <style name="RecipeDetailsToolbarTheme" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:textColorSecondary">@color/colorPrimary</item>
+        <item name="colorButtonNormal">@color/colorPrimary</item>
+        <item name="android:buttonTint">@color/colorPrimary</item>
+    </style>
+
 </resources>

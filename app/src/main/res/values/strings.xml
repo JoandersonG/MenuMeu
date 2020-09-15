@@ -48,6 +48,7 @@
     <string name="recipe_removed_from_favorites">Receita removida dos favoritos</string>
     <string name="show_description">Mostrar ou Esconder Descrição</string>
     <string name="add_category">Adicionar categoria</string>
+    <string name="recipe_details">Detalhes da Receita</string>
 
     <!-- SearchActivity -->
     <string name="search_results">Resultados da Busca:</string>

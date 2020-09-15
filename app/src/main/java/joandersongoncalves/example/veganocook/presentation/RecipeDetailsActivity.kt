@@ -3,14 +3,12 @@ package joandersongoncalves.example.veganocook.presentation
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.get
-import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.youtube.player.YouTubeInitializationResult
@@ -22,6 +20,7 @@ import joandersongoncalves.example.veganocook.data.model.Recipe
 import joandersongoncalves.example.veganocook.presentation.viewmodel.RecipeDetailsViewModel
 import kotlinx.android.synthetic.main.activity_recipe_details.*
 import kotlinx.android.synthetic.main.app_toolbar.*
+import kotlinx.android.synthetic.main.include_recipe_details_video_description.*
 import java.io.Serializable
 
 
@@ -52,22 +51,27 @@ class RecipeDetailsActivity : AppCompatActivity() {
         viewModel.recipe.value = recipe
     }
 
+    private fun isShowingAllVideoDescriptionOnView(): Boolean {
+        return tvVideoDescriptionRecipeDetails.maxLines != 5
+    }
+
     private fun settingShowAndHideDescription() {
-        layoutShowHideDescription.setOnClickListener {
-            tvDescription.visibility = if (tvDescription.isVisible) {
-                imageShowHideDescription.setImageDrawable(getDrawable(R.drawable.ic_keyboard_arrow_down_black_24dp))
-                View.GONE
+
+        btSeeHideDescriptionRecipeDetails.setOnClickListener {
+            btSeeHideDescriptionRecipeDetails.text = if (isShowingAllVideoDescriptionOnView()) {
+                tvVideoDescriptionRecipeDetails.maxLines = 5
+                getString(R.string.show_video_description)
             } else {
-                imageShowHideDescription.setImageDrawable(getDrawable(R.drawable.ic_keyboard_arrow_up_black_24dp))
-                View.VISIBLE
+                tvVideoDescriptionRecipeDetails.maxLines = 300
+                getString(R.string.hide_video_description)
             }
         }
     }
 
     private fun settingToolbar() {
         viewFlipperAppToolbar.displayedChild = 3
-        AppToolbarSetup.setBackButton(appToolbarRecipeDetais, this)
-        appToolbarRecipeDetais.setOnMenuItemClickListener { item ->
+        AppToolbarSetup.setBackButton(appToolbarRecipeDetails, this)
+        appToolbarRecipeDetails.setOnMenuItemClickListener { item ->
             when (item.title) {
                 getString(R.string.edit) -> {
                     val requestCode = 1
@@ -92,9 +96,6 @@ class RecipeDetailsActivity : AppCompatActivity() {
                         .show()
                 }
                 getString(R.string.add_to_favorite) -> {
-                    if (recipe != null) {
-                        viewModel.updateRecipe(recipe!!)
-                    }
                     item.isChecked = if (item.isChecked) {
                         item.setIcon(R.drawable.ic_favorite_outlined_24dp)
                         Snackbar.make(
@@ -113,6 +114,9 @@ class RecipeDetailsActivity : AppCompatActivity() {
                         true
                     }
                     recipe?.isFavorite = item.isChecked
+                    if (recipe != null) {
+                        viewModel.updateRecipe(recipe!!)
+                    }
                 }
             }
             return@setOnMenuItemClickListener true
@@ -131,11 +135,11 @@ class RecipeDetailsActivity : AppCompatActivity() {
 
     private fun setFavoriteCheckButton(isChecked: Boolean) {
         if (isChecked) {
-            appToolbarRecipeDetais.menu[0].setIcon(R.drawable.ic_favorite_filled_24dp)
+            appToolbarRecipeDetails.menu[0].setIcon(R.drawable.ic_favorite_filled_24dp)
         } else {
-            appToolbarRecipeDetais.menu[0].setIcon(R.drawable.ic_favorite_outlined_24dp)
+            appToolbarRecipeDetails.menu[0].setIcon(R.drawable.ic_favorite_outlined_24dp)
         }
-        appToolbarRecipeDetais.menu[0].isChecked = isChecked
+        appToolbarRecipeDetails.menu[0].isChecked = isChecked
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -156,22 +160,19 @@ class RecipeDetailsActivity : AppCompatActivity() {
 
     private fun updateFields(recipe: Recipe) {
         tvTitle.text = recipe.name
-        tvDescription.text = recipe.description
+        tvVideoDescriptionRecipeDetails.text = recipe.description
         setFavoriteCheckButton(recipe.isFavorite)
 
-        //getting and putting categories into chips
         recipe.categories.let {
-            chipGroupRecipeDetailsActivity.removeAllViews()
+            layoutChipCategoryRecipeDetails.removeAllViews()
             for (category in it) {
-                val categoryChip = layoutInflater.inflate(
-                    R.layout.chip_all_categories,
-                    chipGroupRecipeDetailsActivity,
+                val newCategoryView = layoutInflater.inflate(
+                    R.layout.chip_category_recipe_details,
+                    layoutChipCategoryRecipeDetails,
                     false
-                ) as Chip
-                categoryChip.isCheckable = false
-                categoryChip.isClickable = false
-                categoryChip.text = category.categoryName
-                chipGroupRecipeDetailsActivity.addView(categoryChip)
+                ) as TextView
+                newCategoryView.text = category.categoryName
+                layoutChipCategoryRecipeDetails.addView(newCategoryView)
             }
         }
     }
