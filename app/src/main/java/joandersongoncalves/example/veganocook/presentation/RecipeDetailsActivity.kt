@@ -3,6 +3,7 @@ package joandersongoncalves.example.veganocook.presentation
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -161,6 +162,9 @@ class RecipeDetailsActivity : AppCompatActivity() {
     private fun updateFields(recipe: Recipe) {
         tvTitle.text = recipe.name
         tvVideoDescriptionRecipeDetails.text = recipe.description
+        if (recipe.description == "") {
+            videoDescriptionInclude.visibility = View.GONE
+        }
         setFavoriteCheckButton(recipe.isFavorite)
 
         recipe.categories.let {
