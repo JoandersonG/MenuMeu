@@ -11,7 +11,10 @@ import joandersongoncalves.example.veganocook.data.model.RecipeCategoryCrossRef
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@Database(entities = [Recipe::class, Category::class, RecipeCategoryCrossRef::class], version = 1)
+@Database(
+    entities = [Recipe::class, Category::class, RecipeCategoryCrossRef::class, SearchHistoryEntry::class],
+    version = 2
+)
 abstract class RecipeDatabase : RoomDatabase() {
 
     abstract fun recipeDao(): RecipeDao

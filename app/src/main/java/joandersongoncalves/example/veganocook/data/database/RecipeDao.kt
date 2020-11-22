@@ -6,6 +6,34 @@ import joandersongoncalves.example.veganocook.data.model.*
 @Dao
 abstract class RecipeDao {
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    abstract fun insertSearchEntryToDatabase(entry: SearchHistoryEntry)
+
+
+    @Query("SELECT COUNT(entry_title) FROM search_history")
+    abstract fun getAmountSearchEntries(): Int
+
+    @Query("SELECT * FROM search_history ORDER BY creation_timestamp ASC LIMIT 1")
+    abstract suspend fun getOldestSearchEntry(): SearchHistoryEntry
+
+    @Delete
+    abstract suspend fun deleteSearchHistoryEntry(entry: SearchHistoryEntry)
+
+    @Query("DELETE FROM search_history WHERE entry_title = :name")
+    abstract suspend fun deleteSearchHistoryEntryName(name: String)
+
+    suspend fun insertSearchEntry(entry: SearchHistoryEntry) {
+        //if there is already 3 entries, remove the oldest one and add new entry
+        if (getAmountSearchEntries() >= 3) {
+            val oldest = getOldestSearchEntry()
+            deleteSearchHistoryEntry(oldest)
+        }
+        insertSearchEntryToDatabase(entry)
+    }
+
+    @Query("SELECT * FROM search_history ORDER BY creation_timestamp ASC limit 3")
+    abstract suspend fun getPreviousSearchEntries(): List<SearchHistoryEntry>;
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun insertRecipe(recipe: Recipe)
 

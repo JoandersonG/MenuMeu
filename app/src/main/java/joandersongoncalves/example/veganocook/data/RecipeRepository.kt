@@ -4,6 +4,7 @@ import joandersongoncalves.example.veganocook.data.database.RecipeDao
 import joandersongoncalves.example.veganocook.data.model.Category
 import joandersongoncalves.example.veganocook.data.model.HomeRecipeSet
 import joandersongoncalves.example.veganocook.data.model.Recipe
+import joandersongoncalves.example.veganocook.data.model.SearchHistoryEntry
 
 class RecipeRepository(private val recipeDao: RecipeDao) {
 
@@ -36,6 +37,15 @@ class RecipeRepository(private val recipeDao: RecipeDao) {
         return recipeDao.getFavoriteRecipes()
     }
 
+    suspend fun getPreviousSearchEntries(): List<String> {
+        val entries = recipeDao.getPreviousSearchEntries()
+        val sEntriesAsString: MutableList<String> = ArrayList()
+        for (e in entries) {
+            sEntriesAsString.add(e.getTitle());
+        }
+        return sEntriesAsString;
+    }
+
     suspend fun updateRecipe(recipe: Recipe) {
         recipeDao.updateRecipeWithCategories(recipe)
     }
@@ -66,5 +76,13 @@ class RecipeRepository(private val recipeDao: RecipeDao) {
 
     suspend fun updateCategory(category: Category) {
         recipeDao.updateCategory(category)
+    }
+
+    suspend fun insertSearchHistoryEntry(entry: SearchHistoryEntry) {
+        recipeDao.insertSearchEntry(entry);
+    }
+
+    suspend fun deleteSearchHistoryEntryByName(entry: String) {
+        recipeDao.deleteSearchHistoryEntryName(entry);
     }
 }
