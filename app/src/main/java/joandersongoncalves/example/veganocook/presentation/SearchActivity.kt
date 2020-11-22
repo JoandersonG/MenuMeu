@@ -1,23 +1,28 @@
 package joandersongoncalves.example.veganocook.presentation
 
-import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
+import android.os.Handler
+import android.os.Looper
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.SearchView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import joandersongoncalves.example.veganocook.R
 import joandersongoncalves.example.veganocook.presentation.adapter.SearchResultAdapter
 import joandersongoncalves.example.veganocook.presentation.viewmodel.SearchViewModel
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.app_toolbar.*
+import kotlinx.android.synthetic.main.include_previous_search.*
+
 
 class SearchActivity : AppCompatActivity() {
-    private var searchView: SearchView? = null
     private val viewModel: SearchViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,10 +33,64 @@ class SearchActivity : AppCompatActivity() {
 
         settingViewModel(adapter)
 
+        manageSearch()
+
+        settingPreviousSearches()
+
+        layoutForPreviousSearch.visibility = View.VISIBLE
+
+        showKeyboard()
         //setting viewFlipper
         viewFlipperSearch.displayedChild = 0
 
         settingToolbar()
+    }
+
+    private fun settingPreviousSearches() {
+        //update previous search
+        viewModel.getPreviousSearchEntries()
+
+        //onclick actions
+        layoutPreviousEntry1.setOnClickListener {
+            //insert into searchBar
+            etSearch.setText(tvPreviousSearch1.text.toString())
+            viewModel.query.value = tvPreviousSearch1.text.toString();
+        }
+        layoutPreviousEntry2.setOnClickListener {
+            //insert into searchBar
+            etSearch.setText(tvPreviousSearch2.text.toString())
+            viewModel.query.value = tvPreviousSearch2.text.toString();
+        }
+        layoutPreviousEntry3.setOnClickListener {
+            //insert into searchBar
+            etSearch.setText(tvPreviousSearch3.text.toString())
+            viewModel.query.value = tvPreviousSearch3.text.toString();
+        }
+
+        ibDeletePreviousSearchEntry1.setOnClickListener {
+            //delete search history entry
+            viewModel.deleteSearchHistoryEntry(tvPreviousSearch1.text.toString());
+        }
+
+        ibDeletePreviousSearchEntry2.setOnClickListener {
+            //delete search history entry
+            viewModel.deleteSearchHistoryEntry(tvPreviousSearch2.text.toString());
+        }
+
+        ibDeletePreviousSearchEntry3.setOnClickListener {
+            //delete search history entry
+            viewModel.deleteSearchHistoryEntry(tvPreviousSearch3.text.toString());
+        }
+    }
+
+    private fun showKeyboard() {
+        val handlerUI = Handler(Looper.getMainLooper())
+        val r = Runnable {
+            etSearch.requestFocus()
+            val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+        }
+        handlerUI.post(r)
     }
 
     private fun settingToolbar() {
@@ -52,6 +111,56 @@ class SearchActivity : AppCompatActivity() {
                 viewFlipperSearch.displayedChild = 2
             }
         })
+
+        viewModel.query.observe(this, Observer {
+            if (it == "") {
+                //show previous search history
+                if (thereIsSearchHistoryToBeShown()) {
+                    layoutForPreviousSearch.visibility = View.VISIBLE
+                }
+                //change drawable end icon
+                appSearchbarLayout.endIconDrawable = ContextCompat.getDrawable(
+                    this@SearchActivity,
+                    R.drawable.ic_search_24dp
+                )
+            } else {
+                //change drawable end icon
+                appSearchbarLayout.endIconDrawable = ContextCompat.getDrawable(
+                    this@SearchActivity,
+                    R.drawable.ic_baseline_clear_24dp
+                )
+            }
+        })
+
+        viewModel.previousSearchEntries.observe(this, Observer {
+            if (thereIsSearchHistoryToBeShown()) {
+                layoutForPreviousSearch.visibility = View.VISIBLE
+            } else {
+                layoutForPreviousSearch.visibility = View.GONE
+            }
+            if (it.size >= 3) {
+                tvPreviousSearch1.text = it[2];
+                layoutPreviousEntry1.visibility = View.VISIBLE
+            } else {
+                layoutPreviousEntry1.visibility = View.GONE
+            }
+            if (it.size >= 2) {
+                tvPreviousSearch2.text = it[1];
+                layoutPreviousEntry2.visibility = View.VISIBLE
+            } else {
+                layoutPreviousEntry2.visibility = View.GONE
+            }
+            if (it.isNotEmpty()) {
+                tvPreviousSearch3.text = it[0];
+                layoutPreviousEntry3.visibility = View.VISIBLE
+            } else {
+                layoutPreviousEntry3.visibility = View.GONE
+            }
+        })
+    }
+
+    private fun thereIsSearchHistoryToBeShown(): Boolean {
+        return viewModel.previousSearchEntries.value!!.isNotEmpty()
     }
 
     private fun settingRecyclerView(): SearchResultAdapter {
@@ -71,49 +180,48 @@ class SearchActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == AppConstantCodes.RETURN_UPDATED_RECIPE) {
-            viewModel.query.value?.let { viewModel.queryByName(it) }
+            viewModel.searchForResults()
         }
 
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.search_top_app_bar, menu)
+    private fun performSearch(query: String) {
+        //show loading screen
+        viewFlipperSearch.displayedChild = 1
+        viewModel.searchForResults()
+        // Hiding keyboard
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(etSearch?.applicationWindowToken, 0)
+    }
 
-        val searchManager = getSystemService((Context.SEARCH_SERVICE)) as SearchManager
+    private fun manageSearch() {
+        appSearchbarLayout.setEndIconOnClickListener {
+            etSearch.setText("")
+            viewModel.query.value = "";
+            showKeyboard()
+            viewModel.getPreviousSearchEntries()
+        }
 
-        searchView = menu.findItem(R.id.search).actionView as SearchView
-        val searchableInfo = searchManager.getSearchableInfo(componentName)
-        searchView?.setSearchableInfo(searchableInfo)
-        searchView?.isIconified = false
-
-        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                query?.let {
-                    viewModel.query.value = it
-                    viewModel.queryByName(it)
-                    viewFlipperSearch.displayedChild = 1
-                }
-
-                // Escondendo o teclado
-                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(searchView?.applicationWindowToken, 0)
-
-                return true
+        etSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                return false
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                viewModel.query.value = s.toString()
+            }
+
+            override fun afterTextChanged(s: Editable?) {
             }
         })
 
-        searchView?.setOnCloseListener {
-            //tapping on close clears the text
-            searchView?.setQuery("", false)
-            //finish()
-            false
+        etSearch.setOnEditorActionListener { textView, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                performSearch(textView.text.toString())
+                layoutForPreviousSearch.visibility = View.GONE;
+                return@setOnEditorActionListener true;
+            }
+            return@setOnEditorActionListener false;
         }
-
-        return true
     }
 }
+

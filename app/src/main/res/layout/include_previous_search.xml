@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/layoutPreviousSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        android:background="@drawable/white_no_ripple_gray_stroke_background"
+        android:paddingHorizontal="4dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/layoutPreviousEntry1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@drawable/transparent_gray_ripple_no_stroke_background"
+            android:padding="4dp">
+
+            <TextView
+                android:id="@+id/tvPreviousSearch1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                tools:text="strogonoff" />
+
+            <ImageButton
+                android:id="@+id/ibDeletePreviousSearchEntry1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_clear_gray"
+                android:background="@drawable/transparent_ripple_no_stroke_background"
+                android:contentDescription="@string/delete_search_history_entry" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutPreviousEntry2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@drawable/transparent_gray_ripple_no_stroke_background"
+            android:padding="4dp">
+
+            <TextView
+                android:id="@+id/tvPreviousSearch2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                tools:text="batata assada" />
+
+            <ImageButton
+                android:id="@+id/ibDeletePreviousSearchEntry2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_baseline_clear_gray"
+                android:background="@drawable/transparent_ripple_no_stroke_background"
+                android:contentDescription="@string/delete_search_history_entry" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutPreviousEntry3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@drawable/transparent_gray_ripple_no_stroke_background"
+            android:padding="4dp">
+
+            <TextView
+                android:id="@+id/tvPreviousSearch3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                tools:text="refogado de brócolis" />
+
+            <ImageButton
+                android:id="@+id/ibDeletePreviousSearchEntry3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_clear_gray"
+                android:background="@drawable/transparent_ripple_no_stroke_background"
+                android:contentDescription="@string/delete_search_history_entry" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:paddingHorizontal="4dp"
+        android:background="@color/white"
+        android:text="@string/previous_search"
+        android:textSize="14sp"
+        android:textColor="@color/gray"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,10 +4,12 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import joandersongoncalves.example.veganocook.data.model.Category
 import joandersongoncalves.example.veganocook.data.model.Recipe
 import joandersongoncalves.example.veganocook.data.model.RecipeCategoryCrossRef
+import joandersongoncalves.example.veganocook.data.model.SearchHistoryEntry
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

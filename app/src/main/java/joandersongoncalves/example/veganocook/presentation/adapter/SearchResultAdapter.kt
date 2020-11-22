@@ -42,9 +42,27 @@ class SearchResultAdapter(
 
         private val resultImage = itemView.resultImage
         private val resultTitle = itemView.resultTitle
+        private val category1 = itemView.categoryOneAdapterRecipe
+        private val category2 = itemView.categoryTwoAdapterRecipe
+        private val category3 = itemView.categoryThreeAdapterRecipe
 
         fun bindView(recipe: Recipe) {
             resultTitle.text = recipe.name
+            if (recipe.categories.isNotEmpty()) {
+                category1.text = recipe.categories[0].categoryName
+            } else {
+                category1.visibility = View.GONE
+            }
+            if (recipe.categories.size >= 2) {
+                category2.text = recipe.categories[1].categoryName
+            } else {
+                category2.visibility = View.GONE
+            }
+            if (recipe.categories.size >= 3) {
+                category3.text = recipe.categories[2].categoryName
+            } else {
+                category3.visibility = View.GONE
+            }
             Picasso
                 .get()
                 .load(recipe.video.mediumThumbnailUrl)

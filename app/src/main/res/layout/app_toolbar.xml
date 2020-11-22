@@ -56,9 +56,22 @@
             android:id="@+id/appToolbarSearch"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:menu="@menu/search_top_app_bar"
-            app:navigationIcon="@drawable/ic_arrow_back_white_24dp"
-            style="@style/Widget.MaterialComponents.Toolbar.Primary" />
+            app:navigationIcon="@drawable/ic_navigate_before_36dp"
+            android:background="@color/white"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary">
+
+            <TextView
+                android:id="@+id/tvAppToolbarSearchTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="64dp"
+                android:text="@string/search"
+                android:textColor="@color/black"
+                android:gravity="center" />
+
+        </com.google.android.material.appbar.MaterialToolbar>
 
         <!-- RecipeDetailsActivity -->
         <com.google.android.material.appbar.MaterialToolbar
