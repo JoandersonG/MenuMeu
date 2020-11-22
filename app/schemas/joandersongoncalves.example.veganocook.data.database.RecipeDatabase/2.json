@@ -1,7 +1,7 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 1,
+    "version": 2,
     "identityHash": "f53798983b8bb5e7b214ee7d715d6602",
     "entities": [
       {
@@ -147,7 +147,7 @@
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`entry_title` TEXT NOT NULL, `creation_timestamp` INTEGER, PRIMARY KEY(`entry_title`))",
         "fields": [
           {
-            "fieldPath": "searchHistoryEntry",
+            "fieldPath": "entryTitle",
             "columnName": "entry_title",
             "affinity": "TEXT",
             "notNull": true

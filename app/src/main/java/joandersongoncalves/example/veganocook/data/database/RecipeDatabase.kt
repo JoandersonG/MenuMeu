@@ -38,7 +38,10 @@ abstract class RecipeDatabase : RoomDatabase() {
                     context.applicationContext,
                     RecipeDatabase::class.java,
                     "recipe_database"
-                ).addCallback(RecipeDatabaseCallback(scope))
+                )
+                    .addCallback(RecipeDatabaseCallback(scope))
+                    .fallbackToDestructiveMigration()
+                    .addMigrations(MIGRATION_1_2)
                     .build()
                 INSTANCE = instance
                 return instance
@@ -70,5 +73,16 @@ abstract class RecipeDatabase : RoomDatabase() {
             }
         }
 
+    }
+}
+
+/*
+* Database version 2 adds SearchHistory table.
+*/
+val MIGRATION_1_2 = object : Migration(1, 2) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL(
+            "CREATE TABLE IF NOT EXISTS search_history (`entry_title` TEXT NOT NULL, `creation_timestamp` INTEGER, PRIMARY KEY(`entry_title`))"
+        )
     }
 }
