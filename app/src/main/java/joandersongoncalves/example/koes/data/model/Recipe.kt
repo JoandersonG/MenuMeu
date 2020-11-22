@@ -48,10 +48,10 @@ data class Recipe(
     }
 
     companion object {
-        const val BREAKFAST = "BREAKFAST"
-        const val LUNCH = "LUNCH"
-        const val DINNER = "DINNER"
-        const val SNACK = "SNACK"
+        const val BREAKFAST = "Café da manhã"
+        const val LUNCH = "Almoço"
+        const val DINNER = "Jantar"
+        const val SNACK = "Lanche"
     }
 }
 
