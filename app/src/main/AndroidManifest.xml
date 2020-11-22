@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="joandersongoncalves.example.veganocook">
+    package="joandersongoncalves.example.koes">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -11,15 +11,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".presentation.EditHomeScreenActivity" />
-        <activity android:name=".presentation.CreateRecipeActivity" />
-        <activity android:name=".presentation.CategoryActivity" />
+        <activity android:name="joandersongoncalves.example.koes.presentation.EditHomeScreenActivity" />
+        <activity android:name="joandersongoncalves.example.koes.presentation.CreateRecipeActivity" />
+        <activity android:name="joandersongoncalves.example.koes.presentation.CategoryActivity" />
         <activity
-            android:name=".presentation.SearchActivity"
+            android:name="joandersongoncalves.example.koes.presentation.SearchActivity"
             android:windowSoftInputMode="stateVisible"></activity>
-        <activity android:name=".presentation.RecipeDetailsActivity" />
+        <activity android:name="joandersongoncalves.example.koes.presentation.RecipeDetailsActivity" />
         <activity
-            android:name=".presentation.HomeActivity"
+            android:name="joandersongoncalves.example.koes.presentation.HomeActivity"
             android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

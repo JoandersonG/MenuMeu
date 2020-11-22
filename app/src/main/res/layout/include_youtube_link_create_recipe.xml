@@ -45,7 +45,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <joandersongoncalves.example.veganocook.utils.SquareButton
+    <joandersongoncalves.example.koes.utils.SquareButton
         android:id="@+id/btSearchYoutubeLink"
         style="@style/HomeActivityButton"
         android:layout_width="wrap_content"

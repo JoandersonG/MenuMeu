@@ -1,0 +1,178 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 2,
+    "identityHash": "f53798983b8bb5e7b214ee7d715d6602",
+    "entities": [
+      {
+        "tableName": "recipes",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`recipe_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `description` TEXT NOT NULL, `is_favorite` INTEGER NOT NULL, `video_title` TEXT NOT NULL, `video_description` TEXT NOT NULL, `video_url` TEXT NOT NULL, `default_thumbnail_url` TEXT, `medium_thumbnail_url` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "recipeId",
+            "columnName": "recipe_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isFavorite",
+            "columnName": "is_favorite",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "video.title",
+            "columnName": "video_title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "video.description",
+            "columnName": "video_description",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "video.url",
+            "columnName": "video_url",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "video.defaultThumbnailUrl",
+            "columnName": "default_thumbnail_url",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "video.mediumThumbnailUrl",
+            "columnName": "medium_thumbnail_url",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "recipe_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "categories",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`category_name` TEXT NOT NULL, `is_showed_home` INTEGER NOT NULL, PRIMARY KEY(`category_name`))",
+        "fields": [
+          {
+            "fieldPath": "categoryName",
+            "columnName": "category_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isShowedOnHome",
+            "columnName": "is_showed_home",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "category_name"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "recipes_categories",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`recipe_id` INTEGER NOT NULL, `category_name` TEXT NOT NULL, PRIMARY KEY(`recipe_id`, `category_name`))",
+        "fields": [
+          {
+            "fieldPath": "recipeId",
+            "columnName": "recipe_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "categoryName",
+            "columnName": "category_name",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "recipe_id",
+            "category_name"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_recipes_categories_recipe_id",
+            "unique": false,
+            "columnNames": [
+              "recipe_id"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_recipes_categories_recipe_id` ON `${TABLE_NAME}` (`recipe_id`)"
+          },
+          {
+            "name": "index_recipes_categories_category_name",
+            "unique": false,
+            "columnNames": [
+              "category_name"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_recipes_categories_category_name` ON `${TABLE_NAME}` (`category_name`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "search_history",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`entry_title` TEXT NOT NULL, `creation_timestamp` INTEGER, PRIMARY KEY(`entry_title`))",
+        "fields": [
+          {
+            "fieldPath": "entryTitle",
+            "columnName": "entry_title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "creationTimestamp",
+            "columnName": "creation_timestamp",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "entry_title"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f53798983b8bb5e7b214ee7d715d6602')"
+    ]
+  }
+}

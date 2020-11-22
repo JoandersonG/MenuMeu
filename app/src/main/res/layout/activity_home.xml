@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/ScrollViewMainActivity"
-    tools:context="joandersongoncalves.example.veganocook.presentation.HomeActivity">
+    tools:context="joandersongoncalves.example.koes.presentation.HomeActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -34,7 +34,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/appToolbarLayout" />
 
-        <joandersongoncalves.example.veganocook.utils.SquareButton
+        <joandersongoncalves.example.koes.utils.SquareButton
             android:id="@+id/btAllRecipes"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -79,7 +79,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/btAllRecipes" />
 
-        <joandersongoncalves.example.veganocook.utils.SquareButton
+        <joandersongoncalves.example.koes.utils.SquareButton
             android:id="@+id/btCreateRecipe"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
