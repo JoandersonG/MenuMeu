@@ -32,18 +32,18 @@ class HomeActivity : AppCompatActivity() {
 
     private fun settingHomeScreenButtons() {
         btCreateRecipe.setOnClickListener {
-            startActivity(Intent(this, CreateRecipeActivity::class.java))
+            startActivityForResult(Intent(this, CreateRecipeActivity::class.java), 0)
         }
         btFavorite.setOnClickListener {
             val intent = CategoryActivity.getStartActivity(this, getString(R.string.favorite))
-            startActivity(intent)
+            startActivityForResult(intent, 0)
         }
         btAllRecipes.setOnClickListener {
             val intent = CategoryActivity.getStartActivity(this, getString(R.string.all_recipes))
-            startActivity(intent)
+            startActivityForResult(intent, 0)
         }
         searchButton.setOnClickListener {
-            startActivity(Intent(this, SearchActivity::class.java))
+            startActivityForResult(Intent(this, SearchActivity::class.java), 0)
         }
         btEditHomeScreen.setOnClickListener {
             val newIntent = Intent(this, EditHomeScreenActivity::class.java)
@@ -77,18 +77,13 @@ class HomeActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == AppConstantCodes.RETURN_UPDATED_RECIPE) {
-            //update recipes
-            viewModel.updateRecipesToShow()
-        }
+        viewModel.updateRecipesToShow()
         if (resultCode == AppConstantCodes.DELETE_RECIPE) {
             Snackbar.make(
                 ScrollViewMainActivity,
                 R.string.success_deleting_recipe,
                 Snackbar.LENGTH_SHORT
             ).show()
-            //update recipes
-            viewModel.updateRecipesToShow()
         }
         if (resultCode == AppConstantCodes.CHANGES_MADE_EDIT_HOME) {
             Snackbar.make(

@@ -184,6 +184,7 @@ class CreateRecipeActivity : AppCompatActivity() {
                         tvVideoDescription.text.toString()
                     )
                     idMessage = if (worked) {
+                        setResult(Activity.RESULT_OK)
                         R.string.success_saving_recipe
                     } else {
                         R.string.error_saving_recipe
