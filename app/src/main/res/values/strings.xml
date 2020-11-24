@@ -104,5 +104,6 @@
     <!-- AddCategoryDialogFragment -->
     <string name="confirm_delete_category">Confirme que deseja apagar completamente a seguinte categoria:</string>
     <string name="delete_category">Delete Category</string>
+    <string name="app_logo_koes">App logo: Koes</string>
 
 </resources>
