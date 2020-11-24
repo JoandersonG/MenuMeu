@@ -11,26 +11,24 @@
         android:layout_height="wrap_content">
 
         <!-- HomeActivity -->
+
+        <!-- Other Activities -->
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/appToolbarHome"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:elevation="0dp"
-            android:background="@color/white">
+            android:background="@color/white"
+            app:elevation="0dp">
 
-            <TextView
+
+            <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/app_name"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:layout_marginEnd="16dp"
-                android:textColor="@color/black"
-                android:gravity="center" />
+                android:src="@drawable/koes_logo"
+                android:layout_marginEnd="16dp" />
 
         </com.google.android.material.appbar.MaterialToolbar>
 
-        <!-- Other Activities -->
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/appToolbarGeneral"
             android:layout_width="match_parent"
