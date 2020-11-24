@@ -9,6 +9,7 @@
     <string name="all_breakline_recipes">todas\n as \n receitas</string>
     <string name="search">Buscar</string>
     <string name="success_updating_home_screen">Tela inicial atualizada com sucesso</string>
+    <string name="app_logo_koes">App logo: Koes</string>
 
     <!-- CreateRecipeActivity -->
     <string name="hint_create_recipe_youtube_link">Link do YouTube</string>
@@ -104,6 +105,6 @@
     <!-- AddCategoryDialogFragment -->
     <string name="confirm_delete_category">Confirme que deseja apagar completamente a seguinte categoria:</string>
     <string name="delete_category">Delete Category</string>
-    <string name="app_logo_koes">App logo: Koes</string>
+
 
 </resources>
