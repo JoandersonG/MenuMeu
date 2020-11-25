@@ -13,7 +13,6 @@ import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import joandersongoncalves.example.koes.R
 import joandersongoncalves.example.koes.presentation.adapter.SearchResultAdapter
 import joandersongoncalves.example.koes.presentation.viewmodel.SearchViewModel
@@ -54,32 +53,32 @@ class SearchActivity : AppCompatActivity() {
         layoutPreviousEntry1.setOnClickListener {
             //insert into searchBar
             etSearch.setText(tvPreviousSearch1.text.toString())
-            viewModel.query.value = tvPreviousSearch1.text.toString();
+            viewModel.query.value = tvPreviousSearch1.text.toString()
         }
         layoutPreviousEntry2.setOnClickListener {
             //insert into searchBar
             etSearch.setText(tvPreviousSearch2.text.toString())
-            viewModel.query.value = tvPreviousSearch2.text.toString();
+            viewModel.query.value = tvPreviousSearch2.text.toString()
         }
         layoutPreviousEntry3.setOnClickListener {
             //insert into searchBar
             etSearch.setText(tvPreviousSearch3.text.toString())
-            viewModel.query.value = tvPreviousSearch3.text.toString();
+            viewModel.query.value = tvPreviousSearch3.text.toString()
         }
 
         ibDeletePreviousSearchEntry1.setOnClickListener {
             //delete search history entry
-            viewModel.deleteSearchHistoryEntry(tvPreviousSearch1.text.toString());
+            viewModel.deleteSearchHistoryEntry(tvPreviousSearch1.text.toString())
         }
 
         ibDeletePreviousSearchEntry2.setOnClickListener {
             //delete search history entry
-            viewModel.deleteSearchHistoryEntry(tvPreviousSearch2.text.toString());
+            viewModel.deleteSearchHistoryEntry(tvPreviousSearch2.text.toString())
         }
 
         ibDeletePreviousSearchEntry3.setOnClickListener {
             //delete search history entry
-            viewModel.deleteSearchHistoryEntry(tvPreviousSearch3.text.toString());
+            viewModel.deleteSearchHistoryEntry(tvPreviousSearch3.text.toString())
         }
     }
 
@@ -101,7 +100,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun settingViewModel(searchResultAdapter: SearchResultAdapter) {
-        viewModel.recipesResult.observe(this, Observer {
+        viewModel.recipesResult.observe(this, {
             searchResultAdapter.updateRecipes(it)
             if (viewFlipperSearch.displayedChild > 0 && it.isEmpty()) {
                 //no results found
@@ -112,7 +111,7 @@ class SearchActivity : AppCompatActivity() {
             }
         })
 
-        viewModel.query.observe(this, Observer {
+        viewModel.query.observe(this, {
             if (it == "") {
                 //show previous search history
                 if (thereIsSearchHistoryToBeShown()) {
@@ -132,26 +131,26 @@ class SearchActivity : AppCompatActivity() {
             }
         })
 
-        viewModel.previousSearchEntries.observe(this, Observer {
+        viewModel.previousSearchEntries.observe(this, {
             if (thereIsSearchHistoryToBeShown()) {
                 layoutForPreviousSearch.visibility = View.VISIBLE
             } else {
                 layoutForPreviousSearch.visibility = View.GONE
             }
             if (it.size >= 3) {
-                tvPreviousSearch1.text = it[2];
+                tvPreviousSearch1.text = it[2]
                 layoutPreviousEntry1.visibility = View.VISIBLE
             } else {
                 layoutPreviousEntry1.visibility = View.GONE
             }
             if (it.size >= 2) {
-                tvPreviousSearch2.text = it[1];
+                tvPreviousSearch2.text = it[1]
                 layoutPreviousEntry2.visibility = View.VISIBLE
             } else {
                 layoutPreviousEntry2.visibility = View.GONE
             }
             if (it.isNotEmpty()) {
-                tvPreviousSearch3.text = it[0];
+                tvPreviousSearch3.text = it[0]
                 layoutPreviousEntry3.visibility = View.VISIBLE
             } else {
                 layoutPreviousEntry3.visibility = View.GONE
@@ -185,7 +184,7 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
-    private fun performSearch(query: String) {
+    private fun performSearch() {
         //show loading screen
         viewFlipperSearch.displayedChild = 1
         viewModel.searchForResults()
@@ -197,7 +196,7 @@ class SearchActivity : AppCompatActivity() {
     private fun manageSearch() {
         appSearchbarLayout.setEndIconOnClickListener {
             etSearch.setText("")
-            viewModel.query.value = "";
+            viewModel.query.value = ""
             showKeyboard()
             viewModel.getPreviousSearchEntries()
         }
@@ -214,13 +213,13 @@ class SearchActivity : AppCompatActivity() {
             }
         })
 
-        etSearch.setOnEditorActionListener { textView, actionId, event ->
+        etSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                performSearch(textView.text.toString())
-                layoutForPreviousSearch.visibility = View.GONE;
-                return@setOnEditorActionListener true;
+                performSearch()
+                layoutForPreviousSearch.visibility = View.GONE
+                return@setOnEditorActionListener true
             }
-            return@setOnEditorActionListener false;
+            return@setOnEditorActionListener false
         }
     }
 }
