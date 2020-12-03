@@ -13,7 +13,6 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.size
-import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import joandersongoncalves.example.koes.R
 import joandersongoncalves.example.koes.data.model.Category
@@ -39,7 +38,7 @@ class CreateRecipeActivity : AppCompatActivity() {
 
         settingToolbar()
         val viewModel = settingViewModel()
-        var recipe = gettingReceivedData(viewModel)
+        val recipe = gettingReceivedData(viewModel)
         settingOnClicks(recipe, viewModel)
         pressingEnterOnKeyboardHandler(viewModel)
     }
@@ -167,7 +166,7 @@ class CreateRecipeActivity : AppCompatActivity() {
     }
 
     private fun gettingReceivedData(viewModel: CreateRecipeViewModel): Recipe? {
-        var recipe = intent.getParcelableExtra<Recipe>(AppConstantCodes.EXTRA_RECIPE)
+        val recipe = intent.getParcelableExtra<Recipe>(AppConstantCodes.EXTRA_RECIPE)
         recipe?.let { rec ->
             fillFields(
                 rec.name,
@@ -185,12 +184,12 @@ class CreateRecipeActivity : AppCompatActivity() {
     private fun settingViewModel(): CreateRecipeViewModel {
         val viewModel: CreateRecipeViewModel by viewModels()
 
-        viewModel.videoLiveData.observe(this, Observer {
+        viewModel.videoLiveData.observe(this, {
             it?.let {
                 fillFields(it.title, it.description, "https://youtu.be/${it.url}", null)
             }
         })
-        viewModel.videoRetrieveResponseLiveData.observe(this, Observer {
+        viewModel.videoRetrieveResponseLiveData.observe(this, {
             it?.let {
                 when (it) {
                     CreateRecipeViewModel.ERROR_INVALID_LINK -> {
@@ -212,10 +211,10 @@ class CreateRecipeActivity : AppCompatActivity() {
                 }
             }
         })
-        viewModel.favorite.observe(this, Observer {
+        viewModel.favorite.observe(this, {
             checkBoxAddFavorite.isChecked = it
         })
-        viewModel.recipeCategories.observe(this, Observer { listCategory ->
+        viewModel.recipeCategories.observe(this, { listCategory ->
             layoutChipCategoryCreateRecipe.removeAllViews()
             for (category in listCategory) {
 
