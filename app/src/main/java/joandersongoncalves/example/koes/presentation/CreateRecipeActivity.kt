@@ -17,7 +17,6 @@ import com.google.android.material.snackbar.Snackbar
 import joandersongoncalves.example.koes.R
 import joandersongoncalves.example.koes.data.model.Category
 import joandersongoncalves.example.koes.data.model.Recipe
-import joandersongoncalves.example.koes.presentation.fragment.DialogErrorNoCategoryFragment
 import joandersongoncalves.example.koes.presentation.viewmodel.CreateRecipeViewModel
 import kotlinx.android.synthetic.main.activity_create_recipe.*
 import kotlinx.android.synthetic.main.app_toolbar.*
@@ -85,7 +84,7 @@ class CreateRecipeActivity : AppCompatActivity() {
     private fun settingSaveButton(recipeArg: Recipe?, viewModel: CreateRecipeViewModel): Recipe? {
         var recipe = recipeArg
         btCreateRecipeSave.setOnClickListener {
-            if (validateData()) {
+            if (validateData(viewModel)) {
                 val worked: Boolean
                 val idMessage: Int
                 //if it's editing an existing recipe
@@ -124,18 +123,22 @@ class CreateRecipeActivity : AppCompatActivity() {
         return recipe
     }
 
+    private fun showAddCategoryDialogFragment(viewModel: CreateRecipeViewModel) {
+        viewModel.recipeCategories.value?.let {
+            val addCategoriesFragment =
+                AddCategoryDialogFragment(this, viewModel)
+            val fm = supportFragmentManager
+            addCategoriesFragment.show(fm, "add category fragment")
+        }
+    }
+
     private fun settingOnClicks(recipe: Recipe?, viewModel: CreateRecipeViewModel) {
         settingSaveButton(recipe, viewModel)
         layoutAddFavoriteCreateRecipe.setOnClickListener {
             viewModel.changeFavoriteState()
         }
         btAddCategoryCreateRecipe.setOnClickListener {
-            viewModel.recipeCategories.value?.let {
-                val addCategoriesFragment =
-                    AddCategoryDialogFragment(this, viewModel)
-                val fm = supportFragmentManager
-                addCategoriesFragment.show(fm, "add category fragment")
-            }
+           showAddCategoryDialogFragment(viewModel)
         }
         btCreateRecipeCancel.setOnClickListener {
             // close activity
@@ -255,7 +258,7 @@ class CreateRecipeActivity : AppCompatActivity() {
     }
 
 
-    private fun validateData(): Boolean {
+    private fun validateData(viewModel: CreateRecipeViewModel): Boolean {
 
         //test title field
         if (etRecipeNameCreateRecipe.text == null || etRecipeNameCreateRecipe.text.toString() == "") {
@@ -266,10 +269,7 @@ class CreateRecipeActivity : AppCompatActivity() {
 
         //test categories
         if (layoutChipCategoryCreateRecipe.size == 0) {
-            val errorCategoriesFragment =
-                DialogErrorNoCategoryFragment()
-            val fm = supportFragmentManager
-            errorCategoriesFragment.show(fm, "no category error fragment")
+            showAddCategoryDialogFragment(viewModel)
             return false
         }
 
