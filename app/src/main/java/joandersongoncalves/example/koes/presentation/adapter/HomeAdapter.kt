@@ -78,36 +78,38 @@ class HomeAdapter(
 
             categoryTitle.text = homeRecipeSet.category.categoryName
 
-            if (homeRecipeSet.recipe1 != null) { //has one recipe
+            layout1.visibility = if (homeRecipeSet.recipe1 != null) { //has one recipe
                 recipeTitle1.text = homeRecipeSet.recipe1.name
                 Picasso
                     .get()
                     .load(homeRecipeSet.recipe1.video.mediumThumbnailUrl)
                     .placeholder(R.drawable.placeholder)
                     .into(recipeImage1)
+                 View.VISIBLE
             } else {
-                //remove this view
-                layout1.visibility = View.GONE
+                View.GONE
             }
-            if (homeRecipeSet.recipe2 != null) { //has two recipes
+            layout2.visibility = if (homeRecipeSet.recipe2 != null) { //has two recipes
                 recipeTitle2.text = homeRecipeSet.recipe2.name
                 Picasso
                     .get()
                     .load(homeRecipeSet.recipe2.video.mediumThumbnailUrl)
                     .placeholder(R.drawable.placeholder)
                     .into(recipeImage2)
+                View.VISIBLE
             } else {
-                layout2.visibility = View.GONE
+                View.GONE
             }
-            if (homeRecipeSet.recipe3 != null) { //has three recipes
+            layout3.visibility = if (homeRecipeSet.recipe3 != null) { //has three recipes
                 recipeTitle3.text = homeRecipeSet.recipe3.name
                 Picasso
                     .get()
                     .load(homeRecipeSet.recipe3.video.mediumThumbnailUrl)
                     .placeholder(R.drawable.placeholder)
                     .into(recipeImage3)
+                View.VISIBLE
             } else {
-                layout3.visibility = View.GONE
+                View.GONE
             }
         }
     }
