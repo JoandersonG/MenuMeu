@@ -1,12 +1,12 @@
-<h1 align="center">VeganoCook</h1>
+<h1 align="center">Koes</h1>
 
 ### Objetivos
-VeganoCook é um aplicativo que serve para salvar e organizar vídeos de receitas do Youtube.
+Koes é um aplicativo que serve para salvar e organizar vídeos de receitas do Youtube.
 Através do link dos vídeos, ele é capaz de armazenar, organizar e salvar, guardando inclusive a descrição do vídeo.
 É possível também categorizar essas receitas para encontrá-las mais facilmente.
 
 <h4 align="center"> 
-	VeganoCook em construção... 
+	Koes em construção... 
 </h4>
 
 ### Features
@@ -25,6 +25,45 @@ Através do link dos vídeos, ele é capaz de armazenar, organizar e salvar, gua
   <li>Arquitetura MVVM</li>
   <li>Retrofit para consumir API do YouTube</li>
 </ul>
+
+### Demonstração do app
+<p align="center">
+  <kbd>
+    <img width="250" style="border-radius: 5px"  src="./screenshots/home1.png" alt="Home">
+  </kbd>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <kbd>
+    <img width="250" style="border-radius: 5px" src="./screenshots/add1.png" alt="Carrinho">
+  </kbd>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <kbd>
+    <img width="250" style="border-radius: 5px" src="./screenshots/add2.png" alt="Perfil">
+  </kbd>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <kbd>
+    <img width="250" style="border-radius: 5px" src="./screenshots/all1.png" alt="Detalhes">
+  </kbd>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <kbd>
+    <img width="250" style="border-radius: 5px" src="./screenshots/all2_filter.png" alt="Categoria">
+  </kbd>
+	&nbsp;&nbsp;&nbsp;&nbsp;
+  <kbd>
+    <img width="250" style="border-radius: 5px" src="./screenshots/edit_home1.png" alt="Categoria">
+  </kbd>
+	&nbsp;&nbsp;&nbsp;&nbsp;
+  <kbd>
+    <img width="250" style="border-radius: 5px" src="./screenshots/details1.png" alt="Categoria">
+  </kbd>
+		&nbsp;&nbsp;&nbsp;&nbsp;
+  <kbd>
+    <img width="250" style="border-radius: 5px" src="./screenshots/search1.png" alt="Categoria">
+  </kbd>
+	&nbsp;&nbsp;&nbsp;&nbsp;
+  <kbd>
+    <img width="250" style="border-radius: 5px" src="./screenshots/search2.png" alt="Categoria">
+  </kbd>
+</p>
 
 ### Autor
 
