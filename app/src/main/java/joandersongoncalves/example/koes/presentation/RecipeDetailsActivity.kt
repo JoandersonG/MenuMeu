@@ -48,6 +48,10 @@ class RecipeDetailsActivity : AppCompatActivity() {
     private fun settingViewModel() {
         viewModel.recipe.observe(this, Observer {
             updateFields(it)
+            viewModel.getRecipeCategories()
+        })
+        viewModel.categories.observe(this, {
+            updateCategories(it)
         })
         viewModel.recipe.value = recipe
     }
@@ -132,6 +136,7 @@ class RecipeDetailsActivity : AppCompatActivity() {
         recipe = intent.getParcelableExtra(AppConstantCodes.EXTRA_RECIPE)
         recipe?.categories =
             intent.getSerializableExtra(AppConstantCodes.RECIPE_CATEGORIES) as List<Category>
+        viewModel.recipe.value = recipe
     }
 
     private fun setFavoriteCheckButton(isChecked: Boolean) {
@@ -166,8 +171,11 @@ class RecipeDetailsActivity : AppCompatActivity() {
             videoDescriptionInclude.visibility = View.GONE
         }
         setFavoriteCheckButton(recipe.isFavorite)
+        updateCategories(recipe.categories)
+    }
 
-        recipe.categories.let {
+    private fun updateCategories(categories: List<Category>?) {
+        categories?.let {
             layoutChipCategoryRecipeDetails.removeAllViews()
             for (category in it) {
                 val newCategoryView = layoutInflater.inflate(

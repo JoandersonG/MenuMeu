@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import joandersongoncalves.example.koes.data.RecipeRepository
 import joandersongoncalves.example.koes.data.database.RecipeDatabase
+import joandersongoncalves.example.koes.data.model.Category
 import joandersongoncalves.example.koes.data.model.Recipe
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -14,6 +15,7 @@ class RecipeDetailsViewModel(application: Application) : AndroidViewModel(applic
 
     private val repository: RecipeRepository
     val recipe = MutableLiveData<Recipe>()
+    val categories = MutableLiveData<List<Category>>()
 
     init {
         val recipeDao = RecipeDatabase.getDatabase(application, viewModelScope).recipeDao()
@@ -31,5 +33,9 @@ class RecipeDetailsViewModel(application: Application) : AndroidViewModel(applic
         }
         //then update
         repository.updateRecipe(recipe)
+    }
+
+    fun getRecipeCategories() = viewModelScope.launch(Dispatchers.IO) {
+        categories.postValue(recipe.value?.let { repository.getRecipeWithCategories(it.recipeId) })
     }
 }
