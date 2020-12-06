@@ -22,7 +22,7 @@
         <activity android:name="joandersongoncalves.example.koes.presentation.CategoryActivity" />
         <activity
             android:name="joandersongoncalves.example.koes.presentation.SearchActivity"
-            android:windowSoftInputMode="stateVisible"></activity>
+            android:windowSoftInputMode="stateVisible" />
         <activity android:name="joandersongoncalves.example.koes.presentation.RecipeDetailsActivity" />
         <activity
             android:name="joandersongoncalves.example.koes.presentation.HomeActivity"
