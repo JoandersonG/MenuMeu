@@ -40,6 +40,7 @@ class CreateRecipeActivity : AppCompatActivity() {
         val recipe = gettingReceivedData(viewModel)
         settingOnClicks(recipe, viewModel)
         pressingEnterOnKeyboardHandler(viewModel)
+        onPressingShareInOtherAppsIntent(viewModel)
     }
 
     private fun pressingEnterOnKeyboardHandler(viewModel: CreateRecipeViewModel) {
@@ -294,6 +295,22 @@ class CreateRecipeActivity : AppCompatActivity() {
         //show fields on ViewFlipper
         viewFlipperCreateRecipeActivity.displayedChild = 1
 
+    }
+
+    private fun onPressingShareInOtherAppsIntent(viewModel: CreateRecipeViewModel) {
+        val receiverdIntent = intent
+        val receivedAction = receiverdIntent.action
+        val receivedType = receiverdIntent.type
+        if (receivedAction == Intent.ACTION_SEND) {
+            if (receivedType!!.startsWith("text/")) {
+                val receivedText = receiverdIntent
+                    .getStringExtra(Intent.EXTRA_TEXT)
+                if (receivedText != null) {
+                    etYoutubeLinkCreateRecipe.setText(receivedText)
+                    handleYoutubeLinkSearch(viewModel)
+                }
+            }
+        }
     }
 
     companion object {

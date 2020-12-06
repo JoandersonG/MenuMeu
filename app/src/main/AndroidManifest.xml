@@ -12,7 +12,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name="joandersongoncalves.example.koes.presentation.EditHomeScreenActivity" />
-        <activity android:name="joandersongoncalves.example.koes.presentation.CreateRecipeActivity" />
+        <activity android:name="joandersongoncalves.example.koes.presentation.CreateRecipeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
         <activity android:name="joandersongoncalves.example.koes.presentation.CategoryActivity" />
         <activity
             android:name="joandersongoncalves.example.koes.presentation.SearchActivity"
