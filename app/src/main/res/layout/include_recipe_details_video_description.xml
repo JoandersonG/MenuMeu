@@ -32,7 +32,7 @@
             android:layout_height="35dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/transparent_ripple_no_stroke_background"
-            android:text="@string/show_video_description"
+            android:text="@string/see_entire"
             android:paddingHorizontal="16dp"
             android:textColor="@color/colorPrimary"
             android:layout_gravity="center" />

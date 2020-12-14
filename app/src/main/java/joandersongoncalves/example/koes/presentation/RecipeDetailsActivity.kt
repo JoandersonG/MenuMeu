@@ -65,7 +65,7 @@ class RecipeDetailsActivity : AppCompatActivity() {
         btSeeHideDescriptionRecipeDetails.setOnClickListener {
             btSeeHideDescriptionRecipeDetails.text = if (isShowingAllVideoDescriptionOnView()) {
                 tvVideoDescriptionRecipeDetails.maxLines = 5
-                getString(R.string.show_video_description)
+                getString(R.string.see_entire)
             } else {
                 tvVideoDescriptionRecipeDetails.maxLines = 300
                 getString(R.string.hide_video_description)

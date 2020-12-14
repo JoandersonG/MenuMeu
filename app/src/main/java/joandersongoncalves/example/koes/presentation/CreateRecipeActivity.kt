@@ -151,7 +151,7 @@ class CreateRecipeActivity : AppCompatActivity() {
                 btSeeHideAllVideoDescription.text = getString(R.string.hide_video_description)
             } else {
                 tvVideoDescription.maxLines = 5
-                btSeeHideAllVideoDescription.text = getString(R.string.show_video_description)
+                btSeeHideAllVideoDescription.text = getString(R.string.see_entire)
             }
         }
         btDeleteVideoDescription.setOnClickListener {
