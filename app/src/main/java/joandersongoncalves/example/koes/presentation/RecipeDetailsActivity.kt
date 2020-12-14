@@ -21,6 +21,8 @@ import joandersongoncalves.example.koes.data.model.Recipe
 import joandersongoncalves.example.koes.presentation.viewmodel.RecipeDetailsViewModel
 import kotlinx.android.synthetic.main.activity_recipe_details.*
 import kotlinx.android.synthetic.main.app_toolbar.*
+import kotlinx.android.synthetic.main.include_ingredients_create_recipe.*
+import kotlinx.android.synthetic.main.include_recipe_details_ingredients.*
 import kotlinx.android.synthetic.main.include_recipe_details_video_description.*
 import java.io.Serializable
 
@@ -43,6 +45,8 @@ class RecipeDetailsActivity : AppCompatActivity() {
         settingToolbar()
 
         settingShowAndHideDescription()
+
+        settingShowAndHideIngredients()
     }
 
     private fun settingViewModel() {
@@ -60,6 +64,10 @@ class RecipeDetailsActivity : AppCompatActivity() {
         return tvVideoDescriptionRecipeDetails.maxLines != 5
     }
 
+    private fun isShowingAllIngredientsOnView(): Boolean {
+        return tvIngredientsRecipeDetails.maxLines != 5
+    }
+
     private fun settingShowAndHideDescription() {
 
         btSeeHideDescriptionRecipeDetails.setOnClickListener {
@@ -69,6 +77,18 @@ class RecipeDetailsActivity : AppCompatActivity() {
             } else {
                 tvVideoDescriptionRecipeDetails.maxLines = 300
                 getString(R.string.hide_video_description)
+            }
+        }
+    }
+
+    private fun settingShowAndHideIngredients() {
+        btSeeHideIngredientsRecipeDetails.setOnClickListener {
+            btSeeHideIngredientsRecipeDetails.text = if(isShowingAllIngredientsOnView()) {
+                tvIngredientsRecipeDetails.maxLines = 5
+                getString(R.string.see_entire)
+            } else {
+                tvIngredientsRecipeDetails.maxLines = 300
+                getString(R.string.hide_ingredients)
             }
         }
     }
@@ -169,6 +189,11 @@ class RecipeDetailsActivity : AppCompatActivity() {
         tvVideoDescriptionRecipeDetails.text = recipe.description
         if (recipe.description == "") {
             videoDescriptionInclude.visibility = View.GONE
+        }
+        if (recipe.ingredients == null) {
+            ingredientsInclude.visibility = View.GONE
+        } else {
+            tvIngredientsRecipeDetails.text = recipe.ingredients
         }
         setFavoriteCheckButton(recipe.isFavorite)
         updateCategories(recipe.categories)

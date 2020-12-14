@@ -47,6 +47,16 @@
             app:flexWrap="wrap" />
 
         <include
+            android:id="@+id/ingredientsInclude"
+            layout="@layout/include_recipe_details_ingredients"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"/>
+
+        <include
             android:id="@+id/videoDescriptionInclude"
             layout="@layout/include_recipe_details_video_description"
             android:layout_width="match_parent"
