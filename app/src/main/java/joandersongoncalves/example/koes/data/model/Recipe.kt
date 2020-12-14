@@ -12,6 +12,7 @@ data class Recipe(
     @Embedded var video: YouTubeVideo,
     var name: String,
     var description: String,
+    var ingredients: String?,
     @ColumnInfo(name = "is_favorite")
     var isFavorite: Boolean
 ) : Parcelable {
@@ -23,9 +24,10 @@ data class Recipe(
         video: YouTubeVideo,
         name: String,
         description: String,
+        ingredients: String?,
         favorite: Boolean,
         categories: List<Category>
-    ) : this(0, video, name, description, favorite) {
+    ) : this(0, video, name, description, ingredients, favorite) {
         this.categories = categories
     }
 

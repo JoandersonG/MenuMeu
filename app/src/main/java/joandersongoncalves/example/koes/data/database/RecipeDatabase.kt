@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 
 @Database(
     entities = [Recipe::class, Category::class, RecipeCategoryCrossRef::class, SearchHistoryEntry::class],
-    version = 2
+    version = 3
 )
 abstract class RecipeDatabase : RoomDatabase() {
 
@@ -43,7 +43,7 @@ abstract class RecipeDatabase : RoomDatabase() {
                 )
                     .addCallback(RecipeDatabaseCallback(scope))
                     .fallbackToDestructiveMigration()
-                    .addMigrations(MIGRATION_1_2)
+                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
                     .build()
                 INSTANCE = instance
                 return instance
@@ -85,6 +85,16 @@ val MIGRATION_1_2 = object : Migration(1, 2) {
     override fun migrate(database: SupportSQLiteDatabase) {
         database.execSQL(
             "CREATE TABLE IF NOT EXISTS search_history (`entry_title` TEXT NOT NULL, `creation_timestamp` INTEGER, PRIMARY KEY(`entry_title`))"
+        )
+    }
+}
+/*
+* Database version 3 adds ingredients text field
+*/
+val MIGRATION_2_3 = object : Migration(2, 3) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL(
+            "ALTER TABLE recipes ADD COLUMN ingredients TEXT"
         )
     }
 }
