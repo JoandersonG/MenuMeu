@@ -25,6 +25,9 @@
     <string name="see_entire">Ver completa</string>
     <string name="see_all_recipe">Ver completa</string>
     <string name="get_description">Recuperar descrição</string>
+    <string name="ingredients">Ingredientes</string>
+    <string name="hide_ingredients">Ocultar ingreditentes</string>
+    <string name="get_ingredients">Adicionar ingredientes</string>
 
     <!-- Generic string -->
     <string name="title">Título</string>
@@ -105,6 +108,4 @@
     <!-- AddCategoryDialogFragment -->
     <string name="confirm_delete_category">Confirme que deseja apagar completamente a seguinte categoria:</string>
     <string name="delete_category">Delete Category</string>
-
-
 </resources>

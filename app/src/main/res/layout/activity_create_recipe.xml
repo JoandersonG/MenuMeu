@@ -63,6 +63,12 @@
                     <include
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        layout="@layout/include_ingredients_create_recipe"
+                        android:layout_margin="16dp" />
+
+                    <include
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         layout="@layout/include_recipe_categories_create_recipe"
                         android:layout_margin="16dp" />
 

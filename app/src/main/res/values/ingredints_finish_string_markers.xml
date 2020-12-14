@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="finnish_markers_list">
+        <item>E-mail</item>
+        <item>Caixa postal</item>
+        <item>Contato</item>
+        <item>Se gostou das receita</item>
+        <item>Inscreva-se no nosso</item>
+        <item>ME ACOMPANHE NAS REDES</item>
+        <item>Facebook</item>
+        <item>Instagram</item>
+        <item>modo de preparo</item>
+        <item>Celular</item>
+        <item>Música</item>
+        <item>ASSISTA O PASSO A PASSO</item>
+        <item>Siga as redes</item>
+        <item>As xícaras do vídeo</item>
+        <item>receitasdacris@outlook.com</item>
+        <item>Endereço para envio</item>
+        <item>Veja mais detalhes</item>
+        <item>PRINT THIS RECIPE</item>
+        <item>Other channel</item>
+        <item>Nuances</item>
+        <item>Enjoy your meal!</item>
+        <item>Boa sorte</item>
+        <item>music</item>
+        <item>Instruções:</item>
+        <item>Guia de conversão</item>
+        <item>For business queries</item>
+    </string-array>
+
+</resources>

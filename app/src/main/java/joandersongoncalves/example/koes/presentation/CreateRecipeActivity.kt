@@ -18,14 +18,17 @@ import joandersongoncalves.example.koes.R
 import joandersongoncalves.example.koes.data.model.Category
 import joandersongoncalves.example.koes.data.model.Recipe
 import joandersongoncalves.example.koes.presentation.viewmodel.CreateRecipeViewModel
+import joandersongoncalves.example.koes.utils.WordRegex
 import kotlinx.android.synthetic.main.activity_create_recipe.*
 import kotlinx.android.synthetic.main.app_toolbar.*
+import kotlinx.android.synthetic.main.include_ingredients_create_recipe.*
 import kotlinx.android.synthetic.main.include_recipe_categories_create_recipe.*
 import kotlinx.android.synthetic.main.include_recipe_name_create_recipe.*
 import kotlinx.android.synthetic.main.include_save_favorite_create_recipe.*
 import kotlinx.android.synthetic.main.include_video_description_create_recipe.*
 import kotlinx.android.synthetic.main.include_youtube_link_create_recipe.*
 import java.io.Serializable
+import java.lang.StringBuilder
 
 
 @Suppress("ControlFlowWithEmptyBody")
@@ -93,6 +96,7 @@ class CreateRecipeActivity : AppCompatActivity() {
                     recipe = viewModel.updateRecipe(
                         etRecipeNameCreateRecipe.text.toString(),
                         tvVideoDescription.text.toString(),
+                        tvIngredients.text.toString(),
                         recipe!!
                     )
                     idMessage = R.string.success_updating_recipe
@@ -107,7 +111,8 @@ class CreateRecipeActivity : AppCompatActivity() {
                 } else {
                     worked = viewModel.saveNewRecipe(
                         etRecipeNameCreateRecipe.text.toString(),
-                        tvVideoDescription.text.toString()
+                        tvVideoDescription.text.toString(),
+                        if (tvIngredients.text.toString().isEmpty()) null else tvIngredients.text.toString()
                     )
                     idMessage = if (worked) {
                         setResult(Activity.RESULT_OK)
@@ -154,17 +159,48 @@ class CreateRecipeActivity : AppCompatActivity() {
                 btSeeHideAllVideoDescription.text = getString(R.string.see_entire)
             }
         }
+        btSeeHideAllIngredients.setOnClickListener {
+            if (tvIngredients.maxLines == 5) {
+                tvIngredients.maxLines = 300
+                btSeeHideAllIngredients.text = getString(R.string.hide_ingredients)
+            } else {
+                tvIngredients.maxLines = 5
+                btSeeHideAllIngredients.text = getString(R.string.see_entire)
+            }
+        }
         btDeleteVideoDescription.setOnClickListener {
             tvVideoDescription.setText("")
             tvVideoDescription.visibility = View.GONE
             layoutVideoDescriptionButtons.visibility = View.GONE
             btGetVideoDescription.visibility = View.VISIBLE
         }
+        btDeleteIngredients.setOnClickListener {
+            val backup = tvIngredients.text
+            tvIngredients.setText("")
+            hideIngredients()
+            Snackbar.make(
+                viewFlipperCreateRecipeActivity, "Lista de ingredientes apagada",
+                Snackbar.LENGTH_SHORT
+            ).setAction("Desfazer") {
+                tvIngredients.text = backup
+                tvIngredients.visibility = View.VISIBLE
+                layoutIngredientsButtons.visibility = View.VISIBLE
+                btGetIngredients.visibility = View.GONE
+            }.show()
+        }
         btGetVideoDescription.setOnClickListener {
             tvVideoDescription.setText(viewModel.videoLiveData.value?.description)
             tvVideoDescription.visibility = View.VISIBLE
             layoutVideoDescriptionButtons.visibility = View.VISIBLE
             btGetVideoDescription.visibility = View.GONE
+        }
+        btGetIngredients.setOnClickListener {
+            tvIngredients.setText(viewModel.videoLiveData.value?.description?.let { description ->
+                getValidIngredients(description)
+            })
+            tvIngredients.visibility = View.VISIBLE
+            layoutIngredientsButtons.visibility = View.VISIBLE
+            btGetIngredients.visibility = View.GONE
         }
         btSearchYoutubeLink.setOnClickListener { handleYoutubeLinkSearch(viewModel) }
     }
@@ -175,6 +211,7 @@ class CreateRecipeActivity : AppCompatActivity() {
             fillFields(
                 rec.name,
                 rec.description,
+                rec.ingredients,
                 "https://youtu.be/${rec.video.url}",
                 rec.isFavorite
             )
@@ -190,7 +227,7 @@ class CreateRecipeActivity : AppCompatActivity() {
 
         viewModel.videoLiveData.observe(this, {
             it?.let {
-                fillFields(it.title, it.description, "https://youtu.be/${it.url}", null)
+                fillFields(it.title, it.description, null,"https://youtu.be/${it.url}", null)
             }
         })
         viewModel.videoRetrieveResponseLiveData.observe(this, {
@@ -281,12 +318,23 @@ class CreateRecipeActivity : AppCompatActivity() {
     private fun fillFields(
         title: String,
         description: String,
+        ingredients: String?,
         videoId: String? = null,
         isFavorite: Boolean?
     ) {
 
         etRecipeNameCreateRecipe.setText(title)
         tvVideoDescription.setText(description)
+        if (ingredients.isNullOrEmpty()) {
+            val ingred = getValidIngredients(description)
+            if (ingred.isNotEmpty()) {
+                tvIngredients.setText(ingred)
+            } else {
+                hideIngredients()
+            }
+        } else {
+            tvIngredients.setText(ingredients)
+        }
         etYoutubeLinkCreateRecipe.setText(videoId)
         if (isFavorite != null) {
             checkBoxAddFavorite.isChecked = isFavorite
@@ -295,6 +343,28 @@ class CreateRecipeActivity : AppCompatActivity() {
         //show fields on ViewFlipper
         viewFlipperCreateRecipeActivity.displayedChild = 1
 
+    }
+
+    private fun hideIngredients() {
+        tvIngredients.visibility = View.GONE
+        layoutIngredientsButtons.visibility = View.GONE
+        btGetIngredients.visibility = View.VISIBLE
+    }
+
+
+    private fun getValidIngredients(description: String): String {
+        val finnishMarkers = resources.getStringArray(R.array.finnish_markers_list)
+        val sb = StringBuilder()
+        var descriptionParts : List<String> = description.split(".*[Ii][Nn][Gg][Rr][Ee][Dd][Ii][Ee][Nn][Tt].*".toRegex(), 0)
+        if (descriptionParts.size == 2) {
+            for (marker in finnishMarkers) {
+                sb.append(WordRegex.getWordAsRegex(marker)).append("|")
+            }
+            sb.deleteCharAt(sb.lastIndexOf("|"))
+            descriptionParts = descriptionParts[1].split(sb.toString().toRegex(), 0)
+            return descriptionParts[0]
+        }
+        return ""
     }
 
     private fun onPressingShareInOtherAppsIntent(viewModel: CreateRecipeViewModel) {

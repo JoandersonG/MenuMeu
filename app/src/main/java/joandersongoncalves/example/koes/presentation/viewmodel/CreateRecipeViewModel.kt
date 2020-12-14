@@ -86,11 +86,11 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
             })
     }
 
-    fun saveNewRecipe(name: String, description: String): Boolean {
+    fun saveNewRecipe(name: String, description: String, ingredients: String?): Boolean {
 
         val recipe = videoLiveData.value?.let { video ->
             recipeCategories.value?.toList()?.let { listCategories ->
-                Recipe(video, name, description, favorite.value!!, listCategories)
+                Recipe(video, name, description, ingredients, favorite.value!!, listCategories)
             }
         }
 
@@ -102,11 +102,12 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
         return false
     }
 
-    fun updateRecipe(name: String, description: String, recipe: Recipe): Recipe {
+    fun updateRecipe(name: String, description: String, ingredients: String, recipe: Recipe): Recipe {
 
         viewModelScope.launch(Dispatchers.IO) {
             recipe.name = name
             recipe.description = description
+            recipe.ingredients = ingredients
             videoLiveData.value?.let {
                 recipe.video = it
             }
