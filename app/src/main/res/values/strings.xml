@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Koes</string>
+    <string name="app_name">MenuMeu</string>
 
     <!--  HomeActivity  -->
     <string name="add_recipe">Adicionar receita</string>

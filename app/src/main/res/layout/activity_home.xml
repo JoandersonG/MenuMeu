@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/ScrollViewMainActivity"
     android:background="@color/white"
-    tools:context="joandersongoncalves.example.koes.presentation.HomeActivity">
+    tools:context="joandersongoncalves.example.menumeu.presentation.HomeActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -36,7 +36,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/appToolbarLayout" />
 
-        <joandersongoncalves.example.koes.utils.SquareButton
+        <joandersongoncalves.example.menumeu.utils.SquareButton
             android:id="@+id/btAllRecipes"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -81,7 +81,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/btAllRecipes" />
 
-        <joandersongoncalves.example.koes.utils.SquareButton
+        <joandersongoncalves.example.menumeu.utils.SquareButton
             android:id="@+id/btCreateRecipe"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

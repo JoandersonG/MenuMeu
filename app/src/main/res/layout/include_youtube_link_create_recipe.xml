@@ -45,7 +45,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <joandersongoncalves.example.koes.utils.SquareButton
+    <joandersongoncalves.example.menumeu.utils.SquareButton
         android:id="@+id/btSearchYoutubeLink"
         style="@style/HomeActivityButton"
         android:layout_width="wrap_content"

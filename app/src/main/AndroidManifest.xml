@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="joandersongoncalves.example.koes">
+    package="joandersongoncalves.example.menumeu">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -11,21 +11,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="joandersongoncalves.example.koes.presentation.EditHomeScreenActivity" />
-        <activity android:name="joandersongoncalves.example.koes.presentation.CreateRecipeActivity">
+        <activity android:name="joandersongoncalves.example.menumeu.presentation.EditHomeScreenActivity" />
+        <activity android:name="joandersongoncalves.example.menumeu.presentation.CreateRecipeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
-        <activity android:name="joandersongoncalves.example.koes.presentation.CategoryActivity" />
+        <activity android:name="joandersongoncalves.example.menumeu.presentation.CategoryActivity" />
         <activity
-            android:name="joandersongoncalves.example.koes.presentation.SearchActivity"
+            android:name="joandersongoncalves.example.menumeu.presentation.SearchActivity"
             android:windowSoftInputMode="stateVisible" />
-        <activity android:name="joandersongoncalves.example.koes.presentation.RecipeDetailsActivity" />
+        <activity android:name="joandersongoncalves.example.menumeu.presentation.RecipeDetailsActivity" />
         <activity
-            android:name="joandersongoncalves.example.koes.presentation.HomeActivity"
+            android:name="joandersongoncalves.example.menumeu.presentation.HomeActivity"
             android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
