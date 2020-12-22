@@ -11,10 +11,10 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import androidx.core.view.size
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import joandersongoncalves.example.menumeu.R
@@ -102,7 +102,7 @@ class CategoryActivity : AppCompatActivity() {
                 .findViewById<CheckBox>(R.id.checkBoxFavorite)
                 .isChecked = it
         })
-        viewModel.recipesByCategory.observe(this, Observer {
+        viewModel.recipesByCategory.observe(this, {
             recipeAdapter.setRecipes(it)
             if (it.isEmpty()) { //the results returned zero recipes
                 viewFlipperCategoryActivity.displayedChild = 1
@@ -112,11 +112,11 @@ class CategoryActivity : AppCompatActivity() {
         })
 
         //setting activity title
-        viewModel.categoryTitle.observe(this, Observer {
+        viewModel.categoryTitle.observe(this, {
             tvAppToolbarOtherTitle.text = it
         })
 
-        viewModel.selectedCategoriesOnFilter.observe(this, Observer {
+        viewModel.selectedCategoriesOnFilter.observe(this, {
             if (viewModel.isFavoriteRecipesOnly.value!!) {
                 //this means is it should be favorite only, so show title Favorites
                 viewModel.setToolbarTitle(getString(R.string.favorite))
@@ -175,10 +175,10 @@ class CategoryActivity : AppCompatActivity() {
                     viewModel.selectedCategoriesOnFilter.value?.let { selectedCategories ->
                         background = if (selectedCategories.contains(category)) {
                             setTextColor(Color.WHITE)
-                            getDrawable(R.drawable.primary_ripple_stroke_background)
+                            ContextCompat.getDrawable(this@CategoryActivity, R.drawable.primary_ripple_stroke_background)
                         } else {
                             setTextColor(Color.BLACK)
-                            getDrawable(R.drawable.white_ripple_stroke_background)
+                            ContextCompat.getDrawable(this@CategoryActivity, R.drawable.white_ripple_stroke_background)
                         }
                     }
 
@@ -188,10 +188,10 @@ class CategoryActivity : AppCompatActivity() {
                         viewModel.selectedCategoriesOnFilter.value?.let { selectedCategories ->
                             background = if (selectedCategories.contains(category)) {
                                 setTextColor(Color.WHITE)
-                                getDrawable(R.drawable.primary_ripple_stroke_background)
+                                ContextCompat.getDrawable(this@CategoryActivity, R.drawable.primary_ripple_stroke_background)
                             } else {
                                 setTextColor(Color.BLACK)
-                                getDrawable(R.drawable.white_ripple_stroke_background)
+                                ContextCompat.getDrawable(this@CategoryActivity, R.drawable.white_ripple_stroke_background)
                             }
                         }
                     }
