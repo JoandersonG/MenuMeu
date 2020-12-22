@@ -103,4 +103,9 @@ class CategoryViewModel(application: Application) : AndroidViewModel(application
     fun setToolbarTitle(string: String) {
         categoryTitle.value = string
     }
+
+    fun changeFavoriteRecipesOnly() {
+        isFavoriteRecipesOnly.value = !isFavoriteRecipesOnly.value!!
+        updateAllRecipes()
+    }
 }

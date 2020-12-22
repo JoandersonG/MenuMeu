@@ -6,6 +6,8 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.Button
+import android.widget.CheckBox
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -83,11 +85,23 @@ class CategoryActivity : AppCompatActivity() {
                 //recreate all category chips
                 addAllCategoriesIntoChips()
             }
-
+        drawerFilters
+            .getHeaderView(0)
+            .findViewById<LinearLayout>(R.id.layoutFavoriteFilter)
+            .setOnClickListener {
+                //checkBoxFavorite.isChecked = !checkBoxFavorite.isChecked
+                viewModel.changeFavoriteRecipesOnly()
+            }
         viewModel.getAllCategories()
     }
 
     private fun viewModelObserversSetup(recipeAdapter: RecipeAdapter) {
+        viewModel.isFavoriteRecipesOnly.observe(this, {
+            drawerFilters
+                .getHeaderView(0)
+                .findViewById<CheckBox>(R.id.checkBoxFavorite)
+                .isChecked = it
+        })
         viewModel.recipesByCategory.observe(this, Observer {
             recipeAdapter.setRecipes(it)
             if (it.isEmpty()) { //the results returned zero recipes

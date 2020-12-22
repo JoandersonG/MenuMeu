@@ -68,6 +68,7 @@
     <string name="filters">Filtros</string>
     <string name="added_to_favorites">Receita adicionada aos favoritos</string>
     <string name="removed_from_favorites">Receita removida dos favoritos"</string>
+    <string name="favorite_recipes">Receitas favoritas</string>
 
     <!-- RecipeAdapter -->
     <string name="recipe_image">Imagem da receita</string>

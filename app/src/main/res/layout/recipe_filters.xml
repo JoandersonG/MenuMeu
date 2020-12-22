@@ -44,6 +44,37 @@
         android:layout_marginTop="8dp"
         android:background="@android:color/darker_gray" />
 
+    <LinearLayout
+        android:id="@+id/layoutFavoriteFilter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="6dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        android:background="@drawable/white_ripple_stroke_background"
+        android:clickable="true"
+        android:focusable="true">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:text="@string/favorite_recipes" />
+
+        <CheckBox
+            android:id="@+id/checkBoxFavorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:clickable="false"
+            android:button="@drawable/sl_favourite_24dp"
+            app:buttonTint="@color/colorPrimary" />
+
+    </LinearLayout>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
