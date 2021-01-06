@@ -70,7 +70,7 @@
 
                         <ImageView
                             android:id="@+id/ivRecipeOneHomeAdapter"
-                            android:layout_width="140dp"
+                            android:layout_width="160dp"
                             android:layout_height="wrap_content"
                             android:adjustViewBounds="true"
                             android:src="@drawable/placeholder"
@@ -117,7 +117,7 @@
 
                         <ImageView
                             android:id="@+id/ivRecipeTwoHomeAdapter"
-                            android:layout_width="140dp"
+                            android:layout_width="160dp"
                             android:layout_height="wrap_content"
                             android:adjustViewBounds="true"
                             android:contentDescription="@string/recipe_image"
@@ -164,7 +164,7 @@
 
                         <ImageView
                             android:id="@+id/ivRecipeThreeHomeAdapter"
-                            android:layout_width="140dp"
+                            android:layout_width="160dp"
                             android:layout_height="wrap_content"
                             android:adjustViewBounds="true"
                             android:contentDescription="@string/recipe_image"
