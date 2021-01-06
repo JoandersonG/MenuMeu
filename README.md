@@ -3,9 +3,7 @@
 </p>
 
 ### Objetivos
-MenuMeu é um aplicativo que serve para salvar e organizar vídeos de receitas do Youtube.
-Através do link dos vídeos, ele é capaz de armazenar, organizar e salvar, guardando inclusive a descrição do vídeo.
-É possível também categorizar essas receitas para encontrá-las mais facilmente.
+MenuMeu é um aplicativo sendo desenvolvido para salvar e organizar vídeos de receitas do YouTube. Através do link dos vídeos, ele é capaz de armazenar, organizar e salvar, guardando inclusive a descrição do vídeo e sua lista de ingredientes, capturadas automaticamente da descrição, quando possível. É possível também categorizar essas receitas para organizá-las e encontrá-las mais facilmente, inclusive através de buscas.
 
 <h4 align="center"> 
 	MenuMeu em construção... 
