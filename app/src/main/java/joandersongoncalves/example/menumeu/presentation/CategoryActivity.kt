@@ -221,6 +221,7 @@ class CategoryActivity : AppCompatActivity() {
                 R.string.success_deleting_recipe,
                 Snackbar.LENGTH_SHORT
             ).show()
+            viewModel.updateAllRecipes()
         }
         viewModel.getAllCategories() //updating categories for any possible updates
     }
