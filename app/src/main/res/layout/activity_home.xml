@@ -111,6 +111,7 @@
             android:layout_marginStart="8dp"
             android:paddingBottom="16dp"
             android:overScrollMode="never"
+            android:nestedScrollingEnabled="false"
             tools:listitem="@layout/home_category_adapter"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
